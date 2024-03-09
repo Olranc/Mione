@@ -1,7 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
 
 int getWordType(char** var, char word) {
     *var = "\0";
@@ -9,6 +11,7 @@ int getWordType(char** var, char word) {
         *var = "'";
         return 1;
     }
+    
 
     if (word == ' ') {
         *var = " ";
@@ -74,8 +77,8 @@ int main() {
 
     char* lastWordType = "\0";
 
-    char *txt = malloc(strlen("Mione") * sizeof(char));
-    strcpy(txt,"Mione");
+    char* txt = malloc(strlen("Mione") * sizeof(char));
+    strcpy(txt, "Mione");
 
     while (fgets(line, sizeof(line), file)) { //     C
         //  printf("%s\n",line);
@@ -170,7 +173,7 @@ int main() {
                 char a[] = "string";
 
                 caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
-                
+
                 strcpy(caseType, a);
             }
 
@@ -191,7 +194,7 @@ int main() {
                 a[0] = word;
                 a[1] = '\0';
 
-                txt = realloc(txt,sizeof (char) * (strlen(a)+1));
+                txt = realloc(txt, sizeof(char) * (strlen(a) + 1));
                 strcat(txt, a);
                 //printf("aaaa:%s %c\n",a,inString);
             }
@@ -199,7 +202,7 @@ int main() {
 
                 printf(" here : %s\n", txt); //
 
-                txt = realloc(txt,sizeof (char) * (1));
+                txt = realloc(txt, sizeof(char) * (1));
                 strcpy(txt, "");
 
 
@@ -208,7 +211,7 @@ int main() {
                 a[0] = word;
                 a[1] = '\0';
 
-                txt = realloc(txt,sizeof (char) * (strlen(a)+1));
+                txt = realloc(txt, sizeof(char) * (strlen(a) + 1));
                 strcat(txt, a);
                 //printf("bbbb:%s %c\n",a,inString);
 
