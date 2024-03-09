@@ -1,16 +1,14 @@
 # Mione
 
-![Mione](https://raw.githubusercontent.com/CallHxx/Mione/main/Mione.svg)  
+![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
 
 # POWER BY MIOPRETY
-![Mioprety](https://raw.githubusercontent.com/CallHxx/Mione/main/Mioprety-nobackground.svg) 
+![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg) 
 
-
-**Hi there!** I'm Hxx, and I'm embarking on an exciting adventure to create a brand new high-level language called Mione, even with no prior experience. Feel free to join the journey on Discord: [me](https://discordapp.com/users/973907883274166283)
 
 **Protecting Your Work:**
 
-It's fantastic that you've included a link to your copyright information. Protecting your intellectual property is crucial! COPYRIGHT: [COPYRIGHT](https://raw.githubusercontent.com/CallHxx/Mione/main/COPYRIGHT.txt)
+It's fantastic that you've included a link to your copyright information. Protecting your intellectual property is crucial! COPYRIGHT: [COPYRIGHT](https://raw.githubusercontent.com/ChenNini0924/Mione/main/COPYRIGHT.txt)
 
 ## Exploring Mione's Building Blocks
 
