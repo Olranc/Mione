@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 int getWordType(char** var, char word) {
     *var = "\0";
     if (word == '"' || word == '\'') {
