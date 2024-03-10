@@ -1,1 +1,7 @@
-set x = "Hello World"
+set x = "hello"
+set x={
+"dsadas"}
+
+set y = a123
+set x = 123a
+set z = 213ffas12
