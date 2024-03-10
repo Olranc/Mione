@@ -9,9 +9,6 @@
 
 #include "mione.h"
 
-char* def1;
-char* def2;
-
 int getWordType(char** var, char word) {
     *var = "\0";
     if (word == '"' || word == '\'') {
@@ -20,7 +17,7 @@ int getWordType(char** var, char word) {
     }
 
 
-    if (word == ' '||word == '\n') {
+    if (word == ' ') {
         *var = " ";
         return 1;
     }
@@ -37,10 +34,24 @@ int getWordType(char** var, char word) {
 
         char b;
         b = 96 + i;
+
+      
         if (word == a || word == b) {
-            *var = "abc123";
+            *var = "abc";
             return 1;
-            //printf(" %c %c\n",a,b);
+        }
+        
+    }
+
+    for (int i = 0; i < 10; i++) {
+        char aw[5];
+        sprintf(aw, "%d", i);
+
+        if (aw) {
+            if (word == aw[0]) {
+                *var = "123";
+                return 1;
+            }
         }
     }
 
@@ -87,9 +98,9 @@ int OPEN(char* fileName) {
     int inNumber = 0;
     int nextImNumber = 2;
 
-    char* lastWordType = "abc123";
+    char* lastWordType = " ";
 
-    char* txt = malloc(1 * sizeof(char));
+    char* txt = malloc(2 * sizeof(char));
     strcpy(txt, " ");
 
     while (fgets(line, sizeof(line), file) != NULL) { //     C
@@ -101,7 +112,7 @@ int OPEN(char* fileName) {
 
         int lastOne = strlen(line) - 1;
 
-        for (int i = 0; strlen(line) > i; i++) { // C      C Ӧr
+        for (int i = 0; strlen(line) > i; i++) { // C
             if (i == lastOne) {
                 strcat(line, " ");
             }
@@ -109,14 +120,21 @@ int OPEN(char* fileName) {
             char word = line[i];
             char* wordType;
 
-            char* caseType = malloc(0 * sizeof(char));
-            caseType = realloc(caseType, strlen("none") * sizeof(char));
-            strcpy(caseType, "none");
-
             getWordType(&wordType, word);
+            //特殊。偵測數字前面是否是字元
+
+            if (wordType == "123") {
+                char* aw;
+                getWordType(&aw, line[i - 1]);
+                if (aw == "abc" || lastWordType == "abc") {
+                    wordType = "abc";
+                }
+            }
+            //
+           
 
 
-            if (nextInString == 'n') { // P _ r
+            if (nextInString == 'n') { //
                 if (wordType == "'") {
                     if (inString != '\0') {
                         nextInString = '\0';
@@ -138,7 +156,6 @@ int OPEN(char* fileName) {
 
 
             if (nextInTable == 2) {
-                // L
                 if (wordType == "table") {
                     if (inTable == 1) {
                         nextInTable = 0;
@@ -165,35 +182,30 @@ int OPEN(char* fileName) {
 
             }
             else {
-                char a[] = "string";
-
-                caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
-
-                strcpy(caseType, a);
                 wordType = "'";
             }
             if (inTable == '\0') {
 
             }
             else {
-                char a[] = "table";
-                caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
-
-                //caseType = a;
-                strcpy(caseType, a);
                 wordType = "table";
             }
 
+            char a[] = { word,'\0' };
+            txt = realloc(txt, sizeof(char) * (strlen(txt) + strlen(a)+1));
 
-            if (lastWordType == wordType && i != strlen(line) - 1) {
-                printf("%s %c\n",wordType,word);
+            if (lastWordType == wordType ) {
+                
+                strcat(txt, a);
             }
             else {
-
-                mione(word,wordType);
-
+                
+                mione(txt);
+                strcpy(txt, a);
 
             }
+
+           
 
 
             lastWordType = wordType;
