@@ -5,13 +5,20 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <Windows.h>
+
+#include "mione.h"
+
+char* def1;
+char* def2;
+
 int getWordType(char** var, char word) {
     *var = "\0";
     if (word == '"' || word == '\'') {
         *var = "'";
         return 1;
     }
-    
+
 
     if (word == ' ') {
         *var = " ";
@@ -43,12 +50,17 @@ int getWordType(char** var, char word) {
     }
 
 
+    if (word == '$' || word == '@' || word == '#') {
+        *var = "function";
+        return 1;
+    }
+
+
     return 2;
 };
 
-
-int main() {
-    FILE* file = fopen("index.mio", "r");
+int OPEN(char**fileName) {
+    FILE* file = fopen(fileName, "r");
     char line[2048];
 
     if (file == NULL) {
@@ -77,10 +89,10 @@ int main() {
 
     char* lastWordType = "\0";
 
-    char* txt = malloc(strlen("Mione") * sizeof(char));
-    strcpy(txt, "Mione");
+    char* txt = malloc(1 * sizeof(char));
+    strcpy(txt, " ");
 
-    while (fgets(line, sizeof(line), file)) { //     C
+    while (fgets(line, sizeof(line), file) != NULL) { //     C
         //  printf("%s\n",line);
 
         inString = '\0';
@@ -97,8 +109,8 @@ int main() {
             char word = line[i];
             char* wordType;
 
-            char* caseType;
-            caseType = malloc((strlen("none") + 1) * sizeof(char));
+            char* caseType = malloc(0 * sizeof(char));
+            caseType = realloc(caseType, strlen("none") * sizeof(char));
             strcpy(caseType, "none");
 
             getWordType(&wordType, word);
@@ -120,10 +132,6 @@ int main() {
                 inString = nextInString;
                 nextInString = 'n';
             }
-
-
-
-
 
 
 
@@ -152,20 +160,7 @@ int main() {
 
 
 
-
-
-
             //=========================================================================
-            if (inTable == '\0') {
-
-            }
-            else {
-                char a[] = "table";
-                caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
-
-                //caseType = a;
-                strcpy(caseType, a);
-            }
             if (inString == '\0') {
 
             }
@@ -175,21 +170,29 @@ int main() {
                 caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
 
                 strcpy(caseType, a);
+                wordType = "'";
             }
+            if (inTable == '\0') {
+
+            }
+            else {
+                char a[] = "table";
+                caseType = realloc(caseType, (strlen(a) + 1) * sizeof(char));
+
+                //caseType = a;
+                strcpy(caseType, a);
+                wordType = "table";
+            }
+
 
             printf("%s %c\n", caseType, word);
 
 
-            if (inString == '\0') {
-
-            }
-            else {
-
-                wordType = "'";
-            }
 
 
-            if (lastWordType == wordType && i != strlen(line) - 1) { // ̫ @ 榳 Q  i ӤF
+
+
+            if (lastWordType == wordType && i != strlen(line) - 1) {
                 char a[2];
                 a[0] = word;
                 a[1] = '\0';
@@ -200,7 +203,8 @@ int main() {
             }
             else {
 
-                printf(" here : %s\n", txt); //
+                mione(txt);
+
 
                 txt = realloc(txt, sizeof(char) * (1));
                 strcpy(txt, "");
@@ -219,12 +223,52 @@ int main() {
 
 
             lastWordType = wordType;
-            //free(caseType);
-            //printf("%c %c \n",word,inString);
         }
     }
 
     fclose(file);
-
     return 0;
 }
+
+int main() {
+    LPWSTR* cmds;
+    int num;
+    cmds = CommandLineToArgvW(GetCommandLineW(), &num);
+    char m[256];
+    
+    if (num >= 2) {
+        if (wcscmp(cmds[1], L"o") == 0) {
+            WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
+
+            OPEN(m);
+        }
+
+        if (wcscmp(cmds[1], L"home") == 0) {
+            printf("Hello, World!\n\n");
+            printf("==================================================================\n");
+            printf("          ____                                                \n");
+            printf("        ,'  , `.                                              \n");
+            printf("     ,-+-,.' _ |   ,--,                                       \n");
+            printf("  ,-+-. ;   , || ,--.'|       ,---.         ,---,             \n");
+            printf(" ,--.'|'   |  ;| |  |,       '   ,'\    ,-+-. /  |            \n");
+            printf("|   |  ,', |  ': `--'_      /   /   |  ,--.'|'   |    ,---.   \n");
+            printf("|   | /  | |  || ,' ,'|    .   ; ,. : |   |  ,'' |   /     \  \n");
+            printf("'   | :  | :  |, '  | |    '   | |: : |   | /  | |  /    /  | \n");
+            printf(";   . |  ; |--'  |  | :    '   | .; : |   | |  | | .    ' / | \n");
+            printf("|   : |  | ,     '  : |__  |   :    | |   | |  |/  '   ;   /| \n");
+            printf("|   : '  |/      |  | '.'|  \   \  /  |   | |--'   '   |  / | \n");
+            printf(";   | |`-'       ;  :    ;   `----'   |   |/       |   :    | \n");
+            printf("|   ;/           |  ,   /             '---'         \   \  /  \n");
+            printf("'---'             ---`-'                             `----'   \n");
+            printf("==================================================================");
+        }
+    }else if (num == 1) {
+        printf("a... you might find page is here => 'mione home'\n\n");
+    }
+    
+    
+
+    LocalFree(cmds);
+    return 0;
+}
+
