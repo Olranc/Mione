@@ -20,7 +20,7 @@ int getWordType(char** var, char word) {
     }
 
 
-    if (word == ' ') {
+    if (word == ' '||word == '\n') {
         *var = " ";
         return 1;
     }
@@ -59,7 +59,7 @@ int getWordType(char** var, char word) {
     return 2;
 };
 
-int OPEN(char**fileName) {
+int OPEN(char* fileName) {
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
@@ -87,7 +87,7 @@ int OPEN(char**fileName) {
     int inNumber = 0;
     int nextImNumber = 2;
 
-    char* lastWordType = "\0";
+    char* lastWordType = "abc123";
 
     char* txt = malloc(1 * sizeof(char));
     strcpy(txt, " ");
@@ -185,39 +185,13 @@ int OPEN(char**fileName) {
             }
 
 
-            printf("%s %c\n", caseType, word);
-
-
-
-
-
-
             if (lastWordType == wordType && i != strlen(line) - 1) {
-                char a[2];
-                a[0] = word;
-                a[1] = '\0';
-
-                txt = realloc(txt, sizeof(char) * (strlen(a) + 1));
-                strcat(txt, a);
-                //printf("aaaa:%s %c\n",a,inString);
+                printf("%s %c\n",wordType,word);
             }
             else {
 
-                mione(txt);
+                mione(word,wordType);
 
-
-                txt = realloc(txt, sizeof(char) * (1));
-                strcpy(txt, "");
-
-
-
-                char a[2];
-                a[0] = word;
-                a[1] = '\0';
-
-                txt = realloc(txt, sizeof(char) * (strlen(a) + 1));
-                strcat(txt, a);
-                //printf("bbbb:%s %c\n",a,inString);
 
             }
 
@@ -235,7 +209,7 @@ int main() {
     int num;
     cmds = CommandLineToArgvW(GetCommandLineW(), &num);
     char m[256];
-    
+
     if (num >= 2) {
         if (wcscmp(cmds[1], L"o") == 0) {
             WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
@@ -262,11 +236,13 @@ int main() {
             printf("'---'             ---`-'                             `----'   \n");
             printf("==================================================================");
         }
-    }else if (num == 1) {
+    }
+    else if (num == 1) {
+        OPEN("index.mio");
         printf("a... you might find page is here => 'mione home'\n\n");
     }
-    
-    
+
+
 
     LocalFree(cmds);
     return 0;
