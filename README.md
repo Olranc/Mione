@@ -3,10 +3,13 @@
 ![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
 
 # POWER BY MIOPRETY
+## [Mioprety Discord](https://discord.gg/SzhmGcG23s) --for everyone;
 ![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg) 
 
 
 **Protecting Your Work:**
+
+
 
 It's fantastic that you've included a link to your copyright information. Protecting your intellectual property is crucial! COPYRIGHT: [COPYRIGHT](https://raw.githubusercontent.com/ChenNini0924/Mione/main/COPYRIGHT.txt)
 
