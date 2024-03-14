@@ -1,7 +1,5 @@
 set x = "hello"
-set x={
-"dsadas"}
-
-set y = a123
-set x = 123a
-set z = 213ffas12
+set y = {{}aaaaaaaaaaa}
+set z = {"{}dsad{}"}
+set a = $abcdefg@ 
+set b
