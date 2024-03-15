@@ -2,8 +2,7 @@
 
 ![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
 
-# Mioprety工作室製作
-## [Mioprety Discord](https://discord.gg/SzhmGcG23s)
+## Mioprety工作室製作 [Mioprety Discord](https://discord.gg/SzhmGcG23s)
 ![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg) 
 
 
@@ -54,17 +53,17 @@ print(add(25, 75))
 
 ```
 set index = 0
-while (index < 3)
+while index < 3
  #
   index = index + 1
   print("Times :",index")
  @
-if (index == 3)
+if index == 3
 than #
- print ("index is actually 3")
+ print "index is actually 3"
 @
 else #
- print ("what?! How is it possible")
+ print "what?! How is it possible"
 @
 ```
 
