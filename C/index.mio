@@ -1,4 +1,2 @@
-set x = "hello"
-set y = {{}aaaaaaaaaaa}
-set z = {"{}dsad{}"}
-set a = #abcdefg$@set@
+set x,y = "heelo","world"
+set x="a"
