@@ -338,7 +338,7 @@ int OPEN(char* fileName) {
 
 
 			
-			printf("'%d' '%c' '%d'\n", wordType,word,lvl);
+			//printf("'%d' '%c' '%d'\n", wordType,word,lvl);
 			lastWordType = wordType;
 		}
 
