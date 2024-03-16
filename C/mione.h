@@ -23,6 +23,10 @@ int getWordType(int* var, char word) {
 		return 1;
 	}
 
+	if (word == ',') {
+		*var = 11;
+		return 1;
+	}
 
 
 	for (int i = 0; i < 26; i++) {
@@ -85,7 +89,7 @@ int getWordType(int* var, char word) {
 int Line = 0;
 
 int	nextWordType = 0;
-int	lastWordType = 0;
+int	lastWordType = 6;
 int wordType = 1;
 
 int lvlStratLine = 0;
@@ -98,6 +102,9 @@ int canWrite = 1;
 int nextCanWrite = 0;
 
 int OPEN(char* fileName) {
+
+	char* txt = malloc(sizeof(char) * 2);
+	strcpy(txt,"\0");
 	FILE* file = fopen(fileName, "r");
 	char line[2048];
 
@@ -133,10 +140,10 @@ int OPEN(char* fileName) {
 			}
 
 			// CHECKTYPE:
-			// -1:空格/換行 1:無 2:字串開頭 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2
+			// -1:空格/換行 1:無 2:字串開頭 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句
 
 			// WORDTYPE:
-			// -1:空格/換行 1:無 2:字串 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式
+			// -1:空格/換行 1:無 2:字串 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句
 
 			if (nextWordType) { 
 				wordType = nextWordType;
@@ -301,10 +308,34 @@ int OPEN(char* fileName) {
 						wordType = 1;
 					}
 				}
+
+				if (checkType == 11) {
+					if (canWrite == 1) {
+						wordType = 11;
+					}
+				}
 			}
 
 			
 			//====================================================
+			if (wordType == lastWordType) {
+				int len = strlen(txt);
+				txt = realloc(txt, sizeof(char) * (len + 1+1));
+				txt[len] = word;
+				txt[len+1] = '\0';
+			}
+			else {
+			
+				//here
+				printf("%s\n", txt);
+
+				free(txt);
+
+				txt = malloc(sizeof(char) * (1 + 1));
+				txt[0] = word;
+				txt[1] = '\0';
+			}
+
 
 			
 			printf("'%d' '%c' '%d'\n", wordType,word,lvl);
@@ -315,7 +346,7 @@ int OPEN(char* fileName) {
 	}
 
 	if (lvlStratLine) {
-		prerr(lvlStratLine, "表單或函數尚未完成結束標示。",1);
+		prerr(lvlStratLine, "表單或函數尚未完成**結束標示**。",1);
 	}
 	
 
