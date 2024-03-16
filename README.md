@@ -13,7 +13,7 @@
 版權所有：[版權](https://raw.githubusercontent.com/ChenNini0924/Mione/main/COPYRIGHT.txt)
 # 目錄
 - ### 前往 [Mione語法](/#Mione語法)
-- ### 前往 [Mione版本說明](/#Mione語法)
+- ### 前往 [Mione版本說明](/#Mione版本)
 
 
 ## Mione語法
@@ -78,7 +78,7 @@ else #
 
 **記住：** 這只是初期Mione的基本語法，還未規定完善。
 
-## Mione 版本
+## Mione版本
 - **0.0.1** 
 ```not-a-lang
 -新增了主要的編譯器文件。
