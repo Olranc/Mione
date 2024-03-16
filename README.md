@@ -1,16 +1,13 @@
 # Mione
 
+
+Mioprety [Mioprety Discord](https://discord.gg/SzhmGcG23s)
+
+![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg)  
 ![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
 
-## Mioprety工作室製作 [Mioprety Discord](https://discord.gg/SzhmGcG23s)
-![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg) 
 
 
-**使用條款**
-
-
-
-版權所有：[版權](https://raw.githubusercontent.com/ChenNini0924/Mione/main/COPYRIGHT.txt)
 # 目錄
 - ### 前往 [Mione語法](/#Mione語法)
 - ### 前往 [Mione版本說明](/#Mione版本)
