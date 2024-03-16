@@ -1,11 +1,13 @@
 # Mione
 
 
-Mioprety [Mioprety Discord](https://discord.gg/SzhmGcG23s)
+- ### Mioprety
+- ###### [Mioprety官方Discord](https://discord.gg/SzhmGcG23s)
 
 ![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg)  
-![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
 
+![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
+--- 
 
 
 # 目錄
