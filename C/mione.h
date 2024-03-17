@@ -82,20 +82,34 @@ int getWordType(int* var, char word) {
 		*var = 1;
 		return 1;
 	}
-	
+	if (word == '\\') {
+		*var = 12;
+		return 1;
+	}
 
 	return 2;
 };
 int Line = 0;
 
+int lastCheckType = 0;
+
 int	nextWordType = 0;
 int	lastWordType = 6;
 int wordType = 1;
+	int aboutWord[] = {
+		0,//slash 斜線
+		0,//slash 值
+	};
 
-int lvlStratLine = 0;
+
 int lvl = 0;
 int canCount = 1;
 int nextCanCount = 0;
+
+int forErr[] = {
+	0, // 表單或函數開始行
+	0, // 字串開始行
+};
 
 
 int canWrite = 1;
@@ -139,11 +153,13 @@ int OPEN(char* fileName) {
 				nextCanCount = 0;
 			}
 
+
+
 			// CHECKTYPE:
-			// -1:空格/換行 1:無 2:字串開頭 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句
+			// -1:空格/換行 1:無 2:字串開頭 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號
 
 			// WORDTYPE:
-			// -1:空格/換行 1:無 2:字串 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句
+			// -1:空格/換行 1:無 2:字串 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句 10:'\'符號
 
 			if (nextWordType) { 
 				wordType = nextWordType;
@@ -151,25 +167,30 @@ int OPEN(char* fileName) {
 			}
 			else {
 				if (checkType == 2) { // STRING 字串
-					if (lastWordType == 2) {
-						nextCanWrite = 1;
-					}
-					else {
-						if (canWrite == 1) {
-							wordType = 2;
-							canWrite = 0;
+					if (aboutWord[1]) {}else{
+						if (lastWordType == 2) {
+							nextCanWrite = 1;
+							aboutWord[1] = 0;
+							forErr[1] = 0;
+						}
+						else {
+							if (canWrite == 1) {
+								wordType = 2;
+								canWrite = 0;
+								forErr[1] = Line;
+							}
 						}
 
-						
+						if (canCount) {
+							canCount = 0;
+						}
+						else {
+							nextCanCount = 1;
+						}
 					}
-
-					if (canCount) {
-						canCount = 0;
-					}
-					else {
-						nextCanCount = 1;
-					}
+					
 				}
+
 
 				if (checkType == 3) { // TABLE 表單
 					if (canWrite == 1) {
@@ -177,13 +198,12 @@ int OPEN(char* fileName) {
 						canWrite = 0;
 
 						if (canCount) {
-							if (lvlStratLine) {}
+							if (forErr[0]) {}
 							else {
-								lvlStratLine = Line;
+								forErr[0] = Line;
 							}
 							lvl++;
 						}
-						
 					}
 					else {
 						if (lastWordType == 3) {
@@ -201,9 +221,9 @@ int OPEN(char* fileName) {
 						canWrite = 0;
 
 						if (canCount) {
-							if (lvlStratLine) {}
+							if (forErr[0]) {}
 							else {
-								lvlStratLine = Line;
+								forErr[0] = Line;
 							}
 							lvl++;
 						}
@@ -224,9 +244,9 @@ int OPEN(char* fileName) {
 						canWrite = 0;
 
 						if (canCount) {
-							if (lvlStratLine) {}
+							if (forErr[0]) {}
 							else {
-								lvlStratLine = Line;
+								forErr[0] = Line;
 							}
 							lvl++;
 						}
@@ -270,7 +290,7 @@ int OPEN(char* fileName) {
 							wordType = 3;
 							nextCanWrite = 1;
 
-							lvlStratLine = 0;
+							forErr[0] = 0;
 						}
 						
 					}
@@ -292,7 +312,7 @@ int OPEN(char* fileName) {
 							
 							nextCanWrite = 1;
 
-							lvlStratLine = 0;
+							forErr[0] = 0;
 						}
 					}
 				}
@@ -301,18 +321,27 @@ int OPEN(char* fileName) {
 					if (canWrite == 1) {
 						wordType = -1;
 					}
+					aboutWord[0] = 0;
 				}
 
 				if (checkType == 1) {
 					if (canWrite == 1) {
 						wordType = 1;
 					}
+					
 				}
 
 				if (checkType == 11) {
 					if (canWrite == 1) {
 						wordType = 11;
 					}
+				}
+
+				if (checkType == 12) {
+					if (aboutWord[1]) {}else{
+						aboutWord[0] = 1;
+					}
+					
 				}
 			}
 
@@ -338,15 +367,23 @@ int OPEN(char* fileName) {
 
 
 			
-			//printf("'%d' '%c' '%d'\n", wordType,word,lvl);
+			//printf("'%d' '%c' '%d'\n", wordType,word,aboutWord[0]);
 			lastWordType = wordType;
+			lastCheckType = checkType;
+
+
+			aboutWord[1] = aboutWord[0];
+			aboutWord[0] = 0;
 		}
 
 
 	}
 
-	if (lvlStratLine) {
-		prerr(lvlStratLine, "表單或函數尚未完成**結束標示**。",1);
+	if (forErr[0]) {
+		prerr(forErr[0], "表單或函數尚未完成**結束標示**。",1);
+	}
+	if (wordType == 2) {
+		prerr(forErr[1], "字串尚未做結束宣告。", 2);
 	}
 	
 
