@@ -1,2 +1,1 @@
-set x,y = "heelo\",\"world"
-set x="a"
+set x,y = '"hello"\'\""'
