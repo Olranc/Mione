@@ -7,8 +7,13 @@
 
 int getWordType(int* var, char word) {
 	*var = 1;
-	if (word == '"' || word == '\'') {
+	if (word == '"') {
 		*var = 2;
+		return 1;
+	}
+
+	if (word == '\'') {
+		*var = 13;
 		return 1;
 	}
 
@@ -156,10 +161,11 @@ int OPEN(char* fileName) {
 
 
 			// CHECKTYPE:
-			// -1:空格/換行 1:無 2:字串開頭 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號
+			// -1:空格/換行 1:無 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號 
+			// 13:字串開頭2
 
 			// WORDTYPE:
-			// -1:空格/換行 1:無 2:字串 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句 10:'\'符號
+			// -1:空格/換行 1:無 2:字串1 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句 10:'\'符號 11:字串2
 
 			if (nextWordType) { 
 				wordType = nextWordType;
@@ -180,6 +186,30 @@ int OPEN(char* fileName) {
 								forErr[1] = Line;
 							}
 						}
+						if (canCount) {
+							canCount = 0;
+						}
+						else {
+							nextCanCount = 1;
+						}
+					}
+				}
+
+				if (checkType == 13) { // STRING 字串
+					if (aboutWord[1]) {}
+					else {
+						if (lastWordType == 11) {
+							nextCanWrite = 1;
+							aboutWord[1] = 0;
+							forErr[1] = 0;
+						}
+						else {
+							if (canWrite == 1) {
+								wordType = 11;
+								canWrite = 0;
+								forErr[1] = Line;
+							}
+						}
 
 						if (canCount) {
 							canCount = 0;
@@ -188,8 +218,9 @@ int OPEN(char* fileName) {
 							nextCanCount = 1;
 						}
 					}
-					
+
 				}
+
 
 
 				if (checkType == 3) { // TABLE 表單
@@ -356,7 +387,7 @@ int OPEN(char* fileName) {
 			else {
 			
 				//here
-				printf("%s\n", txt);
+				printf("[CASE]:`%s`\n", txt);
 
 				free(txt);
 
@@ -367,7 +398,7 @@ int OPEN(char* fileName) {
 
 
 			
-			//printf("'%d' '%c' '%d'\n", wordType,word,aboutWord[0]);
+			//printf("'%d' '%c' '%d'\n", wordType,word,checkType);
 			lastWordType = wordType;
 			lastCheckType = checkType;
 
@@ -379,12 +410,14 @@ int OPEN(char* fileName) {
 
 	}
 
+	if (wordType == 2 || wordType == 11) {
+		prerr(forErr[1], "字串尚未做結束宣告。", 2);
+	}
+
 	if (forErr[0]) {
 		prerr(forErr[0], "表單或函數尚未完成**結束標示**。",1);
 	}
-	if (wordType == 2) {
-		prerr(forErr[1], "字串尚未做結束宣告。", 2);
-	}
+	
 	
 
 
@@ -392,7 +425,6 @@ int OPEN(char* fileName) {
 	fclose(file);
 	return 0;
 }
-
 
 
 #ifndef mione_h
