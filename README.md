@@ -110,4 +110,6 @@ else #
 ```
 ## ⚠️0.0.1H之後的更新內容搬到了我們的Discord群族裡。
 
-               
+<div class="footer">
+        &copy; 2024 陳奈奈  |  Chennini0924
+</div>
