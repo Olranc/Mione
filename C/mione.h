@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "mio.h"
 #include "prerr.h"
 
 
@@ -41,7 +42,7 @@ int getWordType(int* var, char word) {
 		b = 97 + i;
 
 
-		if (word == a || word == b) {
+		if (word == a || word == b || word == '_') { 
 			*var = 6;
 			return 1;
 		}
@@ -161,11 +162,11 @@ int OPEN(char* fileName) {
 
 
 			// CHECKTYPE:
-			// -1:空格/換行 1:無 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號 
+			// -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號 
 			// 13:字串開頭2
 
 			// WORDTYPE:
-			// -1:空格/換行 1:無 2:字串1 3:表單 4:函數 5:數字 6:英文字母 7:等號 8:執行式 9:斷句 10:'\'符號 11:字串2
+			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7:等號 8:執行式 9:斷句 10:'\'符號 11:字串2
 
 			if (nextWordType) { 
 				wordType = nextWordType;
@@ -364,7 +365,7 @@ int OPEN(char* fileName) {
 
 				if (checkType == 11) {
 					if (canWrite == 1) {
-						wordType = 11;
+						wordType = 9;
 					}
 				}
 
@@ -380,15 +381,15 @@ int OPEN(char* fileName) {
 			//====================================================
 			if (wordType == lastWordType) {
 				int len = strlen(txt);
-				txt = realloc(txt, sizeof(char) * (len + 1+1));
+				txt = realloc(txt, len + 1+1);
 				txt[len] = word;
 				txt[len+1] = '\0';
 			}
 			else {
-			
-				//here
-				printf("[CASE]:`%s`\n", txt);
 
+				//here
+				//printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt,lastWordType);
+				mio(txt,lastWordType);
 				free(txt);
 
 				txt = malloc(sizeof(char) * (1 + 1));
