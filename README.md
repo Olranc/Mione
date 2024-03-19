@@ -56,7 +56,7 @@ print(add(25, 75))
 
 ```
 set index = 0
-while index < 3
+while index < 3 do
  #
   index = index + 1
   print("Times :",index")
