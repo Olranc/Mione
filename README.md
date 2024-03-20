@@ -4,9 +4,9 @@
 - ### Mioprety
 - ###### [Mioprety官方Discord](https://discord.gg/SzhmGcG23s)
 
-![Mioprety](https://github.com/ChenNini0924/Mione/blob/main/Mioprety-nobackground.svg)  
+![Mioprety](Mioprety-nobackground.svg)  
 
-![Mione](https://raw.githubusercontent.com/ChenNini0924/Mione/main/Mione.svg)
+![Mione](Mione.svg)
 --- 
 
 
@@ -111,5 +111,5 @@ else #
 ## ⚠️0.0.1H之後的更新內容搬到了我們的Discord群族裡。
 
 <div class="footer">
-        &copy; 2024 陳奈奈  |  Chennini0924
+        &copy; 2024 Mioprety
 </div>
