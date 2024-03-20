@@ -6,7 +6,7 @@
 
 
 
-int mio(char* _case,int _type) { // HEAD,PROMOT,VALUE,SYMBOL
+int mio(char* _case,int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 	char*heads[] = {
 		"set",
 		"input",
