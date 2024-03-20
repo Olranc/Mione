@@ -295,7 +295,13 @@ int OPEN(char* fileName) {
 
 				if (checkType == 5) {
 					if (canWrite == 1) {
-						wordType = 5;
+						if (lastWordType == 6) { // 為了 `set x1 = 0`
+							wordType = 6;
+						}
+						else {
+							wordType = 5;
+						}
+
 					}
 				}
 
@@ -388,7 +394,7 @@ int OPEN(char* fileName) {
 			else {
 
 				//here
-				//printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt,lastWordType);
+				printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt,lastWordType);
 				mio(txt,lastWordType);
 				free(txt);
 
