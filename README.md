@@ -59,7 +59,7 @@ set index = 0
 while index < 3 do
  #
   index = index + 1
-  print("Times :",index")
+  print("Times :",index)
  @
 if index == 3
 than #
