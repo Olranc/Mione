@@ -24,14 +24,21 @@ int getWordType(int* var, char word) {
 		return 1;
 	}
 
-	if (word == '=') {
-		*var = 7;
-		return 1;
+	char x[] = { ',', ';', '-', '+', '=', '*', '/', '\0' };
+	for (int i = 0; i < strlen(x); i++) {
+		if (word == x[i]){
+			*var = 7;
+			return 1;
+		}
 	}
 
-	if (word == ',') {
-		*var = 11;
-		return 1;
+	if (word == '('){
+			*var = 14;
+			return 1;
+	}
+	if (word == ')'){
+			*var = 15;
+			return 1;
 	}
 
 
@@ -162,11 +169,11 @@ int OPEN(char* fileName) {
 
 
 			// CHECKTYPE:
-			// -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7:等號 8:表單結束 9:函數開頭1 10:函數開頭2 11:斷句 12:'\'符號 
-			// 13:字串開頭2
+			// -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7: 符號 8:表單結束 9:函數開頭1 10:函數開頭2 12:'\'符號 
+			// 13:字串開頭2 14:括號開始 15:括號結束
 
 			// WORDTYPE:
-			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7:等號 8:執行式 9:斷句 10:'\'符號 11:字串2
+			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 9:符號 10:'\'符號 11:字串2 12:括號開始 13:括號結束
 
 			if (nextWordType) { 
 				wordType = nextWordType;
@@ -375,11 +382,22 @@ int OPEN(char* fileName) {
 					}
 				}
 
+				if (checkType == 14) {
+					if (canWrite == 1) {
+						wordType = 12;
+					}
+				}
+
+				if (checkType == 15) {
+					if (canWrite == 1) {
+						wordType = 13;
+					}
+				}
+
 				if (checkType == 12) {
 					if (aboutWord[1]) {}else{
 						aboutWord[0] = 1;
 					}
-					
 				}
 			}
 
@@ -405,7 +423,7 @@ int OPEN(char* fileName) {
 
 
 			
-			//printf("'%d' '%c' '%d'\n", wordType,word,checkType);
+			printf("'%d' '%c' '%d'\n", wordType,word,checkType);
 			lastWordType = wordType;
 			lastCheckType = checkType;
 
@@ -439,4 +457,3 @@ int OPEN(char* fileName) {
 int OPEN(char* fileName);
 
 #endif
-
