@@ -17,7 +17,6 @@ int main() {
 	int num;
 	cmds = CommandLineToArgvW(GetCommandLineW(), &num);
 	char m[256];
-
 	if (num >= 2) {
 		if (wcscmp(cmds[1], L"o") == 0) {
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
@@ -58,4 +57,3 @@ int main() {
 	LocalFree(cmds);
 	return 0;
 }
-

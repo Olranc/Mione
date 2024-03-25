@@ -431,8 +431,6 @@ int OPEN(char* fileName) {
 			aboutWord[1] = aboutWord[0];
 			aboutWord[0] = 0;
 		}
-
-
 	}
 
 	if (wordType == 2 || wordType == 11) {
@@ -442,10 +440,6 @@ int OPEN(char* fileName) {
 	if (forErr[0]) {
 		prerr(forErr[0], "表單或函數尚未完成**結束標示**。",1);
 	}
-	
-	
-
-
 
 	fclose(file);
 	return 0;
