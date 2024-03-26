@@ -26,19 +26,19 @@ int getWordType(int* var, char word) {
 
 	char x[] = { ',', ';', '-', '+', '=', '*', '/', '\0' };
 	for (int i = 0; i < strlen(x); i++) {
-		if (word == x[i]){
+		if (word == x[i]) {
 			*var = 7;
 			return 1;
 		}
 	}
 
-	if (word == '('){
-			*var = 14;
-			return 1;
+	if (word == '(') {
+		*var = 14;
+		return 1;
 	}
-	if (word == ')'){
-			*var = 15;
-			return 1;
+	if (word == ')') {
+		*var = 15;
+		return 1;
 	}
 
 
@@ -49,7 +49,7 @@ int getWordType(int* var, char word) {
 		b = 97 + i;
 
 
-		if (word == a || word == b || word == '_') { 
+		if (word == a || word == b || word == '_') {
 			*var = 6;
 			return 1;
 		}
@@ -109,10 +109,10 @@ int lastCheckType = 0;
 int	nextWordType = 0;
 int	lastWordType = 6;
 int wordType = 1;
-	int aboutWord[] = {
-		0,//slash æ–œç·š
-		0,//slash å€¼
-	};
+int aboutWord[] = {
+	0,//slash ±×½u
+	0,//slash ­È
+};
 
 
 int lvl = 0;
@@ -120,8 +120,8 @@ int canCount = 1;
 int nextCanCount = 0;
 
 int forErr[] = {
-	0, // è¡¨å–®æˆ–å‡½æ•¸é–‹å§‹è¡Œ
-	0, // å­—ä¸²é–‹å§‹è¡Œ
+	0, // ªí³æ©Î¨ç¼Æ¶}©l¦æ
+	0, // ¦r¦ê¶}©l¦æ
 };
 
 
@@ -131,7 +131,7 @@ int nextCanWrite = 0;
 int OPEN(char* fileName) {
 
 	char* txt = malloc(sizeof(char) * 2);
-	strcpy(txt,"\0");
+	strcpy(txt, "\0");
 	FILE* file = fopen(fileName, "r");
 	char line[2048];
 
@@ -139,7 +139,7 @@ int OPEN(char* fileName) {
 		printf("cant open file\n");
 		return 1;
 	}
-	
+
 	while (fgets(line, sizeof(line), file) != NULL) { //     C
 		Line++;
 		//  printf("%s\n",line);
@@ -169,19 +169,20 @@ int OPEN(char* fileName) {
 
 
 			// CHECKTYPE:
-			// -1:ç©ºæ ¼ 1:ç„¡/æ›è¡Œ 2:å­—ä¸²é–‹é ­1 3:è¡¨å–®é–‹é ­ 4:å‡½æ•¸çµæŸ 5:æ•¸å­— 6:è‹±æ–‡å­—æ¯/åº•ç·š 7: ç¬¦è™Ÿ 8:è¡¨å–®çµæŸ 9:å‡½æ•¸é–‹é ­1 10:å‡½æ•¸é–‹é ­2 12:'\'ç¬¦è™Ÿ 
-			// 13:å­—ä¸²é–‹é ­2 14:æ‹¬è™Ÿé–‹å§‹ 15:æ‹¬è™ŸçµæŸ
+			// -1:ªÅ®æ 1:µL/´«¦æ 2:¦r¦ê¶}ÀY1 3:ªí³æ¶}ÀY 4:¨ç¼Æµ²§ô 5:¼Æ¦r 6:­^¤å¦r¥À/©³½u 7: ²Å¸¹ 8:ªí³æµ²§ô 9:¨ç¼Æ¶}ÀY1 10:¨ç¼Æ¶}ÀY2 12:'\'²Å¸¹ 
+			// 13:¦r¦ê¶}ÀY2 14:¬A¸¹¶}©l 15:¬A¸¹µ²§ô
 
 			// WORDTYPE:
-			// -1:ç©ºæ ¼ 1:ç„¡/æ›è¡Œ 2:å­—ä¸²1 3:è¡¨å–® 4:å‡½æ•¸ 5:æ•¸å­— 6:è‹±æ–‡å­—æ¯/åº•ç·š 7: ç¬¦è™Ÿ 8:åŸ·è¡Œå¼ 9:ç¬¦è™Ÿ 10:'\'ç¬¦è™Ÿ 11:å­—ä¸²2 12:æ‹¬è™Ÿé–‹å§‹ 13:æ‹¬è™ŸçµæŸ
+			// -1:ªÅ®æ 1:µL/´«¦æ 2:¦r¦ê1 3:ªí³æ 4:¨ç¼Æ 5:¼Æ¦r 6:­^¤å¦r¥À/©³½u 7: ²Å¸¹ 8:°õ¦æ¦¡ 10:'\'²Å¸¹ 11:¦r¦ê2 12:¬A¸¹¶}©l 13:¬A¸¹µ²§ô
 
-			if (nextWordType) { 
+			if (nextWordType) {
 				wordType = nextWordType;
 				nextWordType = 0;
 			}
 			else {
-				if (checkType == 2) { // STRING å­—ä¸²
-					if (aboutWord[1]) {}else{
+				if (checkType == 2) { // STRING ¦r¦ê
+					if (aboutWord[1]) {}
+					else {
 						if (lastWordType == 2) {
 							nextCanWrite = 1;
 							aboutWord[1] = 0;
@@ -203,7 +204,7 @@ int OPEN(char* fileName) {
 					}
 				}
 
-				if (checkType == 13) { // STRING å­—ä¸²
+				if (checkType == 13) { // STRING ¦r¦ê
 					if (aboutWord[1]) {}
 					else {
 						if (lastWordType == 11) {
@@ -231,7 +232,7 @@ int OPEN(char* fileName) {
 
 
 
-				if (checkType == 3) { // TABLE è¡¨å–®
+				if (checkType == 3) { // TABLE ªí³æ
 					if (canWrite == 1) {
 						wordType = 3;
 						canWrite = 0;
@@ -251,10 +252,10 @@ int OPEN(char* fileName) {
 							}
 						}
 					}
-					
+
 				}
 
-				if (checkType == 9) { // FUNCTION å‡½æ•¸
+				if (checkType == 9) { // FUNCTION ¨ç¼Æ
 					if (canWrite == 1) {
 						wordType = 4;
 						canWrite = 0;
@@ -274,10 +275,10 @@ int OPEN(char* fileName) {
 							}
 						}
 					}
-					
+
 				}
 
-				if (checkType == 10) { // FUNCTION å‡½æ•¸
+				if (checkType == 10) { // FUNCTION ¨ç¼Æ
 					if (canWrite == 1) {
 						wordType = 8;
 						canWrite = 0;
@@ -302,7 +303,7 @@ int OPEN(char* fileName) {
 
 				if (checkType == 5) {
 					if (canWrite == 1) {
-						if (lastWordType == 6) { // ç‚ºäº† `set x1 = 0`
+						if (lastWordType == 6) { // ¬°¤F `set x1 = 0`
 							wordType = 6;
 						}
 						else {
@@ -324,9 +325,9 @@ int OPEN(char* fileName) {
 					}
 				}
 
-				if (checkType == 8) { // TABLE è¡¨å–®
+				if (checkType == 8) { // TABLE ªí³æ
 					if (lastWordType == 3) {
-						
+
 						if (canCount) {
 							lvl--;
 						}
@@ -337,7 +338,7 @@ int OPEN(char* fileName) {
 
 							forErr[0] = 0;
 						}
-						
+
 					}
 				}
 
@@ -354,7 +355,7 @@ int OPEN(char* fileName) {
 							else {
 								wordType = 8;
 							}
-							
+
 							nextCanWrite = 1;
 
 							forErr[0] = 0;
@@ -373,13 +374,7 @@ int OPEN(char* fileName) {
 					if (canWrite == 1) {
 						wordType = 1;
 					}
-					
-				}
 
-				if (checkType == 11) {
-					if (canWrite == 1) {
-						wordType = 9;
-					}
 				}
 
 				if (checkType == 14) {
@@ -395,25 +390,26 @@ int OPEN(char* fileName) {
 				}
 
 				if (checkType == 12) {
-					if (aboutWord[1]) {}else{
+					if (aboutWord[1]) {}
+					else {
 						aboutWord[0] = 1;
 					}
 				}
 			}
 
-			
+
 			//====================================================
 			if (wordType == lastWordType) {
 				int len = strlen(txt);
-				txt = realloc(txt, len + 1+1);
+				txt = realloc(txt, len + 1 + 1);
 				txt[len] = word;
-				txt[len+1] = '\0';
+				txt[len + 1] = '\0';
 			}
 			else {
 
 				//here
-				printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt,lastWordType);
-				mio(txt,lastWordType);
+				//printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+				mio(txt, lastWordType);
 				free(txt);
 
 				txt = malloc(sizeof(char) * (1 + 1));
@@ -422,8 +418,8 @@ int OPEN(char* fileName) {
 			}
 
 
-			
-			printf("'%d' '%c' '%d'\n", wordType,word,checkType);
+
+			//printf("'%d' '%c' '%d'\n", wordType, word, checkType);
 			lastWordType = wordType;
 			lastCheckType = checkType;
 
@@ -434,11 +430,11 @@ int OPEN(char* fileName) {
 	}
 
 	if (wordType == 2 || wordType == 11) {
-		prerr(forErr[1], "å­—ä¸²å°šæœªåšçµæŸå®£å‘Šã€‚", 2);
+		prerr(forErr[1], "¦r¦ê©|¥¼°µµ²§ô«Å§i¡C", 2);
 	}
 
 	if (forErr[0]) {
-		prerr(forErr[0], "è¡¨å–®æˆ–å‡½æ•¸å°šæœªå®Œæˆ**çµæŸæ¨™ç¤º**ã€‚",1);
+		prerr(forErr[0], "ªí³æ©Î¨ç¼Æ©|¥¼§¹¦¨**µ²§ô¼Ð¥Ü**¡C", 1);
 	}
 
 	fclose(file);

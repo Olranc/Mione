@@ -25,7 +25,7 @@ int main() {
 		}
 
 		if (wcscmp(cmds[1], L"home") == 0) {
-			
+
 			printf("==================================================================\n");
 			printf("          ____                                                \n");
 			printf("        ,'  , `.                                              \n");
@@ -46,7 +46,7 @@ int main() {
 		if (wcscmp(cmds[1], L"version") == 0) {
 			printf("Mione version:%s\n\n\n", mione_verson);
 		}
-	}	
+	}
 	else if (num == 1) {
 		OPEN("index.mio");
 		printf("a... you might find page is here => 'mione home'\n\n");
