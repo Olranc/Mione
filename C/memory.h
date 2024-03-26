@@ -1,4 +1,4 @@
-#pragma once
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -23,7 +23,7 @@ void cm(char** ma, char* v, int _type) {
     memory[mSize - 1][1] = malloc(strlen(v) + 1);
     strcpy(memory[mSize - 1][1], v);
 
-    printf("    [MEMORY CREATED] [VALUE]:'%s'  [ADDRESS]:'%d'\n", v, _type);
+    printf("    [MEMORY CREATED] [VALUE]:'%s'  [ADDRESS]:'%d'\n", v, mSize);
 
     int size = snprintf(NULL, 0, "%d", mSize) + 1;
 
