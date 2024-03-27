@@ -25,14 +25,17 @@ int setC(char* _type, char* _case, int _t) {
 	c[cSize - 1][0] = malloc(strlen(_type) + 1);
 	strcpy(c[cSize - 1][0], _type);
 
-	if (strcmp("VALUE", _type)) {
+	if (strcmp("VARIABLE", _type)) {
+		if (strcmp("VALUE", _type)) {}
+		else {
+			st(_t);
+		}
 
 	}
 	else {
 		char* ma;
 		cm(&ma, _case, _t);
 		_case = ma;
-		
 	}
 	
 	c[cSize - 1][1] = malloc(strlen(_case) + 1);
