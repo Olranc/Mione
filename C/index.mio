@@ -1,2 +1,6 @@
-set abc = "ds" 
-set x = "asdasdsa"
+input "io" as ioL
+
+set hello = "Hello, World"
+set print = ioL.out
+
+print(hello)

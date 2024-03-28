@@ -13,10 +13,11 @@ char*** c = NULL;
 
 
 int setC(char* _type, char* _case, int _t) {
+	//printf("hey i am %s and %s or %d\n", _type, _case, _t);
 	cSize++;
 
 	if (c) {
-		c = realloc(c, cSize * sizeof(char*));
+		c = realloc(c, cSize * sizeof(char**));
 	}
 	else {
 		c = malloc(sizeof(char**));
@@ -41,7 +42,7 @@ int setC(char* _type, char* _case, int _t) {
 	c[cSize - 1][1] = malloc(strlen(_case) + 1);
 	strcpy(c[cSize - 1][1], _case);
 	
-	printf("%s %s\n", c[cSize - 1][0], c[cSize - 1][1]);
+	//printf("%s %s\n", c[cSize - 1][0], c[cSize - 1][1]);
 
 	pass = 1;
 }
@@ -57,9 +58,10 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 		"do",
 		"then",
 		"else",
+		"=",
 	};
 
-	printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", _case, _type);
+	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(heads) / sizeof(char*); i = i + 1) {
@@ -80,7 +82,9 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 		}
 	}
 
-	if (pass) {  }
+	if (pass) { 
+		
+	}
 		
 	else {
 		if (_type == 6) {
@@ -90,8 +94,12 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 			setC("VALUE", _case, _type);
 		}
 	}
+	
 
-
+	if (pass) {
+		printf("	<數值與類型>: `%s` `%s`\n", c[cSize - 1][0], c[cSize - 1][1]);
+	}
+	
 }
 int newline() {
 

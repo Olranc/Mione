@@ -39,7 +39,7 @@ void cm(char** ma, char* v, int _type) {
     printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
     printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
     printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
-    printf("    [ADDRESS]:'%d", mSize);
+    printf("    [ADDRESS]:'%d\n", mSize);
 
     int size = snprintf(NULL, 0, "%d", mSize) + 1;
 
