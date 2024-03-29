@@ -2,7 +2,7 @@
 
 
 - ### Mioprety
-- ###### [Mioprety官方Discord](https://discord.gg/SzhmGcG23s)
+- ###### [Mioprety官方Discord](https://discord.gg/DF7txbgjmg)
 
 ![Mioprety](Mioprety-nobackground.svg)  
 
