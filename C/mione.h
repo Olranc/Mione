@@ -107,7 +107,7 @@ int Line = 0;
 int lastCheckType = 0;
 
 int	nextWordType = 0;
-int	lastWordType = 6;
+int	lastWordType = -1; //here
 int wordType = 1;
 int aboutWord[] = {
 	0,//slash ±×½u
@@ -370,6 +370,13 @@ int OPEN(char* fileName) {
 					aboutWord[0] = 0;
 				}
 
+				if (checkType == -2) { // todo
+					if (canWrite == 1) {
+						wordType = -2;
+					}
+					aboutWord[0] = 0;
+				}
+
 				if (checkType == 1) {
 					if (canWrite == 1) {
 						wordType = 1;
@@ -397,8 +404,7 @@ int OPEN(char* fileName) {
 				}
 			}
 
-
-			//====================================================
+			//===================================================
 			if (wordType == lastWordType) {
 				int len = strlen(txt);
 				txt = realloc(txt, len + 1 + 1);

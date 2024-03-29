@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "memory.h"
+#include "HEAD.h"
 
 
 #ifndef mio_h
@@ -11,6 +12,11 @@ int pass = 0;
 int cSize = 0;
 char*** c = NULL;
 
+// set							x								=								"hello"
+// <HEAD ID>    <虛擬記憶體位置>     <記憶體位置>		<虛擬記憶體位置>
+
+// "a"=="a"
+// <虛擬記憶體位置> <符號ID> <虛擬記憶體位置>
 
 int setC(char* _type, char* _case, int _t) {
 	//printf("hey i am %s and %s or %d\n", _type, _case, _t);
@@ -26,18 +32,28 @@ int setC(char* _type, char* _case, int _t) {
 	c[cSize - 1][0] = malloc(strlen(_type) + 1);
 	strcpy(c[cSize - 1][0], _type);
 
+
 	if (strcmp("VARIABLE", _type)) {
 		if (strcmp("VALUE", _type)) {}
 		else {
-			st(_t);
+			char* ma;
+			cm_v(&ma,_t,_case);
+			_case = ma;
 		}
-
+		if (strcmp("HEAD", _type)) {}
+		else {
+			char* ma;
+			vI(&ma,_case); // _t:6
+			_case = ma;
+			printf("%s\n", ma);
+		}
 	}
 	else {
 		char* ma;
 		cm(&ma, _case, _t);
 		_case = ma;
 	}
+
 	
 	c[cSize - 1][1] = malloc(strlen(_case) + 1);
 	strcpy(c[cSize - 1][1], _case);
@@ -100,9 +116,6 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 		printf("	<數值與類型>: `%s` `%s`\n", c[cSize - 1][0], c[cSize - 1][1]);
 	}
 	
-}
-int newline() {
-
 }
 
 #endif
