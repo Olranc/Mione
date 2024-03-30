@@ -15,13 +15,6 @@ int set(char*** _while,int _whileSize) { //1
 	}
 }
 
-int vI(char** v, char* HEADNAME) {
-	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i++) {
-		if (strcmp(HEADNAME, HEADS[i])) {}else{
-			*v = malloc(sizeof((i+1)/10+2));
-			sprintf(*v,"%d",i+1);
-		}
-	}
-}
+
 
 #endif 

@@ -33,28 +33,45 @@ int setC(char* _type, char* _case, int _t) {
 	strcpy(c[cSize - 1][0], _type);
 
 
-	if (strcmp("VARIABLE", _type)) {
-		if (strcmp("VALUE", _type)) {}
-		else {
-			char* ma;
-			cm_v(&ma,_t,_case);
-			_case = ma;
-		}
-		if (strcmp("HEAD", _type)) {}
-		else {
-			char* ma;
-			vI(&ma,_case); // _t:6
-			_case = ma;
-			printf("%s\n", ma);
-		}
-	}
+	if (strcmp("VARIABLE", _type)) {}
 	else {
 		char* ma;
 		cm(&ma, _case, _t);
 		_case = ma;
 	}
+	if (strcmp("VALUE", _type)) {}
+	else {
+		char* ma;
+		cm_v(&ma, _t, _case);
+		_case = ma;
+	}
+
+	if (strcmp("HEAD", _type)) {}
+	else {
+		char* ma;
+		vI("HEAD", &ma, _case); // _t:6
+		_case = ma;
+		printf("%s\n", ma);
+	}
+
+	if (strcmp("PROMPT", _type)) {}
+	else {
+		char* ma;
+		vI("PROMPT", &ma, _case); // _t:6
+		_case = ma;
+		printf("%s\n", ma);
+	}
+
+	if (strcmp("SYMBOL", _type)) {}
+	else {
+		char* ma;
+		vI("SYMBOL", &ma, _case); // _t:6
+		_case = ma;
+		printf("%s\n", ma);
+	}
 
 	
+
 	c[cSize - 1][1] = malloc(strlen(_case) + 1);
 	strcpy(c[cSize - 1][1], _case);
 	
@@ -78,14 +95,29 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 		}
 	}
 
-	for (int i = 0; i < sizeof(PROMOTS) / sizeof(char*); i = i + 1) {
+	if (pass) {}else{
+		for (int i = 0; i < sizeof(PROMOTS) / sizeof(char*); i = i + 1) {
 
-		if (strcmp(PROMOTS[i], _case)) {
-		}
-		else {
-			setC("PROMPT", _case, _type);
+			if (strcmp(PROMOTS[i], _case)) {
+			}
+			else {
+				setC("PROMPT", _case, _type);
+			}
 		}
 	}
+	if (pass) {}else{
+		for (int i = 0; i < sizeof(SYMBOLS) / sizeof(char*); i = i + 1) {
+
+			if (strcmp(SYMBOLS[i], _case)) {
+			}
+			else {
+				setC("SYMBOL", _case, _type);
+			}
+		}
+	}
+	
+
+	
 
 	if (pass) { 
 		

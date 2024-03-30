@@ -469,7 +469,7 @@ int OPEN(char* fileName) {
 
 			
 
-			printf("'%d' '%c' '%d'\n", wordType, word, checkType);
+			//printf("'%d' '%c' '%d'\n", wordType, word, checkType);
 			lastWordType = wordType;
 			lastCheckType = checkType;
 
