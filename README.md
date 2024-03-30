@@ -6,7 +6,9 @@
 
 ![Mioprety](Mioprety-nobackground.svg)  
 
-![Mione](Mione.svg)
+![Mione](https://raw.githubusercontent.com/Mioprety/Mione/d7b9f225e2b94e0adb6a4eb87d66ff961f6586e1/Mione.svg)
+
+
 --- 
 
 
