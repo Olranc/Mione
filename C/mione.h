@@ -347,6 +347,9 @@ int OPEN(char* fileName) {
 							wordType = 14;
 							canWrite = 0;
 						}
+						else {
+							wordType = 7;
+						}
 					}
 					else {
 						if (lastCheckType == 16) {
