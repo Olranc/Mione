@@ -24,12 +24,17 @@ int getWordType(int* var, char word) {
 		return 1;
 	}
 
-	char x[] = { ',', ';', '-', '+', '=', '*', '/', '\0' };
+	char x[] = { ',', ';', '-', '+', '=', '*', '\0' };
 	for (int i = 0; i < strlen(x); i++) {
 		if (word == x[i]) {
 			*var = 7;
 			return 1;
 		}
+	}
+
+	if (word == '/') {
+		*var = 16;
+		return 1;
 	}
 
 	if (word == '(') {
@@ -170,10 +175,10 @@ int OPEN(char* fileName) {
 
 			// CHECKTYPE:
 			// -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7: 符號 8:表單結束 9:函數開頭1 10:函數開頭2 12:'\'符號 
-			// 13:字串開頭2 14:括號開始 15:括號結束
+			// 13:字串開頭2 14:括號開始 15:括號結束 16:`/`符號
 
 			// WORDTYPE:
-			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 12:括號開始 13:括號結束
+			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 12:括號開始 13:括號結束 14:解說符號
 
 			if (nextWordType) {
 				wordType = nextWordType;
@@ -319,11 +324,42 @@ int OPEN(char* fileName) {
 					}
 				}
 
-				if (checkType == 7) {
+
+				//符號
+
+
+				if (checkType == 7) { 
 					if (canWrite == 1) {
 						wordType = 7;
 					}
 				}
+
+				if (checkType == 16) { //解說符號，或是除法，這裡要判斷他是兩個解說符號在一起的
+
+					if (canWrite == 1) {
+						int nextCheckType = 0;
+						getWordType(&nextCheckType, line[i + 1]);
+						if (nextCheckType == 16) { //代表下一個是 `/` 符號
+							wordType = 14;
+							//不需要先 canWrite 歸零
+						}
+						else if (lastCheckType == 16) { //代表上一個是 `/`符號
+							wordType = 14;
+							canWrite = 0;
+						}
+					}
+					else {
+						if (lastCheckType == 16) {
+							if (lastCheckType == 16) { //代表上一個是 `/`符號
+								wordType = 14;
+								nextCanWrite = 1;
+							}
+						}
+					}
+				}
+
+
+
 
 				if (checkType == 8) { // TABLE 表單
 					if (lastWordType == 3) {
@@ -402,6 +438,11 @@ int OPEN(char* fileName) {
 						aboutWord[0] = 1;
 					}
 				}
+
+
+
+				
+
 			}
 
 			//===================================================
@@ -423,9 +464,9 @@ int OPEN(char* fileName) {
 				txt[1] = '\0';
 			}
 
+			
 
-
-			//printf("'%d' '%c' '%d'\n", wordType, word, checkType);
+			printf("'%d' '%c' '%d'\n", wordType, word, checkType);
 			lastWordType = wordType;
 			lastCheckType = checkType;
 
@@ -442,6 +483,8 @@ int OPEN(char* fileName) {
 	if (forErr[0]) {
 		prerr(forErr[0], "表單或函數尚未完成**結束標示**。", 1);
 	}
+
+	//可以使用 wordType ==14 來判斷使用者是否有做 說明結尾
 
 	fclose(file);
 	return 0;

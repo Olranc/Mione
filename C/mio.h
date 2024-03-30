@@ -65,33 +65,22 @@ int setC(char* _type, char* _case, int _t) {
 
 int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 	//HEAD:HEAD_NAME
-	char* heads[] = {
-		"set",
-		"input",
-	};
-
-	char* prompts[] = {
-		"do",
-		"then",
-		"else",
-		"=",
-	};
 
 	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
-	for (int i = 0; i < sizeof(heads) / sizeof(char*); i = i + 1) {
+	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {
 
-		if (strcmp(heads[i], _case)) {
+		if (strcmp(HEADS[i], _case)) {
 		}
 		else {
 			setC("HEAD", _case, _type);
 		}
 	}
 
-	for (int i = 0; i < sizeof(prompts) / sizeof(char*); i = i + 1) {
+	for (int i = 0; i < sizeof(PROMOTS) / sizeof(char*); i = i + 1) {
 
-		if (strcmp(prompts[i], _case)) {
+		if (strcmp(PROMOTS[i], _case)) {
 		}
 		else {
 			setC("PROMPT", _case, _type);
