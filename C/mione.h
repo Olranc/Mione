@@ -24,10 +24,17 @@ int getWordType(int* var, char word) {
 		return 1;
 	}
 
-	char x[] = { ',', ';', '-', '+', '=', '*', '\0' };
+	char x[] = {',', ';', '-', '+', '=', '*', '>','<',']','[','\0'};
 	for (int i = 0; i < strlen(x); i++) {
 		if (word == x[i]) {
 			*var = 7;
+			return 1;
+		}
+	}
+	char y[] = {'(',')','\0'}; //不可重複兩個的符號
+	for (int i = 0; i < strlen(y); i++) {
+		if (word == y[i]) {
+			*var = 14;
 			return 1;
 		}
 	}
@@ -36,16 +43,6 @@ int getWordType(int* var, char word) {
 		*var = 16;
 		return 1;
 	}
-
-	if (word == '(') {
-		*var = 14;
-		return 1;
-	}
-	if (word == ')') {
-		*var = 15;
-		return 1;
-	}
-
 
 	for (int i = 0; i < 26; i++) {
 		char a;
@@ -107,9 +104,10 @@ int getWordType(int* var, char word) {
 
 	return 2;
 };
-int Line = 0;
+
 
 int lastCheckType = 0;
+int Line = 0;
 
 int	nextWordType = 0;
 int	lastWordType = -1; //here
@@ -132,6 +130,8 @@ int forErr[] = {
 
 int canWrite = 1;
 int nextCanWrite = 0;
+
+
 
 int OPEN(char* fileName) {
 
@@ -175,10 +175,10 @@ int OPEN(char* fileName) {
 
 			// CHECKTYPE:
 			// -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7: 符號 8:表單結束 9:函數開頭1 10:函數開頭2 12:'\'符號 
-			// 13:字串開頭2 14:括號開始 15:括號結束 16:`/`符號
+			// 13:字串開頭2 14:不可重複兩個的符號 16:`/`符號
 
 			// WORDTYPE:
-			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 12:括號開始 13:括號結束 14:解說符號
+			// -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 14:解說符號 15: 符號二
 
 			if (nextWordType) {
 				wordType = nextWordType;
@@ -334,6 +334,28 @@ int OPEN(char* fileName) {
 					}
 				}
 
+				if (checkType == 14) {
+					if (canWrite == 1) {
+						int nextCheckType = 0;
+						getWordType(&nextCheckType, line[i + 1]);
+
+						if (nextCheckType == 14 && lastWordType == 15) {
+							wordType = 7;
+						}
+						else {
+							if (lastWordType == 15) {
+								wordType = 7;
+							}
+							else {
+								wordType = 15;
+							}
+						}
+						
+					
+						
+					}
+				}
+
 				if (checkType == 16) { //解說符號，或是除法，這裡要判斷他是兩個解說符號在一起的
 
 					if (canWrite == 1) {
@@ -423,18 +445,6 @@ int OPEN(char* fileName) {
 
 				}
 
-				if (checkType == 14) {
-					if (canWrite == 1) {
-						wordType = 12;
-					}
-				}
-
-				if (checkType == 15) {
-					if (canWrite == 1) {
-						wordType = 13;
-					}
-				}
-
 				if (checkType == 12) {
 					if (aboutWord[1]) {}
 					else {
@@ -456,7 +466,6 @@ int OPEN(char* fileName) {
 				txt[len + 1] = '\0';
 			}
 			else {
-
 				//here
 				//printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
 				mio(txt, lastWordType);
@@ -490,6 +499,11 @@ int OPEN(char* fileName) {
 	//可以使用 wordType ==14 來判斷使用者是否有做 說明結尾
 
 	fclose(file);
+
+	//MIONE
+
+	run();
+	
 	return 0;
 }
 

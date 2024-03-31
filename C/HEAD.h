@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "CASE_type.h"
+
 
 #ifndef HEAD_h
 #define HEAD_h
