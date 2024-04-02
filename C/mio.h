@@ -11,86 +11,100 @@
 int pass = 0;
 int cSize = 0;
 
-char**** c;
-int NumOfLine = 0;
 
 // set							x								=								"hello"
-// <HEAD ID>    <µêÀÀ°O¾ÐÅé¦ì¸m>     <°O¾ÐÅé¦ì¸m>		<µêÀÀ°O¾ÐÅé¦ì¸m>
+// <HEAD ID>    <è™›æ“¬è¨˜æ†¶é«”ä½ç½®>     <è¨˜æ†¶é«”ä½ç½®>		<è™›æ“¬è¨˜æ†¶é«”ä½ç½®>
 
 // "a"=="a"
-// <µêÀÀ°O¾ÐÅé¦ì¸m> <²Å¸¹ID> <µêÀÀ°O¾ÐÅé¦ì¸m>
+// <è™›æ“¬è¨˜æ†¶é«”ä½ç½®> <ç¬¦è™ŸID> <è™›æ“¬è¨˜æ†¶é«”ä½ç½®>
 
 int setC(char* _type, char* _case, int _t) {
-	c = Rut ? &Runthions : &MIO;
+    cSize++;
+    printf("start \n");
+    if (MIO[MioTarget] != NULL) {
+        printf("going to pass 1 1\n");
+        MIO[MioTarget] = realloc(MIO[MioTarget], cSize * sizeof(char**));
+        printf("pass 1 1\n");
+    }
+    else {
+        printf("going to pass 1 2\n");
+        MIO[MioTarget] = malloc(sizeof(char**));
+        printf("pass 1 2\n");
+    }
+    MIO[MioTarget][cSize - 1] = NULL;
 
-	//printf("hey i am %s and %s or %d\n", _type, _case, _t);
-	cSize++;
+    printf("going to pass 2\n");
+    MIO[MioTarget][cSize - 1] = malloc(sizeof(char*)*2);
+    printf("pass 2\n");
+    MIO[MioTarget][cSize - 1][0] = NULL;
+    MIO[MioTarget][cSize - 1][1] = NULL;
 
-	if (*c) {
-		*c = realloc((*c), cSize * sizeof(char**));
-	}
-	else {
-		*c = malloc(sizeof(char**));
-	}
+    printf("going to pass 3 1\n");
+    MIO[MioTarget][cSize - 1][0] = malloc(strlen(_type)+1);
+    printf("write me 3 1%s\n",_type);
+    strcpy(MIO[MioTarget][cSize - 1][0], _type);
+    printf("pass 3 1\n");
 
-	(*c)[cSize - 1] = malloc(sizeof(char*) * 2);
+    if (strcmp("VARIABLE", _type)) {}
+    else {
+        char* ma;
+        cm(&ma, _case, _t);
+        _case = ma;
+    }
+    if (strcmp("VALUE", _type)) {}
+    else {
+        char* ma;
+        cm_v(&ma, _t, _case);
+        _case = ma;
+    }
 
-	(*c)[cSize - 1][0] = malloc(strlen(_type) + 1);
-	strcpy((*c)[cSize - 1][0], _type);
+    if (strcmp("HEAD", _type)) {}
+    else {
+        char* ma;
+        vI("HEAD", &ma, _case);
+        _case = ma;
+    }
 
-	
+    if (strcmp("PROMPT", _type)) {}
+    else {
+        char* ma;
+        vI("PROMPT", &ma, _case);
+        _case = ma;
+    }
 
-
-	if (strcmp("VARIABLE", _type)) {}
-	else {
-		char* ma;
-		cm(&ma, _case, _t);
-		_case = ma;
-	}
-	if (strcmp("VALUE", _type)) {}
-	else {
-		char* ma;
-		cm_v(&ma, _t, _case);
-		_case = ma;
-	}
-
-	if (strcmp("HEAD", _type)) {}
-	else {
-		char* ma;
-		vI("HEAD", &ma, _case);
-		_case = ma;
-	}
-
-	if (strcmp("PROMPT", _type)) {}
-	else {
-		char* ma;
-		vI("PROMPT", &ma, _case); 
-		_case = ma;
-	}
-
-	if (strcmp("SYMBOL", _type)) {}
-	else {
-		char* ma;
-		vI("SYMBOL", &ma, _case); 
-		_case = ma;
-	}
-
-	
+    if (strcmp("SYMBOL", _type)) {}
+    else {
+        char* ma;
+        vI("SYMBOL", &ma, _case);
+        _case = ma;
+    }
 
 
 
-	(*c)[cSize - 1][1] = malloc(strlen(_case) + 1);
-	strcpy((*c)[cSize - 1][1], _case);
 
-	//printf("%s %s\n", *c[cSize - 1][0], *c[cSize - 1][1]);
+    printf("going to pass 3 2\n");
+    MIO[MioTarget][cSize - 1][1] = malloc(strlen(_case)+1);
+    printf("write me 3 2 %s\n",_case);
+    strcpy(MIO[MioTarget][cSize - 1][1], _case);
+    printf("pass 3 2\n");
 
-	pass = 1;
+    printf("%s %s\n", MIO[MioTarget][cSize - 1][1],MIO[MioTarget][cSize - 1][0]);
+    pass = 1;
+
+    return 1;
 }
 
 int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
+    if (MIO){
+        MIO = realloc(MIO,sizeof(char***)*(MioTarget+1));
+    }else{
+        MIO = malloc(sizeof(char***)*1);
+    }
+    MIO[MioTarget] = NULL;
+
 	//HEAD:HEAD_NAME
 
-	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {
@@ -138,26 +152,25 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 			setC("VALUE", _case, _type);
 		}
 	}
-	
-	char* result = strstr(_case, "\n");
-	if (result != NULL) { //§Úª¾¹D³o¼Ë¥Î¤§«á·|¦³«Ü¦h°ÝÃD
-		NumOfLine++;
-		if (everyLines) {
-			everyLines = realloc(everyLines, sizeof(int) * NumOfLine);
-		}
-		else {
-			everyLines = malloc(sizeof(int) * 1);
-		}
 
-		everyLines[NumOfLine - 1] = the_size;
-		
-	}
+    int newLines = 0;
 
-	if (pass) {
-		the_size++;
-		//printf("<¼Æ­È»PÃþ«¬>: `%s` `%s`\n", c[cSize - 1][0], c[cSize - 1][1]);
-	}
-	
+    for (int i = 0;i<strlen(_case);i++){
+        if (_case[i] == '\n'){
+            NumberOfLines++;
+            if (EveryLines) {
+                EveryLines = realloc(EveryLines, sizeof(int) * NumberOfLines);
+            }
+            else {
+                EveryLines = malloc(sizeof(int) * 1);
+            }
+
+            EveryLines[NumberOfLines - 1] = cSize;
+        }
+
+    }
+
+    return 1;
 }
 
 #endif

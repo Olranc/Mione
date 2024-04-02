@@ -1,35 +1,16 @@
 #ifndef run_h
 #define run_h
 
-int the_size = 0;
+char**** MIO = NULL;
+int MioTarget = 0;
 
-
-int* everyLines;
-int nowTraget = 0;
-int soNowLine = 1;
-
-char*** MIO;
-
-int Rut = 0;
-char*** Runthions;
-
-
-
-
+int NumberOfLines;
+int* EveryLines = NULL; //每行的最後一個
+int nowTraget = 0; //構建到...
+int soNowLine = 1; //實體運行到...
 
 int run() {
-	char**** c = Rut ? &Runthions : &MIO;
-	
 
-	for (int i = 0; i < the_size; i++) {
-		printf("%s %s \n", (*c)[i][0], (*c)[i][1]);
-		if (i+1 == everyLines[nowTraget] && sizeof(everyLines)/sizeof(int)+1 != nowTraget) {
-			
-			nowTraget++;
-			soNowLine++;
-			printf("�{�b�O��%d��\n", soNowLine);
-		}
-	}
 };
 
 

@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <Windows.h>
+#include <windows.h>
 #include "mione.h"
 #include "verson.h"
 
@@ -13,7 +13,7 @@
 
 
 int main() {
-	printf("這是個未完成的實作產品，請在這個應用程式的同個資料夾裡創建 `index.mio` 以運行。\n\n");
+	printf("aaaaaaaaaaaa `index.mio` ww\n\n");
 	LPWSTR* cmds;
 	int num;
 	cmds = CommandLineToArgvW(GetCommandLineW(), &num);

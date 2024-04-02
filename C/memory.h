@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-char*** memory;
+char*** memory = NULL;
 int Type = 0;
 
 int mSize = 0;
@@ -11,7 +11,7 @@ int mSize = 0;
 #ifndef memory_h
 #define memory_h
 
-void cm(char** ma, char* v, int _type) { //!!! °O¦í¡A¦pªG¨S¦³¨Ï¥Î type:6¸¹¶}ÀY©Î¨Ï¥Î´«¦æ¡A±N¦Û¦æ³Ð³yµêÀÀ°O¾ÐÅé
+void cm(char** ma, char* v, int _type) {
     // memory = {   {"x",2,"sssss"}   }
     mSize++;
     if (memory) {
@@ -20,7 +20,13 @@ void cm(char** ma, char* v, int _type) { //!!! °O¦í¡A¦pªG¨S¦³¨Ï¥Î type:6¸¹¶}ÀY©Î
     else {
         memory = malloc(sizeof(char**));
     }
+    memory[mSize - 1]= NULL;
     memory[mSize - 1] = malloc(sizeof(char*) * 3);
+
+    memory[mSize - 1][0] = NULL;
+    memory[mSize - 1][1]= NULL;
+    memory[mSize - 1][2]= NULL;
+
 
     memory[mSize - 1][0] = malloc(strlen(v) + 1);
     strcpy(memory[mSize - 1][0], v);
@@ -35,15 +41,15 @@ void cm(char** ma, char* v, int _type) { //!!! °O¦í¡A¦pªG¨S¦³¨Ï¥Î type:6¸¹¶}ÀY©Î
     
 
 
-    //printf("    [MEMORY CREATED]\n"); 
-    //printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
-    //printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
-    //printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
-    //printf("    [ADDRESS]:'%d\n", mSize);
+    printf("    [MEMORY CREATED]\n");
+    printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
+    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
+    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
+    printf("    [ADDRESS]:'%d\n", mSize);
 
     int size = snprintf(NULL, 0, "%d", mSize) + 1;
-
-    char* output = malloc(size * sizeof(char));
+    char* output = NULL;
+     output= malloc(size * sizeof(char));
     sprintf(output, "%d", mSize);
     *ma = output;
 }
@@ -51,15 +57,18 @@ void cm(char** ma, char* v, int _type) { //!!! °O¦í¡A¦pªG¨S¦³¨Ï¥Î type:6¸¹¶}ÀY©Î
 void cm_v(char ** ma,int _type,char* v) { //
     mSize++;
     if (memory) {
+        printf("??????\n");
         memory = realloc(memory, sizeof(char**) * mSize);
     }
     else {
         memory = malloc(sizeof(char**));
     }
+    memory[mSize - 1] = NULL;
     memory[mSize - 1] = malloc(sizeof(char*) * 2);
+    memory[mSize - 1][0] = NULL;
+    memory[mSize - 1][1] = NULL;
 
-
-    memory[mSize - 1][0] = malloc(32); //³Ì°ª¥u¤ä´© 31­Ó¦ì¼Æ
+    memory[mSize - 1][0] = malloc(32); //ï¿½Ì°ï¿½ï¿½uï¿½ä´© 31ï¿½Ó¦ï¿½ï¿½
     sprintf(memory[mSize - 1][0], "%d", _type);
 
     memory[mSize - 1][1] = malloc(strlen(v) + 1);
@@ -67,19 +76,20 @@ void cm_v(char ** ma,int _type,char* v) { //
 
 
 
-    //printf("    [MEMORY CREATED]\n");
-    //printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][0]);
-   // printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
-   // printf("    [ADDRESS]:'%d\n", mSize);
+    printf("    [MEMORY CREATED]\n");
+    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][0]);
+    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
+    printf("    [ADDRESS]:'%d\n", mSize);
 
     int size = snprintf(NULL, 0, "%d", mSize) + 1;
 
-    char* output = malloc(size * sizeof(char));
+    char* output = NULL;
+    output= malloc(size * sizeof(char));
     sprintf(output, "%d", mSize);
     *ma = output;
 }
 
-void rtm(char**** c) { //ªð¦^°O¾ÐÅé
+void rtm(char**** c) { //ï¿½ï¿½^ï¿½Oï¿½ï¿½ï¿½ï¿½
     *c = memory;
 }
 

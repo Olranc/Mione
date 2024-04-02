@@ -7,102 +7,102 @@
 
 
 int getWordType(int* var, char word) {
-	*var = 1;
-	if (word == '"') {
-		*var = 2;
-		return 1;
-	}
+    *var = 1;
+    if (word == '"') {
+        *var = 2;
+        return 1;
+    }
 
-	if (word == '\'') {
-		*var = 13;
-		return 1;
-	}
-
-
-	if (word == ' ') {
-		*var = -1;
-		return 1;
-	}
-
-	char x[] = {',', ';', '-', '+', '=', '*', '>','<',']','[','\0'};
-	for (int i = 0; i < strlen(x); i++) {
-		if (word == x[i]) {
-			*var = 7;
-			return 1;
-		}
-	}
-	char y[] = {'(',')','\0'}; //§£•i≠´Ω∆®‚≠”™∫≤≈∏π
-	for (int i = 0; i < strlen(y); i++) {
-		if (word == y[i]) {
-			*var = 14;
-			return 1;
-		}
-	}
-
-	if (word == '/') {
-		*var = 16;
-		return 1;
-	}
-
-	for (int i = 0; i < 26; i++) {
-		char a;
-		a = 65 + i;
-		char b;
-		b = 97 + i;
+    if (word == '\'') {
+        *var = 13;
+        return 1;
+    }
 
 
-		if (word == a || word == b || word == '_') {
-			*var = 6;
-			return 1;
-		}
+    if (word == ' ') {
+        *var = -1;
+        return 1;
+    }
 
-	}
+    char x[] = {',', ';', '-', '+', '=', '*', '>','<',']','[','\0'};
+    for (int i = 0; i < strlen(x); i++) {
+        if (word == x[i]) {
+            *var = 7;
+            return 1;
+        }
+    }
+    char y[] = {'(',')','\0'}; //‰∏çÂèØÈáçË§áÂÖ©ÂÄãÁöÑÁ¨¶Ëôü
+    for (int i = 0; i < strlen(y); i++) {
+        if (word == y[i]) {
+            *var = 14;
+            return 1;
+        }
+    }
 
-	for (int i = 0; i < 10; i++) {
-		char aw[5];
-		sprintf(aw, "%d", i);
+    if (word == '/') {
+        *var = 16;
+        return 1;
+    }
 
-		if (aw) {
-			if (word == aw[0]) {
-				*var = 5;
-				return 1;
-			}
-		}
-	}
-
-	if (word == '{') {
-		*var = 3;
-		return 1;
-	}
-	if (word == '}') {
-		*var = 8;
-		return 1;
-	}
+    for (int i = 0; i < 26; i++) {
+        char a;
+        a = 65 + i;
+        char b;
+        b = 97 + i;
 
 
-	if (word == '@') {
-		*var = 4;
-		return 1;
-	}
-	if (word == '$') {
-		*var = 9;
-		return 1;
-	}
-	if (word == '#') {
-		*var = 10;
-		return 1;
-	}
+        if (word == a || word == b || word == '_') {
+            *var = 6;
+            return 1;
+        }
 
-	if (word == '\n') {
-		*var = 1;
-		return 1;
-	}
-	if (word == '\\') {
-		*var = 12;
-		return 1;
-	}
+    }
 
-	return 2;
+    for (int i = 0; i < 10; i++) {
+        char aw[5];
+        sprintf(aw, "%d", i);
+
+        if (aw) {
+            if (word == aw[0]) {
+                *var = 5;
+                return 1;
+            }
+        }
+    }
+
+    if (word == '{') {
+        *var = 3;
+        return 1;
+    }
+    if (word == '}') {
+        *var = 8;
+        return 1;
+    }
+
+
+    if (word == '@') {
+        *var = 4;
+        return 1;
+    }
+    if (word == '$') {
+        *var = 9;
+        return 1;
+    }
+    if (word == '#') {
+        *var = 10;
+        return 1;
+    }
+
+    if (word == '\n') {
+        *var = 1;
+        return 1;
+    }
+    if (word == '\\') {
+        *var = 12;
+        return 1;
+    }
+
+    return 2;
 };
 
 
@@ -113,8 +113,8 @@ int	nextWordType = 0;
 int	lastWordType = -1; //here
 int wordType = 1;
 int aboutWord[] = {
-	0,//slash ±◊Ωu
-	0,//slash ≠»
+        0,//slash ÊñúÁ∑ö
+        0,//slash ÂÄº
 };
 
 
@@ -123,8 +123,8 @@ int canCount = 1;
 int nextCanCount = 0;
 
 int forErr[] = {
-	0, // ™Ì≥Ê©Œ®Áº∆∂}©l¶Ê
-	0, // ¶r¶Í∂}©l¶Ê
+        0, // Ë°®ÂñÆÊàñÂáΩÊï∏ÈñãÂßãË°å
+        0, // Â≠ó‰∏≤ÈñãÂßãË°å
 };
 
 
@@ -134,377 +134,372 @@ int nextCanWrite = 0;
 
 
 int OPEN(char* fileName) {
+    char* txt = malloc(sizeof(char) * 2);
+    strcpy(txt, "\0");
+    FILE* file = fopen(fileName, "r");
+    char line[2048];
+
+    if (file == NULL) {
+        printf("cant open file\n");
+        return 1;
+    }
+
+    while (fgets(line, sizeof(line), file) != NULL) { //     C
+        Line++;
+        //  printf("%s\n",line);
+
+        int lastOne = strlen(line) - 1;
+
+        for (int i = 0; strlen(line) > i; i++) { // C
+            if (i == lastOne) {
+                strcat(line, " ");
+            }
+
+            char word = line[i];
+            int checkType = 1;
+            getWordType(&checkType, word);
+
+            //====================================================
+            if (nextCanWrite) {
+                canWrite = nextCanWrite;
+                nextCanWrite = 0;
+            }
+
+            if (nextCanCount) {
+                canCount = nextCanCount;
+                nextCanCount = 0;
+            }
+
+
+
+            // CHECKTYPE:
+            // -1:Á©∫Ê†º 1:ÁÑ°/ÊèõË°å 2:Â≠ó‰∏≤ÈñãÈ†≠1 3:Ë°®ÂñÆÈñãÈ†≠ 4:ÂáΩÊï∏ÁµêÊùü 5:Êï∏Â≠ó 6:Ëã±ÊñáÂ≠óÊØç/Â∫ïÁ∑ö 7: Á¨¶Ëôü 8:Ë°®ÂñÆÁµêÊùü 9:ÂáΩÊï∏ÈñãÈ†≠1 10:ÂáΩÊï∏ÈñãÈ†≠2 12:'\'Á¨¶Ëôü
+            // 13:Â≠ó‰∏≤ÈñãÈ†≠2 14:‰∏çÂèØÈáçË§áÂÖ©ÂÄãÁöÑÁ¨¶Ëôü 16:`/`Á¨¶Ëôü
+
+            // WORDTYPE:
+            // -1:Á©∫Ê†º 1:ÁÑ°/ÊèõË°å 2:Â≠ó‰∏≤1 3:Ë°®ÂñÆ 4:ÂáΩÊï∏ 5:Êï∏Â≠ó 6:Ëã±ÊñáÂ≠óÊØç/Â∫ïÁ∑ö 7: Á¨¶Ëôü 8:Âü∑Ë°åÂºè 10:'\'Á¨¶Ëôü 11:Â≠ó‰∏≤2 14:Ëß£Ë™™Á¨¶Ëôü 15: Á¨¶Ëôü‰∫å
+
+            if (nextWordType) {
+                wordType = nextWordType;
+                nextWordType = 0;
+            }
+            else {
+                if (checkType == 2) { // STRING Â≠ó‰∏≤
+                    if (aboutWord[1]) {}
+                    else {
+                        if (lastWordType == 2) {
+                            nextCanWrite = 1;
+                            aboutWord[1] = 0;
+                            forErr[1] = 0;
+                        }
+                        else {
+                            if (canWrite == 1) {
+                                wordType = 2;
+                                canWrite = 0;
+                                forErr[1] = Line;
+                            }
+                        }
+                        if (canCount) {
+                            canCount = 0;
+                        }
+                        else {
+                            nextCanCount = 1;
+                        }
+                    }
+                }
+
+                if (checkType == 13) { // STRING Â≠ó‰∏≤
+                    if (aboutWord[1]) {}
+                    else {
+                        if (lastWordType == 11) {
+                            nextCanWrite = 1;
+                            aboutWord[1] = 0;
+                            forErr[1] = 0;
+                        }
+                        else {
+                            if (canWrite == 1) {
+                                wordType = 11;
+                                canWrite = 0;
+                                forErr[1] = Line;
+                            }
+                        }
+
+                        if (canCount) {
+                            canCount = 0;
+                        }
+                        else {
+                            nextCanCount = 1;
+                        }
+                    }
+
+                }
+
+
 
-	char* txt = malloc(sizeof(char) * 2);
-	strcpy(txt, "\0");
-	FILE* file = fopen(fileName, "r");
-	char line[2048];
-
-	if (file == NULL) {
-		printf("cant open file\n");
-		return 1;
-	}
-
-	while (fgets(line, sizeof(line), file) != NULL) { //     C
-		Line++;
-		//  printf("%s\n",line);
-
-		int lastOne = strlen(line) - 1;
-
-		for (int i = 0; strlen(line) > i; i++) { // C
-			if (i == lastOne) {
-				strcat(line, " ");
-			}
-
-			char word = line[i];
-			int checkType = 1;
-			getWordType(&checkType, word);
-
-			//====================================================
-			if (nextCanWrite) {
-				canWrite = nextCanWrite;
-				nextCanWrite = 0;
-			}
-
-			if (nextCanCount) {
-				canCount = nextCanCount;
-				nextCanCount = 0;
-			}
-
-
-
-			// CHECKTYPE:
-			// -1:™≈ÆÊ 1:µL/¥´¶Ê 2:¶r¶Í∂}¿Y1 3:™Ì≥Ê∂}¿Y 4:®Áº∆µ≤ßÙ 5:º∆¶r 6:≠^§Â¶r•¿/©≥Ωu 7: ≤≈∏π 8:™Ì≥Êµ≤ßÙ 9:®Áº∆∂}¿Y1 10:®Áº∆∂}¿Y2 12:'\'≤≈∏π 
-			// 13:¶r¶Í∂}¿Y2 14:§£•i≠´Ω∆®‚≠”™∫≤≈∏π 16:`/`≤≈∏π
-
-			// WORDTYPE:
-			// -1:™≈ÆÊ 1:µL/¥´¶Ê 2:¶r¶Í1 3:™Ì≥Ê 4:®Áº∆ 5:º∆¶r 6:≠^§Â¶r•¿/©≥Ωu 7: ≤≈∏π 8:∞ı¶Ê¶° 10:'\'≤≈∏π 11:¶r¶Í2 14:∏—ª°≤≈∏π 15: ≤≈∏π§G
-
-			if (nextWordType) {
-				wordType = nextWordType;
-				nextWordType = 0;
-			}
-			else {
-				if (checkType == 2) { // STRING ¶r¶Í
-					if (aboutWord[1]) {}
-					else {
-						if (lastWordType == 2) {
-							nextCanWrite = 1;
-							aboutWord[1] = 0;
-							forErr[1] = 0;
-						}
-						else {
-							if (canWrite == 1) {
-								wordType = 2;
-								canWrite = 0;
-								forErr[1] = Line;
-							}
-						}
-						if (canCount) {
-							canCount = 0;
-						}
-						else {
-							nextCanCount = 1;
-						}
-					}
-				}
-
-				if (checkType == 13) { // STRING ¶r¶Í
-					if (aboutWord[1]) {}
-					else {
-						if (lastWordType == 11) {
-							nextCanWrite = 1;
-							aboutWord[1] = 0;
-							forErr[1] = 0;
-						}
-						else {
-							if (canWrite == 1) {
-								wordType = 11;
-								canWrite = 0;
-								forErr[1] = Line;
-							}
-						}
-
-						if (canCount) {
-							canCount = 0;
-						}
-						else {
-							nextCanCount = 1;
-						}
-					}
-
-				}
-
-
-
-				if (checkType == 3) { // TABLE ™Ì≥Ê
-					if (canWrite == 1) {
-						wordType = 3;
-						canWrite = 0;
-
-						if (canCount) {
-							if (forErr[0]) {}
-							else {
-								forErr[0] = Line;
-							}
-							lvl++;
-						}
-					}
-					else {
-						if (lastWordType == 3) {
-							if (canCount) {
-								lvl++;
-							}
-						}
-					}
-
-				}
-
-				if (checkType == 9) { // FUNCTION ®Áº∆
-					if (canWrite == 1) {
-						wordType = 4;
-						canWrite = 0;
-
-						if (canCount) {
-							if (forErr[0]) {}
-							else {
-								forErr[0] = Line;
-							}
-							lvl++;
-						}
-					}
-					else {
-						if (lastWordType == 4 || lastWordType == 8) {
-							if (canCount) {
-								lvl++;
-							}
-						}
-					}
-
-				}
-
-				if (checkType == 10) { // FUNCTION ®Áº∆
-					if (canWrite == 1) {
-						wordType = 8;
-						canWrite = 0;
-
-						if (canCount) {
-							if (forErr[0]) {}
-							else {
-								forErr[0] = Line;
-							}
-							lvl++;
-						}
-					}
-					else {
-						if (lastWordType == 4 || lastWordType == 8) {
-							if (canCount) {
-								lvl++;
-							}
-						}
-					}
-
-				}
-
-				if (checkType == 5) {
-					if (canWrite == 1) {
-						if (lastWordType == 6) { // ¨∞§F `set x1 = 0`
-							wordType = 6;
-						}
-						else {
-							wordType = 5;
-						}
-
-					}
-				}
-
-				if (checkType == 6) {
-					if (canWrite == 1) {
-						wordType = 6;
-					}
-				}
-
-
-				//≤≈∏π
-
-
-				if (checkType == 7) { 
-					if (canWrite == 1) {
-						wordType = 7;
-					}
-				}
-
-				if (checkType == 14) {
-					if (canWrite == 1) {
-						int nextCheckType = 0;
-						getWordType(&nextCheckType, line[i + 1]);
-
-						if (nextCheckType == 14 && lastWordType == 15) {
-							wordType = 7;
-						}
-						else {
-							if (lastWordType == 15) {
-								wordType = 7;
-							}
-							else {
-								wordType = 15;
-							}
-						}
-						
-					
-						
-					}
-				}
-
-				if (checkType == 16) { //∏—ª°≤≈∏π°A©Œ¨O∞£™k°A≥o∏Ã≠nßP¬_•L¨O®‚≠”∏—ª°≤≈∏π¶b§@∞_™∫
-
-					if (canWrite == 1) {
-						int nextCheckType = 0;
-						getWordType(&nextCheckType, line[i + 1]);
-						if (nextCheckType == 16) { //•N™Ì§U§@≠”¨O `/` ≤≈∏π
-							wordType = 14;
-							//§£ª›≠n•˝ canWrite ¬kπs
-						}
-						else if (lastCheckType == 16) { //•N™Ì§W§@≠”¨O `/`≤≈∏π
-							wordType = 14;
-							canWrite = 0;
-						}
-						else {
-							wordType = 7;
-						}
-					}
-					else {
-						if (lastCheckType == 16) {
-							if (lastCheckType == 16) { //•N™Ì§W§@≠”¨O `/`≤≈∏π
-								wordType = 14;
-								nextCanWrite = 1;
-							}
-						}
-					}
-				}
-
-
-
-
-				if (checkType == 8) { // TABLE ™Ì≥Ê
-					if (lastWordType == 3) {
-
-						if (canCount) {
-							lvl--;
-						}
-						if (lvl) {}
-						else {
-							wordType = 3;
-							nextCanWrite = 1;
-
-							forErr[0] = 0;
-						}
-
-					}
-				}
-
-				if (checkType == 4) {
-					if (lastWordType == 4 || lastWordType == 8) {
-						if (canCount) {
-							lvl--;
-						}
-						if (lvl) {}
-						else {
-							if (lastWordType == 4) {
-								wordType = 4;
-							}
-							else {
-								wordType = 8;
-							}
-
-							nextCanWrite = 1;
-
-							forErr[0] = 0;
-						}
-					}
-				}
-
-				if (checkType == -1) {
-					if (canWrite == 1) {
-						wordType = -1;
-					}
-					aboutWord[0] = 0;
-				}
-
-				if (checkType == -2) { // todo
-					if (canWrite == 1) {
-						wordType = -2;
-					}
-					aboutWord[0] = 0;
-				}
-
-				if (checkType == 1) {
-					if (canWrite == 1) {
-						wordType = 1;
-					}
-
-				}
-
-				if (checkType == 12) {
-					if (aboutWord[1]) {}
-					else {
-						aboutWord[0] = 1;
-					}
-				}
-
-
-
-				
-
-			}
-
-			//===================================================
-			if (wordType == lastWordType) {
-				int len = strlen(txt);
-				txt = realloc(txt, len + 1 + 1);
-				txt[len] = word;
-				txt[len + 1] = '\0';
-			}
-			else {
-				//here
-				//printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
-				mio(txt, lastWordType);
-				free(txt);
-
-				txt = malloc(sizeof(char) * (1 + 1));
-				txt[0] = word;
-				txt[1] = '\0';
-			}
-
-			
-
-			//printf("'%d' '%c' '%d'\n", wordType, word, checkType);
-			lastWordType = wordType;
-			lastCheckType = checkType;
-
-
-			aboutWord[1] = aboutWord[0];
-			aboutWord[0] = 0;
-		}
-	}
-
-	if (wordType == 2 || wordType == 11) {
-		prerr(forErr[1], "¶r¶Í©|•º∞µµ≤ßÙ´≈ßi°C", 2);
-	}
-
-	if (forErr[0]) {
-		prerr(forErr[0], "™Ì≥Ê©Œ®Áº∆©|•ºßπ¶®**µ≤ßÙº–•‹**°C", 1);
-	}
-
-	//•i•H®œ•Œ wordType ==14 ®”ßP¬_®œ•Œ™Ã¨Oß_¶≥∞µ ª°©˙µ≤ß¿
-
-	fclose(file);
-
-	//MIONE
-
-	run();
-	
-	return 0;
+                if (checkType == 3) { // TABLE Ë°®ÂñÆ
+                    if (canWrite == 1) {
+                        wordType = 3;
+                        canWrite = 0;
+
+                        if (canCount) {
+                            if (forErr[0]) {}
+                            else {
+                                forErr[0] = Line;
+                            }
+                            lvl++;
+                        }
+                    }
+                    else {
+                        if (lastWordType == 3) {
+                            if (canCount) {
+                                lvl++;
+                            }
+                        }
+                    }
+
+                }
+
+                if (checkType == 9) { // FUNCTION ÂáΩÊï∏
+                    if (canWrite == 1) {
+                        wordType = 4;
+                        canWrite = 0;
+
+                        if (canCount) {
+                            if (forErr[0]) {}
+                            else {
+                                forErr[0] = Line;
+                            }
+                            lvl++;
+                        }
+                    }
+                    else {
+                        if (lastWordType == 4 || lastWordType == 8) {
+                            if (canCount) {
+                                lvl++;
+                            }
+                        }
+                    }
+
+                }
+
+                if (checkType == 10) { // FUNCTION ÂáΩÊï∏
+                    if (canWrite == 1) {
+                        wordType = 8;
+                        canWrite = 0;
+
+                        if (canCount) {
+                            if (forErr[0]) {}
+                            else {
+                                forErr[0] = Line;
+                            }
+                            lvl++;
+                        }
+                    }
+                    else {
+                        if (lastWordType == 4 || lastWordType == 8) {
+                            if (canCount) {
+                                lvl++;
+                            }
+                        }
+                    }
+
+                }
+
+                if (checkType == 5) {
+                    if (canWrite == 1) {
+                        if (lastWordType == 6) { // ÁÇ∫‰∫Ü `set x1 = 0`
+                            wordType = 6;
+                        }
+                        else {
+                            wordType = 5;
+                        }
+
+                    }
+                }
+
+                if (checkType == 6) {
+                    if (canWrite == 1) {
+                        wordType = 6;
+                    }
+                }
+
+
+                //Á¨¶Ëôü
+
+
+                if (checkType == 7) {
+                    if (canWrite == 1) {
+                        wordType = 7;
+                    }
+                }
+
+                if (checkType == 14) {
+                    if (canWrite == 1) {
+                        int nextCheckType = 0;
+                        getWordType(&nextCheckType, line[i + 1]);
+
+                        if (nextCheckType == 14 && lastWordType == 15) {
+                            wordType = 7;
+                        }
+                        else {
+                            if (lastWordType == 15) {
+                                wordType = 7;
+                            }
+                            else {
+                                wordType = 15;
+                            }
+                        }
+
+
+
+                    }
+                }
+
+                if (checkType == 16) { //Ëß£Ë™™Á¨¶ËôüÔºåÊàñÊòØÈô§Ê≥ïÔºåÈÄôË£°Ë¶ÅÂà§Êñ∑‰ªñÊòØÂÖ©ÂÄãËß£Ë™™Á¨¶ËôüÂú®‰∏ÄËµ∑ÁöÑ
+
+                    if (canWrite == 1) {
+                        int nextCheckType = 0;
+                        getWordType(&nextCheckType, line[i + 1]);
+                        if (nextCheckType == 16) { //‰ª£Ë°®‰∏ã‰∏ÄÂÄãÊòØ `/` Á¨¶Ëôü
+                            wordType = 14;
+                            //‰∏çÈúÄË¶ÅÂÖà canWrite Ê≠∏Èõ∂
+                        }
+                        else if (lastCheckType == 16) { //‰ª£Ë°®‰∏ä‰∏ÄÂÄãÊòØ `/`Á¨¶Ëôü
+                            wordType = 14;
+                            canWrite = 0;
+                        }
+                        else {
+                            wordType = 7;
+                        }
+                    }
+                    else {
+                        if (lastCheckType == 16) {
+                            if (lastCheckType == 16) { //‰ª£Ë°®‰∏ä‰∏ÄÂÄãÊòØ `/`Á¨¶Ëôü
+                                wordType = 14;
+                                nextCanWrite = 1;
+                            }
+                        }
+                    }
+                }
+
+
+
+
+                if (checkType == 8) { // TABLE Ë°®ÂñÆ
+                    if (lastWordType == 3) {
+
+                        if (canCount) {
+                            lvl--;
+                        }
+                        if (lvl) {}
+                        else {
+                            wordType = 3;
+                            nextCanWrite = 1;
+
+                            forErr[0] = 0;
+                        }
+
+                    }
+                }
+
+                if (checkType == 4) {
+                    if (lastWordType == 4 || lastWordType == 8) {
+                        if (canCount) {
+                            lvl--;
+                        }
+                        if (lvl) {}
+                        else {
+                            if (lastWordType == 4) {
+                                wordType = 4;
+                            }
+                            else {
+                                wordType = 8;
+                            }
+
+                            nextCanWrite = 1;
+
+                            forErr[0] = 0;
+                        }
+                    }
+                }
+
+                if (checkType == -1) {
+                    if (canWrite == 1) {
+                        wordType = -1;
+                    }
+                    aboutWord[0] = 0;
+                }
+
+                if (checkType == -2) { // todo
+                    if (canWrite == 1) {
+                        wordType = -2;
+                    }
+                    aboutWord[0] = 0;
+                }
+
+                if (checkType == 1) {
+                    if (canWrite == 1) {
+                        wordType = 1;
+                    }
+
+                }
+
+                if (checkType == 12) {
+                    if (aboutWord[1]) {}
+                    else {
+                        aboutWord[0] = 1;
+                    }
+                }
+            }
+
+            //===================================================
+            if (wordType == lastWordType) {
+                int len = strlen(txt);
+                txt = realloc(txt, len + 1 + 1);
+                txt[len] = word;
+                txt[len + 1] = '\0';
+            }
+            else {
+                //here
+                //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                mio(txt, lastWordType);
+                free(txt);
+
+
+                txt = NULL;
+                txt = malloc(sizeof(char) * (1 + 1));
+                txt[0] = word;
+                txt[1] = '\0';
+            }
+
+
+
+            //printf("'%d' '%c' '%d'\n", wordType, word, checkType);
+            lastWordType = wordType;
+            lastCheckType = checkType;
+
+
+            aboutWord[1] = aboutWord[0];
+            aboutWord[0] = 0;
+        }
+    }
+
+    if (wordType == 2 || wordType == 11) {
+        prerr(forErr[1], "Â≠ó‰∏≤Â∞öÊú™ÂÅöÁµêÊùüÂÆ£Âëä„ÄÇ", 2);
+    }
+
+    if (forErr[0]) {
+        prerr(forErr[0], "Ë°®ÂñÆÊàñÂáΩÊï∏Â∞öÊú™ÂÆåÊàê**ÁµêÊùüÊ®ôÁ§∫**„ÄÇ", 1);
+    }
+
+    //ÂèØ‰ª•‰ΩøÁî® wordType ==14 ‰æÜÂà§Êñ∑‰ΩøÁî®ËÄÖÊòØÂê¶ÊúâÂÅö Ë™™ÊòéÁµêÂ∞æ
+
+    fclose(file);
+
+    //MIONE
+    run();
+
+    return 0;
 }
 
 

@@ -2,8 +2,8 @@
 #include "verson.h"
 
 int prerr(int line, char* msg, int errCode) {
-	printf("¿ù»~¶µ¥Ø¶}ÀY¦æ¼Æ¡G%d\n¿ù»~»²§U»¡©ú¡G%s \n", line, msg);
-	printf("	Mioneª©¥»¡G%s\n", mione_verson);
-	printf("	¿ù»~¥N½X¡G'%d'\n", errCode);
-	return 1;
+    printf("éŒ¯èª¤é …ç›®é–‹é ­è¡Œæ•¸ï¼š%d\néŒ¯èª¤è¼”åŠ©èªªæ˜Žï¼š%s \n", line, msg);
+    printf("	Mioneç‰ˆæœ¬ï¼š%s\n", mione_verson);
+    printf("	éŒ¯èª¤ä»£ç¢¼ï¼š'%d'\n", errCode);
+    return 1;
 }
