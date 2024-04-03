@@ -2,8 +2,21 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "HEAD.h"
+
 #ifndef CASE_type_h
 #define CASE_type_h
+
+typedef  struct   {
+    char* NAME;
+    int (*fuc)(char***,int);
+} THECASE;
+
+THECASE HEAD_CASE[] = {
+        {"1",set},
+        {"2",NULL},
+};
+
 
 char* HEADS[] = {
 	"input",

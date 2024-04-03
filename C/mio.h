@@ -7,9 +7,11 @@
 
 #ifndef mio_h
 #define mio_h
+#include "run.h"
 
 int pass = 0;
-int cSize = 0;
+
+
 
 
 // set							x								=								"hello"
@@ -20,7 +22,6 @@ int cSize = 0;
 
 int setC(char* _type, char* _case, int _t) {
     cSize++;
-    printf("start \n");
     if (MIO[MioTarget]) {
         MIO[MioTarget] = realloc(MIO[MioTarget], cSize * sizeof(char**));
     }

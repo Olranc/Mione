@@ -497,7 +497,7 @@ int OPEN(char* fileName) {
     fclose(file);
 
     //MIONE
-    run();
+    run(); //run
     return 0;
 }
 
