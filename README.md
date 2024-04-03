@@ -1,8 +1,8 @@
-# Mione
+# Mione 😀- [Mioprety Discord](https://discord.gg/DF7txbgjmg)
 
 
 - ### Mioprety
-- ###### [Mioprety官方Discord](https://discord.gg/DF7txbgjmg)
+
 
 ![Mioprety](Mioprety-nobackground.svg)  
 
