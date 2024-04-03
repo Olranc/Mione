@@ -1,2 +1,1 @@
-set x = "hello"
-set x={"dsadas"}
+set x = "\"

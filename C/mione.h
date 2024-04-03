@@ -430,7 +430,7 @@ int OPEN(char* fileName) {
                     aboutWord[0] = 0;
                 }
 
-                if (checkType == -2) { // todo
+                if (checkType == -2) {
                     if (canWrite == 1) {
                         wordType = -2;
                     }
@@ -485,11 +485,11 @@ int OPEN(char* fileName) {
     }
 
     if (wordType == 2 || wordType == 11) {
-        prerr(forErr[1], "字串尚未做結束宣告。", 2);
+        prerr(forErr[1], "The end of the string has not yet been declared.", 2);
     }
 
     if (forErr[0]) {
-        prerr(forErr[0], "表單或函數尚未完成**結束標示**。", 1);
+        prerr(forErr[0], "The form or function has not been completed **end indicator**.", 1);
     }
 
     //可以使用 wordType ==14 來判斷使用者是否有做 說明結尾

@@ -154,7 +154,7 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
             else {
                 EveryLines = malloc(sizeof(int) * 1);
             }
-
+            printf("new line\n");
             EveryLines[NumberOfLines - 1] = cSize;
         }
 
