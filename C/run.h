@@ -2,6 +2,8 @@
 #define run_h
 
 #include "CASE_type.h"
+int NL = 0;
+
 
 char**** MIO = NULL;
 int * MIOsize;
@@ -9,7 +11,7 @@ int MioTarget = 0;
 
 int cSize = 0; //給mio.h的臨時變數
 
-int NumberOfLines;
+
 int* EveryLines = NULL; //每行的最後一個
 int nowTarget = 0; //構建到...
 int soNowLine = 1; //實體運行到...
@@ -22,20 +24,43 @@ int run() {
     }
     MIOsize[MioTarget] = cSize;
 
-    for (int i = 0;i<MIOsize[MioTarget];i++){ //HERE
-        char * TYPE = MIO[MioTarget][i][0];
-        char * ADDRESS = MIO[MioTarget][i][1];
+    for (int index = 0;index<MIOsize[MioTarget];index++){ //HERE
+        char * TYPE = MIO[MioTarget][index][0];
+        char * ADDRESS = MIO[MioTarget][index][1];
 
         if (strcmp(TYPE,"HEAD")){ }else{//節省參訪時間
             for (int i = 0;i<sizeof(HEAD_CASE)/sizeof(HEAD_CASE[0]);i++){
                 if (strcmp(HEAD_CASE[i].NAME, ADDRESS )){}else{
+
+                    char *** PACK = malloc(sizeof(char**));
+                    for (int ii = 0;ii<MIOsize[MioTarget];ii++){
+                        if (ii > index){
+                            if (strcmp(MIO[MioTarget][ii][0],"VALUE")==0 || strcmp(MIO[MioTarget][ii][0],"VARIABLE")==0){
+                                if (ii +1<=MIOsize[MioTarget]-1){
+                                    if (strcmp(MIO[MioTarget][ii+1][0],"VALUE")==0 || strcmp(MIO[MioTarget][ii+1][0],"VARIABLE")==0){
+                                        for (int eLines = 0;eLines<NL;eLines++){
+                                            if (EveryLines[eLines] >= ii+1){
+                                                if (EveryLines[eLines] >= ii){
+
+                                                    printf("in the same line\n");
+                                                    
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                            }
+                        }
+                    }
                     printf("OMG paired with HEAD\n");
                 }
             }
         }
 
-        if (strcmp(TYPE,"VALUE")==0 || strcmp(TYPE,"VARIABLE")==0 ){//節省參訪時間
-            //to do
+        if (strcmp(TYPE,"VALUE")==0 || strcmp(TYPE,"VARIABLE")==0){//節省參訪時間
+
         }
 
         printf("%s %s\n",TYPE,ADDRESS);
