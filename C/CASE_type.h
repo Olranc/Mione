@@ -13,8 +13,8 @@ typedef  struct   {
 } THECASE;
 
 THECASE HEAD_CASE[] = {
-        {"1",set},
-        {"2",NULL},
+        {"1",NULL},
+        {"2",set},
 };
 
 

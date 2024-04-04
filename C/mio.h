@@ -11,7 +11,17 @@
 
 int pass = 0;
 
-
+int mioEnd(){
+    NL++;
+    if (EveryLines) {
+        EveryLines = realloc(EveryLines, sizeof(int) * NL);
+    }
+    else {
+        EveryLines = malloc(sizeof(int) * 1);
+    }
+    //printf("new line %d\n",NL);
+    EveryLines[NL - 1] = cSize;
+}
 
 // set							x								=								"hello"
 // <HEAD ID>    <虛擬記憶體位置>     <記憶體位置>		<虛擬記憶體位置>
@@ -143,22 +153,14 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 	}
 
     for (int i = 0;i<strlen(_case);i++){
-        if (_case[i] == '\n'){
-            NL++;
-            if (EveryLines) {
-                EveryLines = realloc(EveryLines, sizeof(int) * NL);
-            }
-            else {
-                EveryLines = malloc(sizeof(int) * 1);
-            }
-            printf("new line %d\n",NL);
-            EveryLines[NL - 1] = cSize;
-        }
+        if (_case[i] == '\n') mioEnd();
 
     }
 
 
     return 1;
 }
+
+
 
 #endif

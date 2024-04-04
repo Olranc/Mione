@@ -24,46 +24,70 @@ int run() {
     }
     MIOsize[MioTarget] = cSize;
 
-    for (int index = 0;index<MIOsize[MioTarget];index++){ //HERE
-        char * TYPE = MIO[MioTarget][index][0];
-        char * ADDRESS = MIO[MioTarget][index][1];
+    for (int index = 0;index<MIOsize[MioTarget];index++) { //HERE
+        char *TYPE = MIO[MioTarget][index][0];
+        char *ADDRESS = MIO[MioTarget][index][1];
 
-        if (strcmp(TYPE,"HEAD")){ }else{//節省參訪時間
-            for (int i = 0;i<sizeof(HEAD_CASE)/sizeof(HEAD_CASE[0]);i++){
-                if (strcmp(HEAD_CASE[i].NAME, ADDRESS )){}else{
+        if (strcmp(TYPE, "HEAD")) {}
+        else {//節省參訪時間
+            for (int i = 0; i < sizeof(HEAD_CASE) / sizeof(HEAD_CASE[0]); i++) {
+                if (strcmp(HEAD_CASE[i].NAME, ADDRESS)) {}
+                else {
 
-                    char *** PACK = malloc(sizeof(char**));
-                    for (int ii = 0;ii<MIOsize[MioTarget];ii++){
-                        if (ii > index){
-                            if (strcmp(MIO[MioTarget][ii][0],"VALUE")==0 || strcmp(MIO[MioTarget][ii][0],"VARIABLE")==0){
-                                if (ii +1<=MIOsize[MioTarget]-1){
-                                    if (strcmp(MIO[MioTarget][ii+1][0],"VALUE")==0 || strcmp(MIO[MioTarget][ii+1][0],"VARIABLE")==0){
-                                        for (int eLines = 0;eLines<NL;eLines++){
-                                            if (EveryLines[eLines] >= ii+1){
-                                                if (EveryLines[eLines] >= ii){
+                    char ***PACK = malloc(sizeof(char **));
+                    int PackSize = 0;
 
-                                                    printf("in the same line\n");
-                                                    
-                                                }
+
+                    int canWrite = 1;
+
+                    for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
+                        if (ii > index) { // set x = fuc "hello"
+                            if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0) {
+                                if (ii < MIOsize[MioTarget] - 1) {
+                                    if (strcmp(MIO[MioTarget][ii + 1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii + 1][0], "VARIABLE") == 0) {
+
+                                        for (int eLines = 0; eLines < NL; eLines++) {
+                                            if (EveryLines[eLines] > ii + 1&& EveryLines[eLines] >= ii + 1) {
+                                            }else{
+                                                //不同行
+                                                canWrite = 0;
                                             }
                                         }
 
+
                                     }
                                 }
-
                             }
+
+                            if (strcmp(MIO[MioTarget][ii][0], "HEAD") == 0) {
+                                canWrite = 0;
+                            }
+
+
+
+                            if (canWrite){
+                                PackSize++;
+                                PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                PACK[PackSize - 1] = MIO[MioTarget][ii];
+                            }else{
+                                break;
+                            }
+
                         }
                     }
-                    printf("OMG paired with HEAD\n");
+
+                    //printf("OMG paired with HEAD\n");
+                    HEAD_CASE[i].fuc(PACK,PackSize);
                 }
             }
         }
 
-        if (strcmp(TYPE,"VALUE")==0 || strcmp(TYPE,"VARIABLE")==0){//節省參訪時間
+        if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
 
         }
 
-        printf("%s %s\n",TYPE,ADDRESS);
+
+       // printf("MAIN:%s %s\n",TYPE,ADDRESS);
     }
 };
 

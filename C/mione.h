@@ -148,6 +148,7 @@ int OPEN(char* fileName) {
         Line++;
         //  printf("%s\n",line);
 
+
         int lastOne = strlen(line) - 1;
 
         for (int i = 0; strlen(line) > i; i++) { // C
@@ -483,6 +484,8 @@ int OPEN(char* fileName) {
             aboutWord[0] = 0;
         }
     }
+
+    mioEnd(); //我不想進行大更改了 w
 
     if (wordType == 2 || wordType == 11) {
         prerr(forErr[1], "The end of the string has not yet been declared.", 2);
