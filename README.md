@@ -1,4 +1,4 @@
-# Mione 😀- [Mioprety Discord](https://discord.gg/DF7txbgjmg)
+# Mione 😀- [Mioprety Discord](https://discord.gg/w9WSdfEPrA)
 
 [![Mioprety](Mioprety-nobackground.svg)](https://github.com/Mioprety)
 [![Mione](https://raw.githubusercontent.com/Mioprety/Mione/d7b9f225e2b94e0adb6a4eb87d66ff961f6586e1/Mione.svg)](https://github.com/Mioprety/Mione)  
