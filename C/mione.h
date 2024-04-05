@@ -400,6 +400,8 @@ int OPEN(char* fileName) {
                             forErr[0] = 0;
                         }
 
+                    }else{
+                        prerr(Line,"Creating the table ends and fails.",5);
                     }
                 }
 
@@ -421,6 +423,8 @@ int OPEN(char* fileName) {
 
                             forErr[0] = 0;
                         }
+                    }else{
+                        prerr(Line,"Creating the Function or Runthion ends and fails.",4);
                     }
                 }
 

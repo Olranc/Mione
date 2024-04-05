@@ -103,7 +103,7 @@ int mio(char* _case, int _type) { // HEAD,PROMOT,VALUE,VARIABLE,SYMBOL
 
 	//HEAD:HEAD_NAME
 
-	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {
