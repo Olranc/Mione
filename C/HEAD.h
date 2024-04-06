@@ -10,12 +10,12 @@
 
 
 int set(char*** _while,int _whileSize) { //1
-    printf("NEW HEAD\n");
+    printf("    [NEW HEAD]\n");
     for (int i = 0; i < _whileSize; i++) {
         printf("%s %s\n",_while[i][0],_while[i][1]);
 
     }
-    printf("END HEAD \n\n");
+    printf("    [END HEAD]\n\n");
 }
 
 

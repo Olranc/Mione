@@ -1,11 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
-
+#define _WINDOWS
 
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-
-#include <windows.h>
+#include <Windows.h>
 #include "mione.h"
 #include "verson.h"
 
@@ -13,7 +11,6 @@
 
 
 int main() {
-	printf("aaaaaaaaaaaa `index.mio` ww\n\n");
 	LPWSTR* cmds;
 	int num;
 	cmds = CommandLineToArgvW(GetCommandLineW(), &num);

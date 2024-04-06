@@ -69,6 +69,10 @@ int run() {
                                 if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
                                     if (strcmp(MIO[MioTarget][ii][1], "9")==0){
                                         canWrite = 0;
+
+                                        PackSize++;
+                                        PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                        PACK[PackSize - 1] = MIO[MioTarget][ii];
                                     }
                                 }
 
@@ -79,13 +83,16 @@ int run() {
                                     PACK[PackSize - 1] = MIO[MioTarget][ii];
                                 }else{
                                     LOCK = ii+1;
-                                    printf("here: %d\n",LOCK);
                                     break;
                                 }
 
                             }
                         }
 
+                        if (canWrite){
+                            LOCK = MIOsize[MioTarget]-1; // 若正常，就要讓他便不正常w
+                        }
+                        printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
                         HEAD_CASE[i].fuc(PACK,PackSize);
 
@@ -94,7 +101,11 @@ int run() {
             }
 
             if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
+                //我懶得用了
+            }
 
+            if (strcmp(TYPE, "SYMBOL") == 0 ){
+                //printf("aaaaaaaaaaaaaaaaaaa\n"); 當時在測試 LOCK用的
             }
         }
 

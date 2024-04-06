@@ -1,1 +1,2 @@
-set x = ;
+set x_ = {"hello"};
+set y =  {}
