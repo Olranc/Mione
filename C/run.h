@@ -66,6 +66,12 @@ int run() {
                                     canWrite = 0;
                                 }
 
+                                if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
+                                    if (strcmp(MIO[MioTarget][ii][1], "9")==0){
+                                        canWrite = 0;
+                                    }
+                                }
+
 
                                 if (canWrite){
                                     PackSize++;

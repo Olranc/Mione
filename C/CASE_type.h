@@ -39,7 +39,8 @@ char* SYMBOLS[] = {
 	"*",
 	"/",
 	"(",
-	")"
+	")",
+    ";"
 };
 
 int vI(char* _type,char** v, char* NAME) {

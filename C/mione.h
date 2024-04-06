@@ -24,7 +24,7 @@ int getWordType(int* var, char word) {
         return 1;
     }
 
-    char x[] = {',', ';', '-', '+', '=', '*', '>','<',']','[','\0'};
+    char x[] = {',', ';', '-', '+', '=', '*', '>','<',']','[',';','\0'};
     for (int i = 0; i < strlen(x); i++) {
         if (word == x[i]) {
             *var = 7;
