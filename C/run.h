@@ -75,14 +75,14 @@ int run() {
                                         PACK[PackSize - 1] = MIO[MioTarget][ii];
                                     }
                                 }
-
+                                //printf("%s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
 
                                 if (canWrite){
                                     PackSize++;
                                     PACK = realloc(PACK, sizeof(char **) * PackSize);
                                     PACK[PackSize - 1] = MIO[MioTarget][ii];
                                 }else{
-                                    LOCK = ii+1;
+                                    LOCK = ii;
                                     break;
                                 }
 
