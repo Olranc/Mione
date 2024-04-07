@@ -90,7 +90,7 @@ int run() {
                         }
 
                         if (canWrite){
-                            LOCK = MIOsize[MioTarget]-1; // 若正常，就要讓他便不正常w
+                            LOCK = MIOsize[MioTarget]-0;// 若正常，就要讓他便不正常w
                         }
                         printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
@@ -102,6 +102,44 @@ int run() {
 
             if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
                 //我懶得用了
+                char ***PACK = malloc(sizeof(char**));
+                int PackSize =  0;
+
+                int canWrite = 1;
+
+                for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
+                    if (ii > index){
+                        int lastIn = 0;
+                        for (int eLines = 0; eLines < NL; eLines++) {
+                            if (index<=(EveryLines[eLines]-1)){
+                                lastIn = EveryLines[eLines]-1;
+                            }
+                            if (lastIn < ii) {
+                                //不同行
+                                canWrite = 0;
+                                printf("%d %s\n",EveryLines[eLines],MIO[MioTarget][ii][1]);
+                            }
+                        }
+
+
+
+
+                        if (canWrite){
+                            PackSize++;
+                            PACK = realloc(PACK, sizeof(char **) * PackSize);
+                            PACK[PackSize - 1] = MIO[MioTarget][ii];
+                        }else{
+                            printf("Different %d %d\n ",ii,index);
+                            LOCK = ii;
+                            break;
+                        }
+                    }
+                }
+
+                if (canWrite){
+                    LOCK = MIOsize[MioTarget];
+                    printf("didnt read %d\n",LOCK);
+                }
             }
 
             if (strcmp(TYPE, "SYMBOL") == 0 ){

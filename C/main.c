@@ -44,6 +44,9 @@ int main() {
 		if (wcscmp(cmds[1], L"version") == 0) {
 			printf("Mione version:%s\n\n\n", mione_verson);
 		}
+        if (wcscmp(cmds[1], L"open_source") == 0){
+            printf("\n\n\nMione : %s \n\n\n", "https://github.com/Mioprety/Mione");
+        }
 	}
 	else if (num == 1) {
 		OPEN("index.mio");
