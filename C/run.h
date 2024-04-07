@@ -48,7 +48,7 @@ int run() {
 
                         for (int eLines = 0; eLines < NL; eLines++) {
                             if (index<=(EveryLines[eLines]-1)){
-                                lastIn = EveryLines[eLines]-1;
+                                lastIn = EveryLines[eLines]-1; //這 -1 在表單裡的邏輯....
                                 printf("%d\n",lastIn);
                                 break;
                             }
@@ -125,7 +125,7 @@ int run() {
 
                 for (int eLines = 0; eLines < NL; eLines++) {
                     if (index<=(EveryLines[eLines]-1)){
-                        lastIn = EveryLines[eLines]-1;
+                        lastIn = EveryLines[eLines]-1; //這 -1 在表單裡的邏輯....
                         break;
                     }
                 }
