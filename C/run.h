@@ -1,6 +1,7 @@
 #ifndef run_h
 #define run_h
 
+
 #include "CASE_type.h"
 int NL = 0;
 
@@ -43,21 +44,31 @@ int run() {
 
                         int canWrite = 1;
 
+                        int lastIn = 0;
+
+                        for (int eLines = 0; eLines < NL; eLines++) {
+                            if (index<=(EveryLines[eLines]-1)){
+                                lastIn = EveryLines[eLines]-1;
+                                printf("%d\n",lastIn);
+                                break;
+                            }
+
+                        }
+
                         for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
                             if (ii > index) { // set x = fuc "hello"
                                 if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0) {
-                                    if (ii < MIOsize[MioTarget] - 1) {
+                                    if (ii < MIOsize[MioTarget]-1) {
+                                        //printf("))))))) %d oh hi i am %s %s\n",ii,MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
                                         if (strcmp(MIO[MioTarget][ii + 1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii + 1][0], "VARIABLE") == 0) {
-
-                                            for (int eLines = 0; eLines < NL; eLines++) {
-                                                if (EveryLines[eLines] > ii + 1&& EveryLines[eLines] >= ii + 1) {
-                                                }else{
-                                                    //不同行
-                                                    canWrite = 0;
-                                                }
+                                            if (lastIn<=ii){
+                                                canWrite = 0;
+                                                //因為這裡是 預測 ，若直接 canWrite = 0 ，自己也不會寫進去
+                                                PackSize++;
+                                                PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                                PACK[PackSize - 1] = MIO[MioTarget][ii];
                                             }
-
-
+                                            //printf(")))))))))))))) %d i am %s %s\n",ii+1,MIO[MioTarget][ii + 1][0],MIO[MioTarget][ii + 1][1]);
                                         }
                                     }
                                 }
@@ -73,26 +84,29 @@ int run() {
                                         PackSize++;
                                         PACK = realloc(PACK, sizeof(char **) * PackSize);
                                         PACK[PackSize - 1] = MIO[MioTarget][ii];
+                                        //printf("yes?\n");
                                     }
                                 }
-                                //printf("%s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
+
+                                printf("HERE:%s %s %d\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1],canWrite);
 
                                 if (canWrite){
                                     PackSize++;
                                     PACK = realloc(PACK, sizeof(char **) * PackSize);
                                     PACK[PackSize - 1] = MIO[MioTarget][ii];
+
                                 }else{
-                                    LOCK = ii;
+                                    LOCK = ii+1; //!!!
                                     break;
                                 }
 
                             }
                         }
 
-                        if (canWrite){
+                        if (canWrite){ //有時候很好奇之前是怎麼做到的w
                             LOCK = MIOsize[MioTarget]-0;// 若正常，就要讓他便不正常w
                         }
-                        printf("here: %d\n",LOCK);
+                        //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
                         HEAD_CASE[i].fuc(PACK,PackSize);
 
@@ -107,29 +121,36 @@ int run() {
 
                 int canWrite = 1;
 
+                int lastIn = 0;
+
+                for (int eLines = 0; eLines < NL; eLines++) {
+                    if (index<=(EveryLines[eLines]-1)){
+                        lastIn = EveryLines[eLines]-1;
+                        break;
+                    }
+                }
+
+
                 for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
-                    if (ii > index){
-                        int lastIn = 0;
+                    if (ii >= index){
                         for (int eLines = 0; eLines < NL; eLines++) {
-                            if (index<=(EveryLines[eLines]-1)){
-                                lastIn = EveryLines[eLines]-1;
-                            }
                             if (lastIn < ii) {
                                 //不同行
                                 canWrite = 0;
-                                printf("%d %s\n",EveryLines[eLines],MIO[MioTarget][ii][1]);
+
+                                //printf("%d %s\n",EveryLines[eLines],MIO[MioTarget][ii][1]);
                             }
                         }
 
 
 
 
-                        if (canWrite){
+                        if (canWrite){ //原來是這裡
                             PackSize++;
                             PACK = realloc(PACK, sizeof(char **) * PackSize);
                             PACK[PackSize - 1] = MIO[MioTarget][ii];
                         }else{
-                            printf("Different %d %d\n ",ii,index);
+                            printf("Different %d %d\n",ii,index);
                             LOCK = ii;
                             break;
                         }
@@ -138,8 +159,11 @@ int run() {
 
                 if (canWrite){
                     LOCK = MIOsize[MioTarget];
-                    printf("didnt read %d\n",LOCK);
+                    printf("didnt read %d\n",LOCK); //代表最後一行
                 }
+
+                VV(PACK,PackSize);
+                printf("end\n");
             }
 
             if (strcmp(TYPE, "SYMBOL") == 0 ){

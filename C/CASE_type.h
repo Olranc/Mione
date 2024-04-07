@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "HEAD.h"
+#include "VV.h"
 
 #ifndef CASE_type_h
 #define CASE_type_h
