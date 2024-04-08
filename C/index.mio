@@ -1,2 +1,1 @@
-set x set y
-x = a
+set x x x => a

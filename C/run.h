@@ -48,7 +48,7 @@ int run() {
 
                         for (int eLines = 0; eLines < NL; eLines++) {
                             if (index<=(EveryLines[eLines]-1)){
-                                lastIn = EveryLines[eLines]-1; //這 -1 在表單裡的邏輯....
+                                lastIn = EveryLines[eLines]-1;
                                 printf("%d\n",lastIn);
                                 break;
                             }
@@ -57,17 +57,29 @@ int run() {
 
                         for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
                             if (ii > index) { // set x = fuc "hello"
+                                int Locked = 0;
+
                                 if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0) {
                                     if (ii < MIOsize[MioTarget]-1) {
                                         //printf("))))))) %d oh hi i am %s %s\n",ii,MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
-                                        if (strcmp(MIO[MioTarget][ii + 1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii + 1][0], "VARIABLE") == 0) {
-                                            if (lastIn<=ii){
+
+                                        if (strcmp(MIO[MioTarget][ii + 1][0], "PROMPT") == 0) {
+                                            int _index = atoi(MIO[MioTarget][ii+1][1]);
+                                            printf("dijdijadjoawjdwajdowaj %d\n",_index);
+                                            if (P_CASE[_index-1].ForHead == 1){
+                                                if (lastIn<=ii){
+                                                    canWrite = 0;
+                                                    //因為這裡是 預測 ，若直接 canWrite = 0 ，自己也不會寫進去
+                                                    PackSize++;
+                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
+                                                }
+                                            }else{
+
                                                 canWrite = 0;
-                                                //因為這裡是 預測 ，若直接 canWrite = 0 ，自己也不會寫進去
-                                                PackSize++;
-                                                PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                PACK[PackSize - 1] = MIO[MioTarget][ii];
+                                                printf("awdjawdjoawdijadoijadoiijo %d\n",P_CASE[_index-1].ForHead);
                                             }
+
                                             //printf(")))))))))))))) %d i am %s %s\n",ii+1,MIO[MioTarget][ii + 1][0],MIO[MioTarget][ii + 1][1]);
                                         }
                                     }
@@ -96,7 +108,12 @@ int run() {
                                     PACK[PackSize - 1] = MIO[MioTarget][ii];
 
                                 }else{
-                                    LOCK = ii+1; //!!!
+                                    if (Locked){
+                                    }else{
+                                        LOCK = ii; //!!!
+                                    }
+
+
                                     break;
                                 }
 
@@ -125,7 +142,7 @@ int run() {
 
                 for (int eLines = 0; eLines < NL; eLines++) {
                     if (index<=(EveryLines[eLines]-1)){
-                        lastIn = EveryLines[eLines]-1; //這 -1 在表單裡的邏輯....
+                        lastIn = EveryLines[eLines]-1;
                         break;
                     }
                 }

@@ -13,24 +13,41 @@ typedef  struct   {
     int (*fuc)(char***,int);
 } THECASE;
 
+typedef  struct   {
+    char* ID;
+    int ForHead;
+} THEPCASE;
+
 THECASE HEAD_CASE[] = {
         {"1",NULL},
         {"2",set},
 };
 
-
-char* HEADS[] = {
-	"input",
-	"set",
-	
+THEPCASE P_CASE[] = {
+        {"1",1},
+        {"2",1},
+        {"3",1},
+        {"4",1},
+        {"5",0},
 };
+char* HEADS[] = {
+        "input",
+        "set",
+
+};
+
+
+
 
 char* PROMOTS[] = {
 	"do",
 	"then",
 	"else",
 	"=",
+    "=>"
 };
+
+
 
 char* SYMBOLS[] = {
 	"==",
