@@ -18,7 +18,7 @@ typedef  struct   {
     int ForHead;
 } THEPCASE;
 
-THECASE HEAD_CASE[] = {
+THECASE HEAD_CASE[] = { //how? ";" didnt here ,and it works??? // oh nvm
         {"1",NULL},
         {"2",set},
 };
@@ -33,7 +33,7 @@ THEPCASE P_CASE[] = {
 char* HEADS[] = {
         "input",
         "set",
-
+        ";"
 };
 
 
@@ -58,7 +58,6 @@ char* SYMBOLS[] = {
 	"/",
 	"(",
 	")",
-    ";",
     ","
 };
 

@@ -65,7 +65,7 @@ int run() {
 
                                         if (strcmp(MIO[MioTarget][ii + 1][0], "PROMPT") == 0) {
                                             int _index = atoi(MIO[MioTarget][ii+1][1]);
-                                            printf("dijdijadjoawjdwajdowaj %d\n",_index);
+                                            //printf("dijdijadjoawjdwajdowaj %d\n",_index);
                                             if (P_CASE[_index-1].ForHead == 1){
                                                 if (lastIn<=ii){
                                                     canWrite = 0;
