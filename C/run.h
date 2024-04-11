@@ -1,10 +1,9 @@
 #ifndef run_h
 #define run_h
-
-
 #include "CASE_type.h"
-int NL = 0;
+#include "M.h"
 
+int NL = 0;
 
 char**** MIO = NULL;
 int * MIOsize;
@@ -49,7 +48,7 @@ int run() {
                         for (int eLines = 0; eLines < NL; eLines++) {
                             if (index<=(EveryLines[eLines]-1)){
                                 lastIn = EveryLines[eLines]-1;
-                                printf("%d\n",lastIn);
+                                //printf("%d\n",lastIn);
                                 break;
                             }
 
@@ -77,7 +76,7 @@ int run() {
                                             }else{
 
                                                 canWrite = 0;
-                                                printf("awdjawdjoawdijadoijadoiijo %d\n",P_CASE[_index-1].ForHead);
+                                                //printf("awdjawdjoawdijadoijadoiijo %d\n",P_CASE[_index-1].ForHead);
                                             }
 
                                             //printf(")))))))))))))) %d i am %s %s\n",ii+1,MIO[MioTarget][ii + 1][0],MIO[MioTarget][ii + 1][1]);
@@ -100,7 +99,7 @@ int run() {
                                     }
                                 }
 
-                                printf("HERE:%s %s %d\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1],canWrite);
+                                //printf("HERE:%s %s %d\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1],canWrite);
 
                                 if (canWrite){
                                     PackSize++;
@@ -167,7 +166,7 @@ int run() {
                             PACK = realloc(PACK, sizeof(char **) * PackSize);
                             PACK[PackSize - 1] = MIO[MioTarget][ii];
                         }else{
-                            printf("Different %d %d\n",ii,index);
+                            //printf("Different %d %d\n",ii,index);
                             LOCK = ii;
                             break;
                         }
@@ -176,11 +175,11 @@ int run() {
 
                 if (canWrite){
                     LOCK = MIOsize[MioTarget];
-                    printf("didnt read %d\n",LOCK); //代表最後一行
+                    //printf("didnt read %d\n",LOCK); //代表最後一行
                 }
 
-                VV(PACK,PackSize);
-                printf("end\n");
+                V_V(PACK,PackSize);
+                //printf("end\n");
             }
 
             if (strcmp(TYPE, "SYMBOL") == 0 ){

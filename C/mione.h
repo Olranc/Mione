@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
+#ifndef mione_h
+#define mione_h
 #include "mio.h"
 #include "prerr.h"
 
@@ -513,9 +511,5 @@ int OPEN(char* fileName) {
     return 0;
 }
 
-
-#ifndef mione_h
-#define mione_h
-int OPEN(char* fileName);
 
 #endif

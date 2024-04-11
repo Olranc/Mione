@@ -1,15 +1,15 @@
-#pragma once
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
+
+
+
+
+#ifndef memory_h
+#define memory_h
 char*** memory = NULL;
 int Type = 0;
 
 int mSize = 0;
 
-#ifndef memory_h
-#define memory_h
 
 void lazy(char**ma){
     int size = snprintf(NULL, 0, "%d", mSize) + 1;

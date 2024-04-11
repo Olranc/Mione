@@ -1,13 +1,11 @@
-#include <stdio.h>
-#include <string.h>
-#include "memory.h"
 
-#include "run.h"
-#include "CASE_type.h"
+
 
 #ifndef mio_h
 #define mio_h
 #include "run.h"
+#include "memory.h"
+
 
 int pass = 0;
 
@@ -86,7 +84,7 @@ int setC(char* _type, char* _case, int _t) {
     MIO[MioTarget][cSize - 1][1] = malloc(strlen(_case)+1);
     strcpy(MIO[MioTarget][cSize - 1][1], _case);
 
-    printf("A:%s %s\n", MIO[MioTarget][cSize - 1][1],MIO[MioTarget][cSize - 1][0]);
+    //printf("A:%s %s\n", MIO[MioTarget][cSize - 1][1],MIO[MioTarget][cSize - 1][0]);
     pass = 1;
 
     return 1;

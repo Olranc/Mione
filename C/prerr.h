@@ -1,4 +1,4 @@
-#include <stdio.h>
+
 #include "verson.h"
 
 int prerr(int line, char* msg, int errCode) {

@@ -1,9 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
 
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
 #include <Windows.h>
+
 #include "mione.h"
 #include "verson.h"
 

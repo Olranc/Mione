@@ -1,12 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-#include "HEAD.h"
-#include "VV.h"
-
 #ifndef CASE_type_h
 #define CASE_type_h
+
 
 typedef  struct   {
     char* NAME;
@@ -18,6 +12,19 @@ typedef  struct   {
     int ForHead;
 } THEPCASE;
 
+THECASE HEAD_CASE[];
+THEPCASE P_CASE[];
+
+#include "M.h"
+
+
+
+
+char* HEADS[] = {
+        "input",
+        "set",
+        ";"
+};
 THECASE HEAD_CASE[] = { //how? ";" didnt here ,and it works??? // oh nvm
         {"1",NULL},
         {"2",set},
@@ -30,13 +37,6 @@ THEPCASE P_CASE[] = {
         {"4",1},
         {"5",0},
 };
-char* HEADS[] = {
-        "input",
-        "set",
-        ";"
-};
-
-
 
 
 char* PROMOTS[] = {
