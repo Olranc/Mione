@@ -20,18 +20,18 @@ int V_V(char*** _while,int _whileSize){
 
 int set(char*** _while,int _whileSize) { //1
     printf("[NEW HEAD]\n");
+    char *** PACK = malloc(sizeof(char**)*1);
+
     for (int i = 0; i < _whileSize; i++) {
         char* TYPE = _while[i][0];
         char* VALUE = _while[i][1];
         printf("    %s %s\n",_while[i][0],_while[i][1]);
 
 
-        if (strcmp(TYPE,"PROMPT")){}else{
-            int _index = atoi(VALUE);
-            if (P_CASE[_index-1].ForHead){
-            }else{
-                printf("not %s\n",P_CASE[_index].ID);
-                //STOP
+
+        if (strcmp(TYPE,"SYMBOL")){}else{
+            if (strcmp(VALUE,"9")){}else{
+                    printf("ok");
             }
         }
     }

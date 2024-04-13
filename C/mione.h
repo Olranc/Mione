@@ -189,7 +189,7 @@ int OPEN(char* fileName) {
                     if (aboutWord[0]) {
                     }
                     else {
-                        if (lastWordType == 2 && lastIsBreak!=1) {
+                        if (forErr[1]) {
                             nextCanWrite = 1;
                             aboutWord[1] = 0;
                             forErr[1] = 0;
@@ -215,32 +215,28 @@ int OPEN(char* fileName) {
 
                 if (checkType == 13) { // STRING 字串
                     if (aboutWord[0]) {
-                    }
-                    else {
-                        if (lastWordType == 11) {
+                    } else {
+                        if (forErr[1]) {
                             nextCanWrite = 1;
                             aboutWord[1] = 0;
                             forErr[1] = 0;
-                        }
-                        else {
+
+                            //printf("BREAK!!! %c\n",word);
+                            doBREAK = 1;
+                        } else {
                             if (canWrite == 1) {
-                                wordType = 11;
+                                wordType = 2;
                                 canWrite = 0;
                                 forErr[1] = Line;
                             }
                         }
-
                         if (canCount) {
                             canCount = 0;
-                        }
-                        else {
+                        } else {
                             nextCanCount = 1;
                         }
                     }
-
                 }
-
-
 
                 if (checkType == 3) { // TABLE 表單
                     if (canWrite == 1) {
@@ -482,33 +478,46 @@ int OPEN(char* fileName) {
                 (txt) = NULL;
                 (txt) = malloc(sizeof(char) * (1 + 1));
             }else{
-                if (wordType == lastWordType) {
-                    int len = strlen(txt);
-                    txt = realloc(txt, len + 1 + 1);
-                    txt[len] = word;
-                    txt[len + 1] = '\0';
-
-
-                }
-                else {
-                    //here
-                    //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
-                    mio((txt), lastWordType);
+                if (lastIsBreak){
                     free((txt));
 
 
                     (txt) = NULL;
-                    (txt) = malloc(sizeof(char) * (1 + 1));
-                    (txt)[0] = word;
-                    (txt)[1] = '\0';
+                    (txt) = realloc(txt,sizeof(char) * (1 + 1));
+                    strcpy(txt,"");
+
+                }else{
+                    if (wordType == lastWordType) {
+                        int len = strlen(txt);
+                        txt = realloc(txt, len + 1 + 1);
+                        txt[len] = word;
+                        txt[len + 1] = '\0';
+
+
+
+                    }
+                    else {
+                        //here
+                        //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                        mio((txt), lastWordType);
+                        free((txt));
+
+
+                        (txt) = NULL;
+                        (txt) = malloc(sizeof(char) * (1 + 1));
+                        (txt)[0] = word;
+                        (txt)[1] = '\0';
+                    }
                 }
+
+
             }
 
 
 
 
 
-            printf("'%d' '%c' '%d' '%d' '%d'\n", wordType, word, checkType,aboutWord[0],doBREAK);
+            printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,aboutWord[0],doBREAK);
             lastWordType = wordType;
             lastCheckType = checkType;
 

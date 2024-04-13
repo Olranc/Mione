@@ -25,7 +25,7 @@ void cm(char** ma, char* v, int _type) {
     for (int i = 0; i <mSize;i++){
         if (strcmp(memory[i][0], v)==0)
         {
-            lazy(ma);
+            *ma = memory[i][1];
             return;
         }
     }

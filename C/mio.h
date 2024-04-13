@@ -17,7 +17,7 @@ int mioEnd(){
     else {
         EveryLines = malloc(sizeof(int) * 1);
     }
-    //printf("new line %d\n",NL);
+    printf("new line %d\n",NL);
     EveryLines[NL - 1] = cSize;
 }
 
@@ -101,7 +101,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 
 	//HEAD:HEAD_NAME
 
-	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {

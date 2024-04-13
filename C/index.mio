@@ -1,2 +1,2 @@
-set x = x
-x=>x "\\""
+set idi = 'Hello, World!\"' x=>y
+print idi
