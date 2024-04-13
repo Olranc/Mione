@@ -43,6 +43,7 @@ char* PROMOTS[] = {
 	"do",
 	"then",
 	"else",
+    "as",
 	"=",
     "=>"
 };
