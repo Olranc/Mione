@@ -145,7 +145,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 		if (_type == 6) {
 			setC("VARIABLE", _case, _type);
 		}
-		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
+		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8 || _type == 16 || _type == 17) {
 			setC("VALUE", _case, _type);
 		}
 	}

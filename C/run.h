@@ -55,46 +55,16 @@ int run() {
                         }
 
                         for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
-                            if (ii > index) { // set x = fuc "hello"
+                            if (ii > index) {
                                 int Locked = 0;
 
-                                if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0) {
-                                    if (ii < MIOsize[MioTarget]-1) {
-                                        //printf("))))))) %d oh hi i am %s %s\n",ii,MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
-                                        if (strcmp(MIO[MioTarget][ii+1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii+1][0], "VARIABLE") == 0){
-                                            if (lastIn<=(ii+1)){ //my brain is broken...
-                                                //printf("OM!!!!! %s\n",MIO[MioTarget][ii+1][1]);
-                                                canWrite = 0;
 
 
-                                            }
-                                        }
+                               if (lastIn>=ii){
 
-                                        if (strcmp(MIO[MioTarget][ii + 1+1][0], "PROMPT") == 0) {
-                                            int _index = atoi(MIO[MioTarget][ii+1+1][1]);
-                                            printf("dijdijadjoawjdwajdowaj %d\n",_index);
-                                            if (P_CASE[_index-1].ForHead == 1){
-                                                if (lastIn>=(ii+1+1)) {
-
-                                                    //因為這裡是 預測 ，若直接 canWrite = 0 ，自己也不會寫進去
-
-                                                }
-                                                printf("break in %d\n",_index);
-
-                                            }else{
-                                                canWrite = 0;
-
-                                                PackSize++;
-                                                PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                PACK[PackSize - 1] = MIO[MioTarget][ii];
-
-                                                Locked = 1;
-                                                LOCK = ii+1;
-                                            }
-                                            //printf(")))))))))))))) %d i am %s %s\n",ii+1,MIO[MioTarget][ii + 1][0],MIO[MioTarget][ii + 1][1]);
-                                        }
-                                    }
-                                }
+                               }else{
+                                   canWrite = 0;
+                               }
 
                                 if (strcmp(MIO[MioTarget][ii][0], "HEAD") == 0) {
                                     canWrite = 0;

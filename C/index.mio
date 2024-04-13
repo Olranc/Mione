@@ -1,2 +1,2 @@
-set idi = 'Hello, World!\"' x=>y
-print idi
+set idi = ('Hello, World!\\"',{}) []
+print {(idi)}
