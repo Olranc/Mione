@@ -58,13 +58,22 @@ int run() {
                             if (ii > index) {
                                 int Locked = 0;
 
-                                if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0){
-                                    if (ii<MIOsize[MioTarget]-1){
-                                        if (strcmp(MIO[MioTarget][ii+1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii+1][0], "VARIABLE") == 0){
-                                            if (lastIn>=ii){
+                                int iiIn = 0;
+                                for (int eLines = 0; eLines < NL; eLines++) {
+                                    if (ii<=(EveryLines[eLines]-1)){
+                                        iiIn = EveryLines[eLines]-1;
+                                        printf("ii IN %d\n",iiIn);
+                                        break;
+                                    }
 
-                                            }else{
+                                }
 
+                                if (lastIn>=ii){
+
+                                }else{
+                                    if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0 || strcmp(MIO[MioTarget][ii][0], "CHILD") == 0){
+                                        if (ii<MIOsize[MioTarget]-1){
+                                            if (strcmp(MIO[MioTarget][ii+1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii+1][0], "VARIABLE") == 0){
                                                 canWrite = 0;
 
                                                 PackSize++;
@@ -73,11 +82,41 @@ int run() {
 
                                                 Locked = 1;
                                                 LOCK = (ii + 1);
+                                            
+                                            }else if(strcmp(MIO[MioTarget][ii+1][0], "CHILD") == 0){
+                                                if (iiIn>=ii+1){
+                                                    canWrite = 0;
+
+                                                    PackSize++;
+                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
+
+                                                    PackSize++;
+                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                                    PACK[PackSize - 1] = MIO[MioTarget][ii+1];
+
+                                                    Locked = 1;
+                                                    LOCK = (ii + 1) + 1;
+                                                }else{
+                                                    canWrite = 0;
+
+                                                    PackSize++;
+                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
+
+                                                    Locked = 1;
+                                                    LOCK = (ii + 1);
+                                                }
+
                                             }
                                         }
-                                    }
 
+                                    }
+                                    
                                 }
+
+                                                
+                                
 
 
 
