@@ -74,39 +74,7 @@ int run() {
                                     if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0 || strcmp(MIO[MioTarget][ii][0], "CHILD") == 0){
                                         if (ii<MIOsize[MioTarget]-1){
                                             if (strcmp(MIO[MioTarget][ii+1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii+1][0], "VARIABLE") == 0){
-                                                canWrite = 0;
 
-                                                PackSize++;
-                                                PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                PACK[PackSize - 1] = MIO[MioTarget][ii];
-
-                                                Locked = 1;
-                                                LOCK = (ii + 1);
-                                            
-                                            }else if(strcmp(MIO[MioTarget][ii+1][0], "CHILD") == 0){
-                                                if (iiIn>=ii+1){
-                                                    canWrite = 0;
-
-                                                    PackSize++;
-                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
-
-                                                    PackSize++;
-                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                    PACK[PackSize - 1] = MIO[MioTarget][ii+1];
-
-                                                    Locked = 1;
-                                                    LOCK = (ii + 1) + 1;
-                                                }else{
-                                                    canWrite = 0;
-
-                                                    PackSize++;
-                                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
-
-                                                    Locked = 1;
-                                                    LOCK = (ii + 1);
-                                                }
 
                                             }
                                         }
@@ -168,7 +136,7 @@ int run() {
                 }
             }
 
-            if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "CHILD") == 0  || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
+            if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
                 //我懶得用了
                 char ***PACK = malloc(sizeof(char**));
                 int PackSize =  0;

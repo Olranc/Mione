@@ -55,12 +55,6 @@ int setC(char* _type, char* _case, int _t) {
         cm_v(&ma, _t, _case);
         _case = ma;
     }
-    if (strcmp("CHILD", _type)) {}
-    else {
-        char* ma;
-        cm_v(&ma, _t, _case);
-        _case = ma;
-    }
 
     if (strcmp("HEAD", _type)) {}
     else {
@@ -154,9 +148,6 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
 			setC("VALUE", _case, _type);
 		}
-        if (_type == 16 || _type == 17){
-            setC("CHILD", _case, _type);
-        }
 	}
 
     for (int i = 0;i<strlen(_case);i++){

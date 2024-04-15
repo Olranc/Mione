@@ -30,7 +30,7 @@ int getWordType(int* var, char word) {
             return 1;
         }
     }
-    char y[] = {'\0'}; //不可重複兩個的符號
+    char y[] = {'[',']','(',')','\0'}; //不可重複兩個的符號
     for (int i = 0; i < strlen(y); i++) {
         if (word == y[i]) {
             *var = 14;
@@ -197,11 +197,11 @@ int OPEN(char* fileName) {
 
             // CHECKTYPE:
             // -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7: 符號 8:表單結束 9:函數開頭1 10:函數開頭2 12:'\'符號
-            // 13:字串開頭2 14:不可重複兩個的符號 16:`/`符號 17:( 18: ) 19 : [ 20 : ]
+            // 13:字串開頭2 14:不可重複兩個的符號 16:`/`符號
 
             // WORDTYPE:
             // -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 14:解說符號 15: 符號二
-            // 16 :括號 17 : 子項目
+            //
 
             if (nextWordType) {
                 wordType = nextWordType;
@@ -335,95 +335,6 @@ int OPEN(char* fileName) {
 
                 }
 
-                if (checkType == 17) {
-                    if (canWrite == 1) {
-                        wordType = 16;
-                        canWrite = 0;
-
-                        if (canCount) {
-                            if (forErr[0]) {}
-                            else {
-                                forErr[0] = Line;
-                            }
-                            lvl++;
-                        }
-                    }
-                    else {
-                        if (lastWordType == 16) {
-                            if (canCount) {
-                                lvl++;
-                            }
-                        }
-                    }
-
-                }
-
-                if (checkType == 18) {
-                    if (lastWordType == 16) {
-                        printf("ok %d\n",canCount);
-                        if (canCount) {
-
-                            lvl--;
-                        }
-                        if (lvl) {}
-                        else {
-                            wordType = 16;
-                            nextCanWrite = 1;
-
-                            forErr[0] = 0;
-                        }
-
-                    }else{
-                        if (canWrite) {
-                            prerr(Line, "idk.", 11);
-                        }
-                    }
-                }
-
-                if (checkType == 19) {
-                    if (canWrite == 1) {
-                        wordType = 17;
-                        canWrite = 0;
-
-                        if (canCount) {
-                            if (forErr[0]) {}
-                            else {
-                                forErr[0] = Line;
-                            }
-                            lvl++;
-                        }
-                    }
-                    else {
-                        if (lastWordType == 17) {
-                            if (canCount) {
-                                lvl++;
-                            }
-                        }
-                    }
-
-                }
-
-                if (checkType == 20) {
-                    if (lastWordType == 17) {
-                        printf("ok %d\n",canCount);
-                        if (canCount) {
-
-                            lvl--;
-                        }
-                        if (lvl) {}
-                        else {
-                            wordType = 17;
-                            nextCanWrite = 1;
-
-                            forErr[0] = 0;
-                        }
-
-                    }else{
-                        if (canWrite) {
-                            prerr(Line, "idk2.", 12);
-                        }
-                    }
-                }
 
 
 
@@ -671,6 +582,8 @@ int OPEN(char* fileName) {
             doBREAK = 0;
         }
     }
+
+    free(txt);
 
     mioEnd(); //我不想進行大更改了 w
 
