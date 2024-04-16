@@ -54,33 +54,51 @@ int run() {
 
                         }
 
-                        for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
+                        int TopCases = 0;
+
+                        int lvl = 0;
+                        int haveFullVV = 0;
+
+                        for (int ii = 0; ii < MIOsize[MioTarget]; ii++) { //預測
                             if (ii > index) {
                                 int Locked = 0;
 
-                                int iiIn = 0;
-                                for (int eLines = 0; eLines < NL; eLines++) {
-                                    if (ii<=(EveryLines[eLines]-1)){
-                                        iiIn = EveryLines[eLines]-1;
-                                        printf("ii IN %d\n",iiIn);
-                                        break;
+                                printf("OMG %s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
+                                if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
+                                    if (strcmp(MIO[MioTarget][ii][1], "7")==0){
+                                        lvl++;
+                                        printf("++\n");
                                     }
-
+                                    if (strcmp(MIO[MioTarget][ii][1], "8")==0){
+                                        lvl--;
+                                        printf("--\n");
+                                    }
                                 }
 
-                                if (lastIn>=ii){
 
-                                }else{
-                                    if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0 || strcmp(MIO[MioTarget][ii][0], "CHILD") == 0){
+
+                                if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0){
+
+                                    if (lvl){}else{
+
                                         if (ii<MIOsize[MioTarget]-1){
-                                            if (strcmp(MIO[MioTarget][ii+1][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii+1][0], "VARIABLE") == 0){
-
-
+                                            if (strcmp(MIO[MioTarget][ii+1][0], "PROMPT") == 0){
+                                                canWrite = 0;
+                                                //todo!!!
+                                                // 清錯誤 set x =
+                                                //         ^^^^^^^
                                             }
                                         }
 
+                                        if (haveFullVV){
+                                            canWrite = 0;
+                                        }else{
+                                            haveFullVV ++;
+                                        }
                                     }
-                                    
+
+
+
                                 }
 
                                                 
@@ -93,16 +111,7 @@ int run() {
                                     canWrite = 0;
                                 }
 
-                                if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
-                                    if (strcmp(MIO[MioTarget][ii][1], "9")==0){
-                                        canWrite = 0;
 
-                                        PackSize++;
-                                        PACK = realloc(PACK, sizeof(char **) * PackSize);
-                                        PACK[PackSize - 1] = MIO[MioTarget][ii];
-                                        //printf("yes?\n");
-                                    }
-                                }
 
                                 //printf("HERE:%s %s %d\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1],canWrite);
 

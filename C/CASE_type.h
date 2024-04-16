@@ -39,7 +39,7 @@ THEPCASE P_CASE[] = {
 };
 
 
-char* PROMOTS[] = {
+char* PROMOTS[] = { //我知道我英文不好
 	"do",
 	"then",
 	"else",
