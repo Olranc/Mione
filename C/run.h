@@ -63,6 +63,10 @@ int run() {
                             if (ii > index) {
                                 int Locked = 0;
 
+                                if (strcmp(MIO[MioTarget][ii][0], "PROMPT") == 0){
+                                    haveFullVV = 0;
+                                }
+
                                 printf("OMG %s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
                                 if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
                                     if (strcmp(MIO[MioTarget][ii][1], "7")==0){
@@ -81,17 +85,13 @@ int run() {
 
                                     if (lvl){}else{
 
-                                        if (ii<MIOsize[MioTarget]-1){
-                                            if (strcmp(MIO[MioTarget][ii+1][0], "PROMPT") == 0){
-                                                canWrite = 0;
-                                                //todo!!!
-                                                // 清錯誤 set x =
-                                                //         ^^^^^^^
-                                            }
-                                        }
+                                        //if (ii<MIOsize[MioTarget]-1){
+
+                                        //}
 
                                         if (haveFullVV){
                                             canWrite = 0;
+
                                         }else{
                                             haveFullVV ++;
                                         }
@@ -101,7 +101,7 @@ int run() {
 
                                 }
 
-                                                
+
                                 
 
 

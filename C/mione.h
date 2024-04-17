@@ -209,16 +209,21 @@ int OPEN(char* fileName) {
             }
             else {
                 if (checkType == 2) { // STRING 字串
-                    if (aboutWord[0]) {
-                    }
+                    if (aboutWord[0]) {}
                     else {
-                        if (forErr[1] && lastWordType == 2) {
+                        if (forErr[1]==0 && lastWordType == 2){
+
+                            prerr(Line,"String Out!",-1);
+                        }
+
+
+
+
+                        if (lastWordType == 2) {
                             nextCanWrite = 1;
                             aboutWord[1] = 0;
                             forErr[1] = 0;
 
-                            //printf("BREAK!!! %c\n",word);
-                            doBREAK = 1;
                         }
                         else {
                             if (canWrite == 1) {
@@ -242,13 +247,17 @@ int OPEN(char* fileName) {
                 if (checkType == 13) { // STRING 字串
                     if (aboutWord[0]) {
                     } else {
-                        if (forErr[1] && lastWordType == 11) {
+                        if (forErr[1]==0 && lastWordType == 11){
+
+                            prerr(Line,"String Out!",-1);
+                        }
+
+
+                        if (lastWordType == 11) {
                             nextCanWrite = 1;
                             aboutWord[1] = 0;
                             forErr[1] = 0;
 
-                            //printf("BREAK!!! %c\n",word);
-                            doBREAK = 1;
                         } else {
                             if (canWrite == 1) {
                                 wordType = 11;
@@ -523,47 +532,27 @@ int OPEN(char* fileName) {
 
             //===================================================
 
-            if (doBREAK){
+            if (wordType == lastWordType) {
                 int len = strlen(txt);
                 txt = realloc(txt, len + 1 + 1);
                 txt[len] = word;
                 txt[len + 1] = '\0';
 
+
+                printf("do 1\n");
+            }
+            else {
+                //here
+                printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
                 mio((txt), lastWordType);
                 free((txt));
 
 
                 (txt) = NULL;
                 (txt) = malloc(sizeof(char) * (1 + 1));
-            }else{
-                if (lastIsBreak){
-
-
-                }else{
-                    if (wordType == lastWordType) {
-                        int len = strlen(txt);
-                        txt = realloc(txt, len + 1 + 1);
-                        txt[len] = word;
-                        txt[len + 1] = '\0';
-
-
-
-                    }
-                    else {
-                        //here
-                        //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
-                        mio((txt), lastWordType);
-                        free((txt));
-
-
-                        (txt) = NULL;
-                        (txt) = malloc(sizeof(char) * (1 + 1));
-                        (txt)[0] = word;
-                        (txt)[1] = '\0';
-                    }
-                }
-
-
+                (txt)[0] = word;
+                (txt)[1] = '\0';
+                printf("do 2 %s\n",txt);
             }
 
 
@@ -583,7 +572,7 @@ int OPEN(char* fileName) {
         }
     }
 
-    free(txt);
+
 
     mioEnd(); //我不想進行大更改了 w
 
@@ -594,6 +583,8 @@ int OPEN(char* fileName) {
     if (forErr[0]) {
         prerr(forErr[0], "The form or function has not been completed **end indicator**.", 1);
     }
+
+
 
     //可以使用 wordType ==14 來判斷使用者是否有做 說明結尾
 
