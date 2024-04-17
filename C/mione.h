@@ -349,28 +349,7 @@ int OPEN(char* fileName) {
 
 
 
-                if (checkType == 16) {
-                    if (canWrite == 1) {
-                        wordType = 16;
-                        canWrite = 0;
 
-                        if (canCount) {
-                            if (forErr[0]) {}
-                            else {
-                                forErr[0] = Line;
-                            }
-                            lvl++;
-                        }
-                    }
-                    else {
-                        if (lastWordType == 16) {
-                            if (canCount) {
-                                lvl++;
-                            }
-                        }
-                    }
-
-                }
 
 
 
@@ -559,7 +538,7 @@ int OPEN(char* fileName) {
 
 
 
-            printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,lvl);
+            printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
             lastWordType = wordType;
             lastCheckType = checkType;
 
