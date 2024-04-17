@@ -54,7 +54,7 @@ int run() {
 
                         }
 
-                        int TopCases = 0;
+
 
                         int lvl = 0;
                         int haveFullVV = 0;
@@ -69,6 +69,7 @@ int run() {
 
                                 printf("OMG %s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
                                 if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
+                                    haveFullVV = 0;
                                     if (strcmp(MIO[MioTarget][ii][1], "7")==0){
                                         lvl++;
                                         printf("++\n");
@@ -146,60 +147,121 @@ int run() {
             }
 
             if (strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "VARIABLE") == 0) {//節省參訪時間
-                //我懶得用了
-                char ***PACK = malloc(sizeof(char**));
-                int PackSize =  0;
+                for (int i = 0; i < sizeof(HEAD_CASE) / sizeof(HEAD_CASE[0]); i++) {
+                    if (strcmp(HEAD_CASE[i].NAME, ADDRESS)) {}
+                    else {
 
-                int canWrite = 1;
-
-                int lastIn = 0;
-
-                for (int eLines = 0; eLines < NL; eLines++) {
-                    if (index<=(EveryLines[eLines]-1)){
-                        lastIn = EveryLines[eLines]-1;
-                        break;
-                    }
-                }
+                        char ***PACK = malloc(sizeof(char **));
+                        int PackSize = 0;
 
 
-                for (int ii = 0; ii < MIOsize[MioTarget]; ii++) {
-                    if (ii >= index){
+                        int canWrite = 1;
+
+                        int lastIn = 0;
+
                         for (int eLines = 0; eLines < NL; eLines++) {
-                            if (lastIn < ii) {
-                                //不同行
-                                canWrite = 0;
+                            if (index<=(EveryLines[eLines]-1)){
+                                lastIn = EveryLines[eLines]-1;
+                                printf("V/V IN %d\n",lastIn);
+                                break;
+                            }
 
-                                //printf("%d %s\n",EveryLines[eLines],MIO[MioTarget][ii][1]);
+                        }
+
+
+
+                        int lvl = 0;
+                        int haveFullVV = 0;
+
+                        for (int ii = 0; ii < MIOsize[MioTarget]; ii++) { //預測
+                            if (ii >= index) {
+                                int Locked = 0;
+
+                                if (strcmp(MIO[MioTarget][ii][0], "PROMPT") == 0){
+                                    haveFullVV = 0;
+                                }
+
+                                printf("OMG %s %s\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1]);
+                                if (strcmp(MIO[MioTarget][ii][0], "SYMBOL") == 0){
+                                    haveFullVV = 0;
+                                    if (strcmp(MIO[MioTarget][ii][1], "7")==0){
+                                        lvl++;
+                                        printf("++\n");
+                                    }
+                                    if (strcmp(MIO[MioTarget][ii][1], "8")==0){
+                                        lvl--;
+                                        printf("--\n");
+                                    }
+                                }
+
+
+
+                                if (strcmp(MIO[MioTarget][ii][0], "VALUE") == 0 || strcmp(MIO[MioTarget][ii][0], "VARIABLE") == 0){
+
+                                    if (lvl){}else{
+
+                                        //if (ii<MIOsize[MioTarget]-1){
+
+                                        //}
+
+                                        if (haveFullVV){
+                                            canWrite = 0;
+
+                                        }else{
+                                            haveFullVV ++;
+                                        }
+                                    }
+
+
+
+                                }
+
+
+
+
+
+
+
+                                if (strcmp(MIO[MioTarget][ii][0], "HEAD") == 0) {
+                                    canWrite = 0;
+                                }
+
+
+
+                                //printf("HERE:%s %s %d\n",MIO[MioTarget][ii][0],MIO[MioTarget][ii][1],canWrite);
+
+                                if (canWrite){
+                                    PackSize++;
+                                    PACK = realloc(PACK, sizeof(char **) * PackSize);
+                                    PACK[PackSize - 1] = MIO[MioTarget][ii];
+
+                                }else{
+                                    if (Locked){
+                                        Locked = 0;
+                                    }else{
+                                        LOCK = ii; //!!!
+                                    }
+
+
+                                    break;
+                                }
+
                             }
                         }
 
-
-
-
-                        if (canWrite){ //原來是這裡
-                            PackSize++;
-                            PACK = realloc(PACK, sizeof(char **) * PackSize);
-                            PACK[PackSize - 1] = MIO[MioTarget][ii];
-                        }else{
-                            //printf("Different %d %d\n",ii,index);
-                            LOCK = ii;
-                            break;
+                        if (canWrite){ //有時候很好奇之前是怎麼做到的w
+                            LOCK = MIOsize[MioTarget]-0;// 若正常，就要讓他便不正常w
                         }
+                        //printf("here: %d\n",LOCK);
+                        //printf("OMG paired with HEAD\n");
+                        V_V(PACK,PackSize);
+
+
                     }
                 }
 
-                if (canWrite){
-                    LOCK = MIOsize[MioTarget];
-                    //printf("didnt read %d\n",LOCK); //代表最後一行
-                }
-
-                V_V(PACK,PackSize);
-                //printf("end\n");
             }
 
-            if (strcmp(TYPE, "SYMBOL") == 0 ){
-                //printf("aaaaaaaaaaaaaaaaaaa\n"); 當時在測試 LOCK用的
-            }
         }
 
        // printf("MAIN:%s %s\n",TYPE,ADDRESS);
