@@ -6,14 +6,9 @@ typedef  struct   {
     char* NAME;
     int (*fuc)(char***,int);
 } THECASE;
-
-typedef  struct   {
-    char* ID;
-    int ForHead;
-} THEPCASE;
+char* PROMPTS[];
 
 THECASE HEAD_CASE[];
-THEPCASE P_CASE[];
 
 #include "M.h"
 
@@ -30,16 +25,8 @@ THECASE HEAD_CASE[] = { //how? ";" didnt here ,and it works??? // oh nvm
         {"2",set},
 };
 
-THEPCASE P_CASE[] = {
-        {"1",1},
-        {"2",1},
-        {"3",1},
-        {"4",1},
-        {"5",0},
-};
 
-
-char* PROMOTS[] = { //我知道我英文不好
+char* PROMPTS[] = { //我知道我英文不好
 	"do",
 	"then",
 	"else",
@@ -63,9 +50,9 @@ char* SYMBOLS[] = {
 };
 
 int vI(char* _type,char** v, char* NAME) {
-	char** c = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? NULL : SYMBOLS) : PROMOTS) : HEADS);
+	char** c = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? NULL : SYMBOLS) : PROMPTS) : HEADS);
 
-	int size = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? 0 : sizeof(SYMBOLS)) : sizeof(PROMOTS)) : sizeof(HEADS))/sizeof(char*);
+	int size = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? 0 : sizeof(SYMBOLS)) : sizeof(PROMPTS)) : sizeof(HEADS))/sizeof(char*);
 	if (c != NULL) {
 		int i = 0;
 		for (NULL; i < size; i++) {

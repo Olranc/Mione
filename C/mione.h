@@ -155,7 +155,7 @@ int nextCanWrite = 0;
 int doBREAK = 0;
 int lastIsBreak = 0;
 
-int OPEN(char* fileName) {
+int compile(char* fileName) {
     char* txt = malloc(sizeof(char) * 2);
     strcpy(txt, "\0");
     FILE* file = fopen(fileName, "r");
@@ -280,6 +280,11 @@ int OPEN(char* fileName) {
                         wordType = 3;
                         canWrite = 0;
 
+                        if (forErr[0] == 0 && lastWordType == 3){
+                            prerr(Line,"Creating the table starts and fails.",3);
+                        }
+
+
                         if (canCount) {
                             if (forErr[0]) {}
                             else {
@@ -303,6 +308,9 @@ int OPEN(char* fileName) {
                         wordType = 4;
                         canWrite = 0;
 
+                        if (forErr[0] == 0 && lastWordType == 4){
+                            prerr(Line,"Creating the Function starts and fails.",3);
+                        }
                         if (canCount) {
                             if (forErr[0]) {}
                             else {
@@ -321,10 +329,14 @@ int OPEN(char* fileName) {
 
                 }
 
-                if (checkType == 10) { // FUNCTION 函數
+                if (checkType == 10) { // Runction 函數
                     if (canWrite == 1) {
                         wordType = 8;
                         canWrite = 0;
+
+                        if (forErr[0] == 0 && lastWordType == 8){
+                            prerr(Line,"Creating the RUN starts and fails.",3);
+                        }
 
                         if (canCount) {
                             if (forErr[0]) {}
@@ -518,11 +530,11 @@ int OPEN(char* fileName) {
                 txt[len + 1] = '\0';
 
 
-                printf("do 1\n");
+
             }
             else {
                 //here
-                printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
                 mio((txt), lastWordType);
                 free((txt));
 
@@ -531,14 +543,14 @@ int OPEN(char* fileName) {
                 (txt) = malloc(sizeof(char) * (1 + 1));
                 (txt)[0] = word;
                 (txt)[1] = '\0';
-                printf("do 2 %s\n",txt);
+
             }
 
 
 
 
 
-            printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
+           // printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
             lastWordType = wordType;
             lastCheckType = checkType;
 
@@ -570,7 +582,7 @@ int OPEN(char* fileName) {
     fclose(file);
 
     //MIONE
-    run(); //run
+
     return 0;
 }
 

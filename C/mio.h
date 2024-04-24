@@ -29,18 +29,18 @@ int mioEnd(){
 
 int setC(char* _type, char* _case, int _t) {
     cSize++;
-    if (MIO[MioTarget]) {
-        MIO[MioTarget] = realloc(MIO[MioTarget], cSize * sizeof(char**));
+    if (MIO  ) {
+        MIO   = realloc(MIO  , cSize * sizeof(char**));
     }
     else {
-        MIO[MioTarget] = malloc(sizeof(char**));
+        MIO   = malloc(sizeof(char**));
     }
 
-    MIO[MioTarget][cSize - 1] = malloc(sizeof(char*)*2);
+    MIO  [cSize - 1] = malloc(sizeof(char*)*2);
 
 
-    MIO[MioTarget][cSize - 1][0] = malloc(strlen(_type)+1);
-    strcpy(MIO[MioTarget][cSize - 1][0], _type);
+    MIO  [cSize - 1][0] = malloc(strlen(_type)+1);
+    strcpy(MIO  [cSize - 1][0], _type);
 
 
     if (strcmp("VARIABLE", _type)) {}
@@ -81,27 +81,20 @@ int setC(char* _type, char* _case, int _t) {
 
 
 
-    MIO[MioTarget][cSize - 1][1] = malloc(strlen(_case)+1);
-    strcpy(MIO[MioTarget][cSize - 1][1], _case);
+    MIO  [cSize - 1][1] = malloc(strlen(_case)+1);
+    strcpy(MIO  [cSize - 1][1], _case);
 
-    //printf("A:%s %s\n", MIO[MioTarget][cSize - 1][1],MIO[MioTarget][cSize - 1][0]);
+    //printf("A:%s %s\n", MIO  [cSize - 1][1],MIO  [cSize - 1][0]);
     pass = 1;
 
     return 1;
 }
 
 int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
-    if (MIO){
-        MIO = realloc(MIO,sizeof(char***)*(MioTarget+1));
-    }else{
-        MIO = malloc(sizeof(char***)*1);
-        MIO[MioTarget] = NULL; //WATCH OUT
-    }
-
 
 	//HEAD:HEAD_NAME
 
-	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {
@@ -114,9 +107,9 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 	}
 
 	if (pass) {}else{
-		for (int i = 0; i < sizeof(PROMOTS) / sizeof(char*); i = i + 1) {
+		for (int i = 0; i < sizeof(PROMPTS) / sizeof(char*); i = i + 1) {
 
-			if (strcmp(PROMOTS[i], _case)) {
+			if (strcmp(PROMPTS[i], _case)) {
 			}
 			else {
 				setC("PROMPT", _case, _type);
@@ -137,8 +130,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 
 	
 
-	if (pass) { 
-		
+	if (pass) {
 	}
 		
 	else {
@@ -152,7 +144,6 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 
     for (int i = 0;i<strlen(_case);i++){
         if (_case[i] == '\n') mioEnd();
-
     }
 
 

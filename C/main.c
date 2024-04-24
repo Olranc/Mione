@@ -23,7 +23,8 @@ int main() {
 		if (wcscmp(cmds[1], L"o") == 0) {
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
 
-			OPEN(m);
+            compile(m);
+            run(); //run
 		}
 
 		if (wcscmp(cmds[1], L"home") == 0) {
@@ -53,7 +54,8 @@ int main() {
         }
 	}
 	else if (num == 1) {
-		OPEN("index.mio");
+        compile("index.mio");
+        run(); //run
 		printf("a... you might find page is here => 'mione home'\n\n");
 	}
 
