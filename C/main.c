@@ -54,7 +54,8 @@ int main() {
         }
 	}
 	else if (num == 1) {
-        compile("index.mio");
+        toBeCompile("index.mio");
+        compile();
         run(); //run
 		printf("a... you might find page is here => 'mione home'\n\n");
 	}

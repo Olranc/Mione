@@ -127,53 +127,78 @@ int getWordType(int* var, char word) {
 };
 
 
-int lastCheckType = 0;
-int Line = 0;
+char **THEFILE;
 
-int	nextWordType = 0;
-int	lastWordType = -1; //here
-int wordType = 1;
-int aboutWord[] = {
-        0,//slash 斜線    上個
-        0,//slash 值      目前
-};
+int toBeCompile(char* fileName) {
 
 
-int lvl = 0;
-int canCount = 1;
-int nextCanCount = 0;
+    int Line = 0;
 
-int forErr[] = {
-        0, // 表單，括號或函數開始行
-        0, // 字串開始行
-};
-
-
-int canWrite = 1;
-int nextCanWrite = 0;
-
-int doBREAK = 0;
-int lastIsBreak = 0;
-
-int compile(char* fileName) {
-    char* txt = malloc(sizeof(char) * 2);
-    strcpy(txt, "\0");
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
     if (file == NULL) {
-        printf("cant open file\n");
+        printf("Cant open file\n");
         return 1;
     }
 
-    while (fgets(line, sizeof(line), file) != NULL) { //     C
+    while (fgets(line, sizeof(line), file) != NULL) {
         Line++;
-        //  printf("%s\n",line);
 
+        if (THEFILE == NULL){
+            THEFILE = malloc(sizeof(char*) * Line);
+
+        }  else{
+            THEFILE = realloc(THEFILE, sizeof(char*) * Line);
+        }
+        THEFILE[Line-1] = malloc(strlen(line) + 1);
+        strcpy(THEFILE[Line-1], line);
+    }
+
+    fclose(file);
+}
+
+int compile() {
+    int lastCheckType = 0;
+    int Line = 0;
+
+    int	nextWordType = 0;
+    int	lastWordType = -1; //here
+    int wordType = 1;
+    int aboutWord[] = {
+            0,//slash 斜線    上個
+            0,//slash 值      目前
+    };
+
+
+    int lvl = 0;
+    int canCount = 1;
+    int nextCanCount = 0;
+
+    int forErr[] = {
+            0, // 表單，括號或函數開始行
+            0, // 字串開始行
+    };
+
+
+    int canWrite = 1;
+    int nextCanWrite = 0;
+
+    int doBREAK = 0;
+    int lastIsBreak = 0;
+
+    char* txt = malloc(sizeof(char) * 2);
+    strcpy(txt, "\0");
+
+
+
+    for (int me = 0;me<sizeof (THEFILE)/sizeof (char*);me++){
+        char *line = THEFILE[me];
+        Line++;
 
         int lastOne = strlen(line) - 1;
 
-        for (int i = 0; strlen(line) > i; i++) { // C
+        for (int i = 0; strlen(line) > i; i++) {
             if (i == lastOne) {
                 strcat(line, " ");
             }
@@ -550,7 +575,7 @@ int compile(char* fileName) {
 
 
 
-           // printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
+            // printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
             lastWordType = wordType;
             lastCheckType = checkType;
 
@@ -562,6 +587,8 @@ int compile(char* fileName) {
             doBREAK = 0;
         }
     }
+
+
 
 
 
@@ -579,7 +606,7 @@ int compile(char* fileName) {
 
     //可以使用 wordType ==14 來判斷使用者是否有做 說明結尾
 
-    fclose(file);
+
 
     //MIONE
 
