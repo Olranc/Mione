@@ -23,7 +23,8 @@ int main() {
 		if (wcscmp(cmds[1], L"o") == 0) {
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
 
-            compile(m);
+            toBeCompile(m);
+            compile();
             run(); //run
 		}
 
