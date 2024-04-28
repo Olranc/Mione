@@ -92,7 +92,7 @@ int run() {
                                             canWrite = 0;
                                             Locked = 1;
                                             LOCK = ii;
-                                            printf("%d\n",ii);
+                                            //printf("%d\n",ii);
                                             //printf("yess???? %s\n",MIO [ii][0]);
                                         }else{
                                             haveFullVV ++;

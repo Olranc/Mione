@@ -193,7 +193,6 @@ int compile() {
 
         char *line = THEFILE[me];
         Line++;
-        printf("%d: %s",sizeof (THEFILE)/sizeof (char*),line);
 
         int lastOne = strlen(line) - 1;
 
@@ -558,7 +557,7 @@ int compile() {
             }
             else {
                 //here
-                printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
                 mio((txt), lastWordType);
                 free((txt));
 

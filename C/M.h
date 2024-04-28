@@ -64,7 +64,7 @@ int V_V(char*** _while,int _whileSize){
 //HEAD
 
 int set(char*** _while,int _whileSize) { //1
-    printf("[NEW HEAD]\n");
+    printf("[NEW HEAD: SET]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
 
@@ -95,7 +95,7 @@ int set(char*** _while,int _whileSize) { //1
 
 
     }
-    printf("[END HEAD]\n\n");
+    printf("[END HEAD: SET]\n\n");
 }
 
 
