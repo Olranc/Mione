@@ -128,12 +128,9 @@ int getWordType(int* var, char word) {
 
 
 char **THEFILE;
+int L = 0;
 
 int toBeCompile(char* fileName) {
-
-
-    int Line = 0;
-
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
@@ -143,16 +140,16 @@ int toBeCompile(char* fileName) {
     }
 
     while (fgets(line, sizeof(line), file) != NULL) {
-        Line++;
+        L++;
 
         if (THEFILE == NULL){
-            THEFILE = malloc(sizeof(char*) * Line);
+            THEFILE = malloc(sizeof(char*) * L);
 
         }  else{
-            THEFILE = realloc(THEFILE, sizeof(char*) * Line);
+            THEFILE = realloc(THEFILE, sizeof(char*) * L);
         }
-        THEFILE[Line-1] = malloc(strlen(line) + 1);
-        strcpy(THEFILE[Line-1], line);
+        THEFILE[L-1] = malloc(strlen(line) + 1);
+        strcpy(THEFILE[L-1], line);
     }
 
     fclose(file);
@@ -192,9 +189,11 @@ int compile() {
 
 
 
-    for (int me = 0;me<sizeof (THEFILE)/sizeof (char*);me++){
+    for (int me = 0;me<L;me++){
+
         char *line = THEFILE[me];
         Line++;
+        printf("%d: %s",sizeof (THEFILE)/sizeof (char*),line);
 
         int lastOne = strlen(line) - 1;
 
@@ -559,7 +558,7 @@ int compile() {
             }
             else {
                 //here
-                //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
                 mio((txt), lastWordType);
                 free((txt));
 

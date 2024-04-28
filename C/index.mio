@@ -1,1 +1,2 @@
-set x = "hello"x7 = 7c
+set x = "hello"
+x7()

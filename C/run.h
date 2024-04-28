@@ -22,9 +22,12 @@ int run() {
     int LOCK =0;
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
+        //printf("%s %s \n", MIO [index][0],MIO [index][1]);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
+
+
 
             if (strcmp(TYPE, "HEAD")) {}
             else {//節省參訪時間
@@ -89,6 +92,7 @@ int run() {
                                             canWrite = 0;
                                             Locked = 1;
                                             LOCK = ii;
+                                            printf("%d\n",ii);
                                             //printf("yess???? %s\n",MIO [ii][0]);
                                         }else{
                                             haveFullVV ++;
