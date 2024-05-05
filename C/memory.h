@@ -11,11 +11,11 @@ int Type = 0;
 int mSize = 0;
 
 
-void lazy(char**ma){
-    int size = snprintf(NULL, 0, "%d", mSize) + 1;
+void lazy(char**ma,int S){
+    int size = snprintf(NULL, 0, "%d", S) + 1;
     char* output = NULL;
     output= malloc(size * sizeof(char));
-    sprintf(output, "%d", mSize);
+    sprintf(output, "%d", S);
     *ma = output;
 }
 
@@ -25,7 +25,8 @@ void cm(char** ma, char* v, int _type) {
     for (int i = 0; i <mSize;i++){
         if (strcmp(memory[i][0], v)==0)
         {
-            *ma = memory[i][1];
+            lazy(ma,i+1);
+
             return;
         }
     }
@@ -62,7 +63,7 @@ void cm(char** ma, char* v, int _type) {
     //printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
     //printf("    [ADDRESS]:'%d\n", mSize);
 
-    lazy(ma);
+    lazy(ma,mSize);
 }
 
 void cm_v(char ** ma,int _type,char* v) { //
@@ -90,11 +91,7 @@ void cm_v(char ** ma,int _type,char* v) { //
     //printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
     //printf("    [ADDRESS]:'%d\n", mSize);
 
-    lazy(ma);
-}
-
-void rtm(char**** c) {
-    *c = memory;
+    lazy(ma,mSize);
 }
 
 #endif

@@ -1,2 +1,5 @@
-set x = "hello"
+set x = "hello",""
+set y = "world",""
+set z = x + " " + y,""
 x7()
+x1 = x7(),x8

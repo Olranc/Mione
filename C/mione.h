@@ -421,16 +421,11 @@ int compile() {
                         int nextCheckType = 0;
                         getWordType(&nextCheckType, line[i + 1]);
 
-                        if (nextCheckType == 14 && lastWordType == 15) {
+                        if (nextCheckType == 14 || lastWordType == 15) {
                             wordType = 7;
                         }
                         else {
-                            if (lastWordType == 15) {
-                                wordType = 7;
-                            }
-                            else {
-                                wordType = 15;
-                            }
+                            wordType = 15;
                         }
 
 

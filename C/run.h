@@ -67,14 +67,22 @@ int run() {
 
                                // printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                                 if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                                    haveFullVV = 0;
+
+                                    int I = atoi(MIO[ii][1])-1;
+                                    if (SYMBOL_CASE[I].VV){
+                                        haveFullVV = 0;
+                                    }else{
+                                        if (strcmp(MIO[ii+1][0],"VALUE")||strcmp(MIO[ii+1][0],"VARIABLE")){
+                                            haveFullVV = 1;
+                                        }
+                                    }
                                     if (strcmp(MIO [ii][1], "7")==0){
                                         lvl++;
-                                       // printf("++\n");
+                                        //printf("++\n");
                                     }
                                     if (strcmp(MIO [ii][1], "8")==0){
                                         lvl--;
-                                      //  printf("--\n");
+                                        //printf("--\n");
                                     }
                                 }
 
@@ -175,12 +183,20 @@ int run() {
                         int Locked = 0;
 
                         if (strcmp(MIO [ii][0], "PROMPT") == 0){
-                            haveFullVV = 0;
+                          haveFullVV = 0;
                         }
 
                         //printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                         if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                            haveFullVV = 0;
+
+                            int I = atoi(MIO[ii][1])-1;
+                            if (SYMBOL_CASE[I].VV){
+                                haveFullVV = 0;
+                            }else{
+                                if (strcmp(MIO[ii+1][0],"VALUE")||strcmp(MIO[ii+1][0],"VARIABLE")){
+                                    haveFullVV = 1;
+                                }
+                            }
                             if (strcmp(MIO [ii][1], "7")==0){
                                 lvl++;
                                 //printf("++\n");

@@ -5,10 +5,17 @@
 typedef  struct   {
     char* NAME;
     int (*fuc)(char***,int);
-} THECASE;
+} THE_HEAD_CASE;
+
+typedef  struct   {
+    char* NAME;
+    int VV;
+} THE_SYMBOL_CASE;
+
 char* PROMPTS[];
 
-THECASE HEAD_CASE[];
+THE_HEAD_CASE HEAD_CASE[];
+THE_SYMBOL_CASE SYMBOL_CASE[];
 
 #include "M.h"
 
@@ -20,13 +27,36 @@ char* HEADS[] = {
         "set",
         ";"
 };
-THECASE HEAD_CASE[] = { //how? ";" didnt here ,and it works??? // oh nvm
+THE_HEAD_CASE HEAD_CASE[] = {
         {"1",NULL},
         {"2",set},
 };
 
+THE_SYMBOL_CASE SYMBOL_CASE[] = {
+        {"1",1},
+        {"2",1},
+        {"3",1},
+        {"4",1},
+        {"5",1},
+        {"6",1},
+        {"7",1},
+        {"8",0},
+        {"9",1},
+};
 
-char* PROMPTS[] = { //我知道我英文不好
+char* SYMBOLS[] = {
+        "==",
+        "-",
+        "+",
+        "^",
+        "*",
+        "/",
+        "(",
+        ")",
+        ","
+};
+
+char* PROMPTS[] = {
 	"do",
 	"then",
 	"else",
@@ -37,17 +67,7 @@ char* PROMPTS[] = { //我知道我英文不好
 
 
 
-char* SYMBOLS[] = {
-	"==",
-	"-",
-	"+",
-	"^",
-	"*",
-	"/",
-	"(",
-	")",
-    ","
-};
+
 
 int vI(char* _type,char** v, char* NAME) {
 	char** c = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? NULL : SYMBOLS) : PROMPTS) : HEADS);
