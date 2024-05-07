@@ -79,28 +79,6 @@ int getWordType(int* var, char word) {
     }
 
 
-    if (word == '(') {
-        *var = 17;
-        return 1;
-    }
-    if (word == ')') {
-        *var = 18;
-        return 1;
-    }
-
-
-
-    if (word == '[') {
-        *var = 19;
-        return 1;
-    }
-    if (word == ']') {
-        *var = 20;
-        return 1;
-    }
-
-
-
     if (word == '@') {
         *var = 4;
         return 1;
@@ -220,10 +198,10 @@ int compile() {
 
             // CHECKTYPE:
             // -1:空格 1:無/換行 2:字串開頭1 3:表單開頭 4:函數結束 5:數字 6:英文字母/底線 7: 符號 8:表單結束 9:函數開頭1 10:函數開頭2 12:'\'符號
-            // 13:字串開頭2 14:不可重複兩個的符號 16:`/`符號
+            // 13:字串開頭2 14:不可重複兩個的符號  16:`/`符號
 
             // WORDTYPE:
-            // -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 14:解說符號 15: 符號二
+            // -1:空格 1:無/換行 2:字串1 3:表單 4:函數 5:數字 6:英文字母/底線 7: 符號 8:執行式 10:'\'符號 11:字串2 14:解說符號 15: 符號二 16:符號二之二
             //
 
             if (nextWordType) {
@@ -418,18 +396,14 @@ int compile() {
 
                 if (checkType == 14) {
                     if (canWrite == 1) {
-                        int nextCheckType = 0;
-                        getWordType(&nextCheckType, line[i + 1]);
-
-                        if (nextCheckType == 14 || lastWordType == 15) {
-                            wordType = 7;
+                        if (lastWordType == 15) {
+                            wordType = 16  ;
                         }
-                        else {
+                        else if (lastWordType == 16) {
+                            wordType = 15;
+                        }else{
                             wordType = 15;
                         }
-
-
-
                     }
                 }
 
@@ -552,7 +526,7 @@ int compile() {
             }
             else {
                 //here
-                //printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
+                printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
                 mio((txt), lastWordType);
                 free((txt));
 
@@ -568,7 +542,7 @@ int compile() {
 
 
 
-            // printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
+             printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
             lastWordType = wordType;
             lastCheckType = checkType;
 

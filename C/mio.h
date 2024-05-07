@@ -84,7 +84,7 @@ int setC(char* _type, char* _case, int _t) {
     MIO  [cSize - 1][1] = malloc(strlen(_case)+1);
     strcpy(MIO  [cSize - 1][1], _case);
 
-    //printf("A:%s %s\n", MIO  [cSize - 1][1],MIO  [cSize - 1][0]);
+    printf("A:%s %s\n", MIO  [cSize - 1][1],MIO  [cSize - 1][0]);
     pass = 1;
 
     return 1;
@@ -94,7 +94,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 
 	//HEAD:HEAD_NAME
 
-	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {

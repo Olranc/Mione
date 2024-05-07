@@ -67,46 +67,22 @@ int run() {
 
                                // printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                                 if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-
-                                    int I = atoi(MIO[ii][1])-1;
-                                    if (SYMBOL_CASE[I].VV){
-                                        haveFullVV = 0;
-                                    }else{
-                                        if (strcmp(MIO[ii+1][0],"VALUE")||strcmp(MIO[ii+1][0],"VARIABLE")){
-                                            haveFullVV = 1;
-                                        }
-                                    }
-                                    if (strcmp(MIO [ii][1], "7")==0){
-                                        lvl++;
-                                        //printf("++\n");
-                                    }
-                                    if (strcmp(MIO [ii][1], "8")==0){
-                                        lvl--;
-                                        //printf("--\n");
-                                    }
+                                    haveFullVV = 0;
                                 }
 
 
 
                                 if (strcmp(MIO [ii][0], "VALUE") == 0 || strcmp(MIO [ii][0], "VARIABLE") == 0){
 
-                                    if (lvl){}else{
-
-                                        //if (ii<MIOsize -1){
-
-                                        //}
-
-                                        if (haveFullVV){
-                                            canWrite = 0;
-                                            Locked = 1;
-                                            LOCK = ii;
-                                            //printf("%d\n",ii);
-                                            //printf("yess???? %s\n",MIO [ii][0]);
-                                        }else{
-                                            haveFullVV ++;
-                                        }
+                                    if (haveFullVV){
+                                        canWrite = 0;
+                                        Locked = 1;
+                                        LOCK = ii;
+                                        //printf("%d\n",ii);
+                                        //printf("yess???? %s\n",MIO [ii][0]);
+                                    }else{
+                                        haveFullVV ++;
                                     }
-
 
 
                                 }
@@ -188,46 +164,23 @@ int run() {
 
                         //printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                         if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-
-                            int I = atoi(MIO[ii][1])-1;
-                            if (SYMBOL_CASE[I].VV){
-                                haveFullVV = 0;
-                            }else{
-                                if (strcmp(MIO[ii+1][0],"VALUE")||strcmp(MIO[ii+1][0],"VARIABLE")){
-                                    haveFullVV = 1;
-                                }
-                            }
-                            if (strcmp(MIO [ii][1], "7")==0){
-                                lvl++;
-                                //printf("++\n");
-                            }
-                            if (strcmp(MIO [ii][1], "8")==0){
-                                lvl--;
-                                //printf("--\n");
-                            }
+                            haveFullVV = 0;
                         }
 
 
 
                         if (strcmp(MIO [ii][0], "VALUE") == 0 || strcmp(MIO [ii][0], "VARIABLE") == 0){
 
-                            if (lvl){}else{
+                            if (haveFullVV){
 
-                                //if (ii<MIOsize -1){
+                                canWrite = 0;
+                                Locked = 1;
+                                LOCK = ii;
 
-                                //}
+                                //printf("yess???? %s\n",MIO [ii][0]);
 
-                                if (haveFullVV){
-
-                                    canWrite = 0;
-                                    Locked = 1;
-                                    LOCK = ii;
-
-                                    //printf("yess???? %s\n",MIO [ii][0]);
-
-                                }else{
-                                    haveFullVV ++;
-                                }
+                            }else{
+                                haveFullVV ++;
                             }
 
 
