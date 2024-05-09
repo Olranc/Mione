@@ -67,8 +67,24 @@ int run() {
 
                                // printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                                 if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                                    haveFullVV = 0;
+                                    if (MIOsize != ii+1){
+                                        if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
+                                            haveFullVV = 0;
+                                        }else{
+                                            int I = atoi(MIO [ii][1]) - 1;
+
+                                            if (SYMBOL_CASE[I].VV){
+                                                haveFullVV = 0;
+                                            }else{
+                                                haveFullVV = 1;
+                                            }
+                                        }
+                                    }
+
+
+
                                 }
+
 
 
 
@@ -164,7 +180,22 @@ int run() {
 
                         //printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                         if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                            haveFullVV = 0;
+                            if (MIOsize != ii+1){
+                                if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
+                                    haveFullVV = 0;
+                                }else{
+                                    int I = atoi(MIO [ii][1]) - 1;
+
+                                    if (SYMBOL_CASE[I].VV){
+                                        haveFullVV = 0;
+                                    }else{
+                                        haveFullVV = 1;
+                                    }
+                                }
+                            }
+
+
+
                         }
 
 
