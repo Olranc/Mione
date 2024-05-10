@@ -1,1 +1,4 @@
-x (("hello world","world hello"))x
+x (("hello world","world hello"))
+x = "Hello World"
+
+set x = x ("hello")

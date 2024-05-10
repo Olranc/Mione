@@ -76,14 +76,15 @@ int set(char*** _while,int _whileSize) { //1
 
 
 
-        if ((strcmp(TYPE,"VALUE") == 0 || strcmp(TYPE,"SYMBOL") == 0 || strcmp(TYPE,"VARIABLE") == 0)){
-            printf("    %s %s\n",_while[i][0],_while[i][1]);
-            PACKSize++;
-            PACK = realloc(PACK,sizeof(char**)*(PACKSize));
-            PACK[PACKSize-1] = _while[i];
+        if (i){
+            if ((strcmp(TYPE,"VALUE") == 0 || strcmp(TYPE,"SYMBOL") == 0 || strcmp(TYPE,"VARIABLE") == 0)){
+                printf("    %s %s\n",_while[i][0],_while[i][1]);
+                PACKSize++;
+                PACK = realloc(PACK,sizeof(char**)*(PACKSize));
+                PACK[PACKSize-1] = _while[i];
+            }
         }
-
-        if (_whileSize-1 == i || (strcmp(TYPE,"PROMPT") == 0)){
+        if (PACKSize&&(_whileSize-1 == i || (strcmp(TYPE,"PROMPT") == 0))){
             char* lastTargetType = nowTargetType;
             nowTargetType = VALUE; //換到新的目標
 
