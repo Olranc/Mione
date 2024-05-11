@@ -57,17 +57,18 @@ void cm(char** ma, char* v, int _type) {
     
 
 
-    //printf("    [MEMORY CREATED]\n");
-    //printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
-    //printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
-    //printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
-    //printf("    [ADDRESS]:'%d\n", mSize);
+    printf("    [MEMORY CREATED]\n");
+    printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
+    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
+    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
+    printf("    [ADDRESS]:'%d\n", mSize);
 
     lazy(ma,mSize);
 }
 
 void cm_v(char ** ma,int _type,char* v) { //
     mSize++;
+
     if (memory) {
         memory = realloc(memory, sizeof(char**) * mSize);
     }
@@ -86,10 +87,10 @@ void cm_v(char ** ma,int _type,char* v) { //
 
 
 
-    //printf("    [MEMORY CREATED]\n");
-    //printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][0]);
-    //printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
-    //printf("    [ADDRESS]:'%d\n", mSize);
+    printf("    [MEMORY CREATED]\n");
+    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][0]);
+    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
+    printf("    [ADDRESS]:'%d\n", mSize);
 
     lazy(ma,mSize);
 }

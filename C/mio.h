@@ -29,13 +29,14 @@ int mioEnd(){
 
 int setC(char* _type, char* _case, int _t) {
     cSize++;
-    if (MIO  ) {
-        MIO   = realloc(MIO  , cSize * sizeof(char**));
+
+    if (MIO) {
+        printf("%d\n", cSize);
+        MIO = realloc(MIO  , cSize * sizeof(char**));
     }
     else {
-        MIO   = malloc(sizeof(char**));
+        MIO = malloc(sizeof(char**));
     }
-
     MIO  [cSize - 1] = malloc(sizeof(char*)*2);
 
 
@@ -51,6 +52,7 @@ int setC(char* _type, char* _case, int _t) {
     }
     if (strcmp("VALUE", _type)) {}
     else {
+
         char* ma;
         cm_v(&ma, _t, _case);
         _case = ma;
