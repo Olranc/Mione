@@ -1,4 +1,1 @@
-
-x (("hello world","world hello"))
-x = "Hello World"
-set x = xxx,x (xxxxxxx)
+x(y("y"))
