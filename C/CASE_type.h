@@ -4,7 +4,7 @@
 
 typedef  struct   {
     char* NAME;
-    int (*fuc)(char***,int);
+    int (*fuc)(char***,int,int);
 } THE_HEAD_CASE;
 
 typedef  struct   {

@@ -9,7 +9,7 @@
 #include <Windows.h>
 
 #include "mione.h"
-#include "verson.h"
+#include "version.h"
 
 
 
@@ -49,7 +49,7 @@ int main() {
 			printf("==================================================================");
 		}
 		if (wcscmp(cmds[1], L"version") == 0) {
-			printf("Mione version:%s\n\n\n", mione_verson);
+			printf("Mione version:%s\n\n\n", mione_version);
 		}
         if (wcscmp(cmds[1], L"open_source") == 0){
             printf("\n\n\nMione : %s \n\n\n", "https://github.com/Mioprety/Mione");

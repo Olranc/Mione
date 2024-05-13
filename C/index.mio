@@ -1,1 +1,4 @@
-x(y("y"))
+set y = $
+@
+
+set x = y(z("Hello","World"))

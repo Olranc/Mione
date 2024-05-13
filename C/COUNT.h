@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "memory.h"
+
 // Function ("Hello,"World!")
 
 char*** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346",<數字類性>},... }
@@ -62,16 +64,35 @@ char*** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346"
                 for (int i = 0;i<PackSize;i++){
                     printf("            TO: %s %s\n",Pack[i][0],Pack[i][1]);
                 }
-                printf("OFF %d\n",lvl);
+                //printf("OFF %d\n",lvl);
 
 
-                COUNT(Pack,PackSize);
+                char*** countPack = COUNT(Pack,PackSize);
+                if (strcmp(PACK[lastCaseNumOutLvl][0],"VALUE") == 0){
+                    if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
+                        printf("MEMEMEMEMEE\n");
+                    }
+                }
+                if (strcmp(PACK[lastCaseNumOutLvl][0],"VARIABLE") == 0){
+                    printf("OK???\n");
+                    if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
+                        printf("MEMEMEMEMEE\n");
+                    }else{
+                        static char *er[] = {"ERR","This variable is not a function.","3"};
+                        static char **err[] = {er};
+                        printf("YES ERROR\n");
+                        return err;
+                    }
+                }
+
                 Pack = NULL;
                 PackSize = 0;
             }
         }
+        printf("\n");
     }
-    printf("\n");
+    return
+    //todo
 }
 
 #endif

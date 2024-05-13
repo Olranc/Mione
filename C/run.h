@@ -1,24 +1,20 @@
+int NL;
+int* EveryLines;
+
 #ifndef run_h
 #define run_h
 #include "CASE_type.h"
 #include "M.h"
 
 int NL = 0;
-
 char*** MIO = NULL;
-int  MIOsize;
-int MioTarget = 0;
-
-int cSize = 0; //給mio.h的臨時變數
-
-
-int* EveryLines = NULL; //每行的最後一個
-int nowTarget = 0; //構建到...
-int soNowLine = 1; //實體運行到...
+int  MIOsize = 0;
+int cSize = 0;
+int* EveryLines = NULL;
 
 int run() {
     MIOsize = cSize;
-
+    cSize = 0;
     int LOCK =0;
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
@@ -41,11 +37,9 @@ int run() {
 
                         int canWrite = 1;
 
-                        int lastIn = 0;
 
                         for (int eLines = 0; eLines < NL; eLines++) {
                             if (index<=(EveryLines[eLines]-1)){
-                                lastIn = EveryLines[eLines]-1;
                                // printf("HEAD IN %d\n",lastIn);
                                 break;
                             }
@@ -54,7 +48,6 @@ int run() {
 
 
 
-                        int lvl = 0;
                         int haveFullVV = 0;
 
                         for (int ii = 0; ii < MIOsize ; ii++) { //預測
@@ -141,7 +134,7 @@ int run() {
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
-                        HEAD_CASE[i].fuc(PACK,PackSize);
+                        HEAD_CASE[i].fuc(PACK,PackSize,index);
 
                     }
                 }
@@ -256,7 +249,7 @@ int run() {
                 }
                 //printf("here: %d\n",LOCK);
                 //printf("OMG paired with HEAD\n");
-                V_V(PACK,PackSize);
+                V_V(PACK,PackSize,index);
 
             }
 
