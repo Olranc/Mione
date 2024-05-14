@@ -57,22 +57,24 @@ int V_V(char*** _while,int _whileSize,int firstI){
                 free(PACK);
                 PACK = malloc(sizeof(char**));
 
+                printf("HERE RIGHT?\n");
 
-                if (strcmp(countPack[0][0],"ERR")){
 
-                    int thisLine;
+
+                if (strcmp(countPack[0][0],"ERR") == 0){
+                    int thisLine = 0;
                     for (int i = 0;i<NL;i++){
                         if (EveryLines[i]<=Index_){
-                            thisLine = i+2;
+                            thisLine = i+2; //i dont know why +2
                         }else{
                             break;
                         }
                     }
-
+                    printf("%s\n",countPack[0][2]);
                     prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
                 }
 
-                printf("passed vv");
+                printf("passed VV");
 
             }
             char* lastTargetType = nowTargetType;

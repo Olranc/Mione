@@ -70,17 +70,10 @@ char**** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346
                 //printf("OFF %d\n",lvl);
 
 
-                if (strcmp(PACK[lastCaseNumOutLvl][0],"VALUE") == 0){
-                    if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
-                        printf("calling function\n");
-                    }
-                }
-                if (strcmp(PACK[lastCaseNumOutLvl][0],"VARIABLE") == 0){
-
+                if (strcmp(PACK[lastCaseNumOutLvl][0],"VALUE") == 0 || strcmp(PACK[lastCaseNumOutLvl][0],"VARIABLE") == 0) {
                     if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
                         printf("calling function\n");
                     }else{
-
 
                         static char _TYPE[] = "ERR";
                         static char _MSG[] = "Oh it is not a function.";
