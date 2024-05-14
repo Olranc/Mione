@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
-
+#define MYFILE "index.mio"
 
 #include <stdio.h>
 #include <string.h>
@@ -56,7 +56,7 @@ int main() {
         }
 	}
 	else if (num == 1) {
-        toBeCompile("index.mio");
+        toBeCompile(MYFILE  );
         compile();
         run(); //run
 		printf("a... you might find page is here => 'mione home'\n\n");

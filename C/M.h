@@ -20,6 +20,16 @@ int V_V(char*** _while,int _whileSize,int firstI){
 
     char* nowTargetType = 0; //0:HEAD
 
+    int prompts = 0;
+
+    for (int i = 0; i < _whileSize; i++) {
+        char* TYPE = _while[i][0];
+        if (strcmp(TYPE,"PROMPT") == 0){
+            prompts++;
+        }
+
+    }
+
     for (int i = 0; i < _whileSize; i++) {
         Index_++;
         char* TYPE = _while[i][0];
@@ -33,39 +43,37 @@ int V_V(char*** _while,int _whileSize,int firstI){
             PACK[PACKSize-1] = _while[i];
         }
 
-        if (_whileSize-1 == i){
-            COUNT(PACK,PACKSize);
 
-
-            PACKSize=0;
-            free(PACK);
-            PACK = malloc(sizeof(char**));
-
-        }
-
-        if (strcmp(TYPE,"PROMPT") == 0){
-            if (nowTargetType == 0) { //是HEAD
+        if (strcmp(TYPE,"PROMPT") == 0 || _whileSize-1 == i){
+            if (nowTargetType == 0 && prompts) { //是HEAD
                 PACKSize=0;
                 free(PACK);
                 PACK = malloc(sizeof(char**));
             }else{ //是 PROMPT
-                char *** countPack = COUNT(PACK,PACKSize);
+                char **** cP= COUNT(PACK,PACKSize);
+                char *** countPack = *cP;
 
                 PACKSize=0;
                 free(PACK);
                 PACK = malloc(sizeof(char**));
 
+
                 if (strcmp(countPack[0][0],"ERR")){
+
                     int thisLine;
                     for (int i = 0;i<NL;i++){
                         if (EveryLines[i]<=Index_){
-                            thisLine = i+1;
+                            thisLine = i+2;
                         }else{
                             break;
                         }
                     }
-                    prerr(thisLine,countPack[0][1],atoi(countPack[0][3]));
+
+                    prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
                 }
+
+                printf("passed vv");
+
             }
             char* lastTargetType = nowTargetType;
             nowTargetType = VALUE; //換到新的目標
@@ -109,29 +117,37 @@ int set(char*** _while,int _whileSize,int firstI) { //1
                     free(PACK);
                     PACK = malloc(sizeof(char**));
                 }else{ //是 PROMPT
-                    char *** countPack = COUNT(PACK,PACKSize);
+                    char **** cP= COUNT(PACK,PACKSize);
+                    char *** countPack = *cP;
 
                     PACKSize=0;
                     free(PACK);
                     PACK = malloc(sizeof(char**));
 
-                    if (strcmp(countPack[0][0],"ERR")){
-                        int thisLine;
+                    //printf("HERE RIGHT?\n");
+                    //printf("YES : %s\n",countPack[0][0]);
+
+
+
+                    if (strcmp(countPack[0][0],"ERR") == 0){
+                        int thisLine = 0;
                         for (int i = 0;i<NL;i++){
                             if (EveryLines[i]<=Index_){
-                                thisLine = i+1;
+                                thisLine = i+2; //i dont know why +2
                             }else{
                                 break;
                             }
                         }
-                        prerr(thisLine,countPack[0][1],atoi(countPack[0][3]));
+                        printf("%s\n",countPack[0][2]);
+                        prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
                     }
+
+                    printf("passed HEAD");
                 }
             }
 
             char* lastTargetType = nowTargetType;
             nowTargetType = VALUE; //換到新的目標
-            printf("OHHHH %s\n",VALUE);
         }
 
 

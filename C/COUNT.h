@@ -9,13 +9,16 @@
 
 // Function ("Hello,"World!")
 
-char*** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346",<數字類性>},... }
+char**** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346",<數字類性>},... }
     printf("      HERE:::\n");
     int lvl = 0;
 
     char ***Pack = malloc(sizeof(char**));
     int PackSize = 0;
     int lastCaseNumOutLvl = 0;
+
+    char ***rePack = malloc(sizeof(char**));
+    int rePackSize = 0;
 
     for (int index = 0;index<PACKSize;index++){
         printf("        %s %s %d\n",PACK[index][0],PACK[index][1],PACKSize);
@@ -67,21 +70,28 @@ char*** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346"
                 //printf("OFF %d\n",lvl);
 
 
-                char*** countPack = COUNT(Pack,PackSize);
                 if (strcmp(PACK[lastCaseNumOutLvl][0],"VALUE") == 0){
                     if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
-                        printf("MEMEMEMEMEE\n");
+                        printf("calling function\n");
                     }
                 }
                 if (strcmp(PACK[lastCaseNumOutLvl][0],"VARIABLE") == 0){
-                    printf("OK???\n");
+
                     if(strcmp(memory[atoi(PACK[lastCaseNumOutLvl][1])-1][0],"4") == 0){
-                        printf("MEMEMEMEMEE\n");
+                        printf("calling function\n");
                     }else{
-                        static char *er[] = {"ERR","This variable is not a function.","3"};
-                        static char **err[] = {er};
+
+
+                        static char _TYPE[] = "ERR";
+                        static char _MSG[] = "Oh it is not a function.";
+                        static char _LINE[] = "1";
+
+                        static char* erPack1[] = {_TYPE,_MSG,_LINE};
+                        static char **erPack2[] = {erPack1};
+                        static char ***erPack[] = {erPack2};
+
                         printf("YES ERROR\n");
-                        return err;
+                        return erPack;
                     }
                 }
 
@@ -91,8 +101,28 @@ char*** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346"
         }
         printf("\n");
     }
-    return
-    //todo
+
+    if (rePackSize == 0){
+
+        rePackSize++;
+
+        static char* AW1[] = {"VALUE","0"};
+        static char **AW2[] = {AW1};
+        static char ***AW[] = {AW2};
+
+        rePack = *AW;
+    }
+
+    printf("-------------\n");
+    for (int i = 0;i<rePackSize;i++){
+        printf("%s %s\n",rePack[i][0],rePack[i][1]);
+    }
+    printf("-------------\n");
+
+    char ****returnPack = malloc(sizeof(char****));
+    *returnPack = rePack;
+    return returnPack;
+
 }
 
 #endif
