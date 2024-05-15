@@ -64,14 +64,16 @@ int V_V(char*** _while,int _whileSize,int firstI){
                 if (strcmp(countPack[0][0],"ERR") == 0){
                     int thisLine = 1;
                     for (int i = 0;i<NL;i++){
-                        if (EveryLines[i]<=Index_){
-                            thisLine = i+1; 
+
+                        thisLine = i+1;
+                        if (EveryLines[i]<Index_){
+
                         }else{
                             break;
                         }
                     }
-                    printf("%s\n",countPack[0][2]);
-                    prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
+
+                    prerr(thisLine,countPack[0][1],thisLine);
                 }
 
                 printf("passed VV");
@@ -134,14 +136,16 @@ int set(char*** _while,int _whileSize,int firstI) { //1
                     if (strcmp(countPack[0][0],"ERR") == 0){
                         int thisLine = 1;
                         for (int i = 0;i<NL;i++){
-                            if (EveryLines[i]<=Index_){
-                                thisLine = i+1;
+
+                            thisLine = i+1;
+                            if (EveryLines[i]<Index_){
+
                             }else{
                                 break;
                             }
                         }
-                        printf("%s\n",countPack[0][2]);
-                        prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
+
+                        prerr(thisLine,countPack[0][1],thisLine);
                     }
 
                     printf("passed HEAD");
