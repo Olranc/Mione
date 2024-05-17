@@ -1,7 +1,10 @@
+
+
+
 #ifndef CASE_type_h
 #define CASE_type_h
 
-
+char* PROMPTS[];
 typedef  struct   {
     char* NAME;
     int (*fuc)(char***,int,int);
@@ -10,17 +13,15 @@ typedef  struct   {
 typedef  struct   {
     char* NAME;
     int VV;
+    int COUNT;
 } THE_SYMBOL_CASE;
-
-char* PROMPTS[];
 
 THE_HEAD_CASE HEAD_CASE[];
 THE_SYMBOL_CASE SYMBOL_CASE[];
 
+
+
 #include "M.h"
-
-
-
 
 char* HEADS[] = {
         "input",
@@ -33,15 +34,16 @@ THE_HEAD_CASE HEAD_CASE[] = {
 };
 
 THE_SYMBOL_CASE SYMBOL_CASE[] = {
-        {"1",1},
-        {"2",1},
-        {"3",1},
-        {"4",1},
-        {"5",1},
-        {"6",1},
-        {"7",1},
-        {"8",0},
-        {"9",1},
+        {"1",1,1},
+        {"2",1,1},
+        {"3",1,1},
+        {"4",1,1},
+        {"5",1,1},
+        {"6",1,1},
+        {"7",1,0},
+        {"8",0,0},
+        {"9",1,0},
+        {"9",1,0},
 };
 
 char* SYMBOLS[] = {
