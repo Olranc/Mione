@@ -50,18 +50,16 @@ int V_V(char*** _while,int _whileSize,int firstI){
                 free(PACK);
                 PACK = malloc(sizeof(char**));
             }else{ //是 PROMPT
-                char **** cP= COUNT(PACK,PACKSize);
-                char *** countPack = *cP;
+                char *** countPack;
+                int countPackSize;
+                COUNT(PACK,PACKSize,&countPack,&countPackSize);
 
                 PACKSize=0;
                 free(PACK);
                 PACK = malloc(sizeof(char**));
 
-                printf("HERE RIGHT?\n");
-
-
-
                 if (strcmp(countPack[0][0],"ERR") == 0){
+
                     int thisLine = 1;
                     for (int i = 0;i<NL;i++){
 
@@ -73,10 +71,9 @@ int V_V(char*** _while,int _whileSize,int firstI){
                         }
                     }
 
-                    prerr(thisLine,countPack[0][1],thisLine);
+                    prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
                 }
-
-                printf("passed VV");
+                printf("passed VV\n");
 
             }
             char* lastTargetType = nowTargetType;
@@ -121,19 +118,16 @@ int set(char*** _while,int _whileSize,int firstI) { //1
                     free(PACK);
                     PACK = malloc(sizeof(char**));
                 }else{ //是 PROMPT
-                    char **** cP= COUNT(PACK,PACKSize);
-                    char *** countPack = *cP;
+                    char *** countPack;
+                    int countPackSize;
+                    COUNT(PACK,PACKSize,&countPack,&countPackSize);
 
                     PACKSize=0;
                     free(PACK);
                     PACK = malloc(sizeof(char**));
 
-                    //printf("HERE RIGHT?\n");
-                    //printf("YES : %s\n",countPack[0][0]);
-
-
-
                     if (strcmp(countPack[0][0],"ERR") == 0){
+
                         int thisLine = 1;
                         for (int i = 0;i<NL;i++){
 
@@ -145,10 +139,10 @@ int set(char*** _while,int _whileSize,int firstI) { //1
                             }
                         }
 
-                        prerr(thisLine,countPack[0][1],thisLine);
+                        prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
                     }
 
-                    printf("passed HEAD");
+                    printf("passed HEAD \n");
                 }
             }
 

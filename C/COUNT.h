@@ -9,190 +9,132 @@
 #include "memory.h"
 #include "CASE_type.h"
 
-int returnPackSize = 0;
-// Function ("Hello,"World!")
-int getSize(){
-    return returnPackSize;
+void toErrForCasesCount(char* reason,char * code,char***Pack) {
+    static char* erPack[3];
+    erPack[0] = "ERR";
+    erPack[1] = reason;
+    erPack[2] = code;
+    *Pack = erPack;
 }
 
-char *** CasesCount(char***CASES,int CASESSize){
-    static char a[] = "NUMBER";
-    static char b[] = "2";
-    static char *ab[2]  ;
-    ab[0] = a;
-    ab[1] = b;
-    static char **fin[] = {ab};
-    return fin; //先這樣
+void CasesCount(char***CASES,int CASESSize,char* **rePack){
+
+    printf("    HERE: CasesCount\n");
+
+    int bracketLVL = 0;
+    int beforeBracket = 0;  //had to add 1 in this 
+
+    for (int index = 0;index<CASESSize;index++) {
+        printf("        CC : %s %s\n", CASES[index][0], CASES[index][1]);
+        printf("        D:%d\n",beforeBracket-1);
+
+        if (beforeBracket&&beforeBracket-1>=0) {
+            if (strcmp(CASES[beforeBracket-1][0], "VALUE")==0||strcmp(CASES[beforeBracket-1][0], "VARIABLE")==0){
+                printf("        start by: %s %s\n", CASES[index][0], CASES[index][1]);
+                int BBType = 0; //Before Bracket Type
+
+                if (strcmp(CASES[beforeBracket-1][0], "VALUE")==0) BBType=atoi(memory[atoi(CASES[beforeBracket-1][1])-1][0]);
+                if (strcmp(CASES[beforeBracket-1][0], "VARIABLE")==0) BBType=atoi(memory[atoi(CASES[beforeBracket-1][1])-1][1]);
+
+                printf("        Before Bracket Type: %d\n", BBType);
+                if (BBType == 4){
+                    printf("        ok it is a function call\n");
+                }else {
+                    static char** erPack;
+                    toErrForCasesCount("It is not a Function,Can't to function call.", "1", &erPack);
+                    *rePack = erPack;
+                    printf("    !!!Found an ERROR by CasesCount\n");
+                    return;
+                }
+            }
+        }
+
+        if (strcmp(CASES[index][0], "SYMBOL") == 0){
+            if (strcmp(CASES[index][1], "7")==0){ // "("
+                if (bracketLVL == 0) {
+                    beforeBracket = index; //-1+1
+                }
+                bracketLVL++;
+            }
+            if (strcmp(CASES[index][1], "8")==0){ // ")"
+                bracketLVL--;
+                if (bracketLVL == 0) {
+                    beforeBracket = 1; //-1+1
+                }
+            }
+        }
+    }
+
+    static char a[]= "NUMBER";
+    static char w[]= "7";
+
+    static char *aw[] = {a,w};
+
+    *rePack = aw;
 }
 
-char**** COUNT (char***PACK,int PACKSize){ // { {"HELLO",<文字類性>},{"12346",<數字類性>},... }
+void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
+    printf("    HERE: COUNT\n");
 
-    printf("      HERE:::\n");
-    //printf("%s %s\n", CasesCount(NULL,0)[0][0],CasesCount(NULL,0)[0][1]);
+    char ***CASES = malloc(0);
 
-    int canDo = 1;
-
-    char ****Pack = malloc(sizeof(char***)*1);
-    int PackTarget = 0;
-    int* PackSize = malloc(sizeof(int)*1);
-
-
-    PackSize[PackTarget] = 0;
-
-
-    char ***CASES = malloc(sizeof(char**)*0);
     int CASESSize = 0;
 
-    int nowCOUNTing = 0;
+    char ***Pack = malloc(0);
+    int PackSize = 0;
 
-    for (int index = 0;index<PACKSize;index++){
-        if (strcmp(PACK[index][0],"SYMBOL")==0){
-            if (strcmp(PACK[index][1],"5")==0){ //*
-                canDo = 2;
-            }
+    for (int index = 0;index<PACKSize;index++) {
+        int addCASE = 0;
+        int countCASE = 0;
+
+
+
+        if (PACKSize-1 == index) {countCASE = 1,addCASE = 1;};
+
+        if (strcmp(PACK[index][0], "VALUE") == 0 || strcmp(PACK[index][0], "VALUE") == 0) addCASE = 1;
+        if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 0) addCASE = 1;
+
+        if (addCASE) {
+            CASESSize++;
+            CASES = realloc(CASES, sizeof(char **) * (CASESSize));
+            CASES[CASESSize - 1] = PACK[index];
         }
-    }
 
 
-    for (int index = 0;index<PACKSize;index++){
-        int doCount = 0;
-        if (PACKSize - 1 == index) doCount = 1;
-        if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT) doCount = 1;
+        if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1) countCASE = 1;
+        printf("    ITEM : %s %s a:%d c:%d\n", PACK[index][0], PACK[index][1],addCASE,countCASE);
 
-        if (doCount) {
+        if (countCASE) {
+            PackSize++;
+            Pack = realloc(Pack, sizeof(char **) * (PackSize));
+            CasesCount(CASES, CASESSize, &(Pack[PackSize - 1]));
 
-            //printf("COUNT %d \n",PackSize[PackTarget]);
-            if (PackSize[PackTarget]) {
-                PackSize[PackTarget]++;
-                //printf("change memory for pack %d\n", PackSize[PackTarget]);
-                Pack[PackTarget] = realloc(Pack[PackTarget], sizeof(char**) * PackSize[PackTarget]);
-                //printf("changed\n");
+            if (strcmp(Pack[PackSize - 1][0], "ERR")==0){
+                printf("    !!!Caught an ERROR from CasesCount\n");
+                static char *errPack[3];
+                errPack[0] = Pack[PackSize - 1][0];
+                errPack[1] = Pack[PackSize - 1][1];
+                errPack[2] = Pack[PackSize - 1][2];
+                static char **erPack[] = {errPack};
+                *rePACK = erPack;
+                *rePACKSize = 1;
+                return;
+            }else{
+                //可以外方
             }
-            else {
-                PackSize[PackTarget]++;
-                //printf("add memory for pack %d\n", PackSize[PackTarget]);
-                Pack[PackTarget] = malloc(sizeof(char**) * PackSize[PackTarget]);
-                //printf("added\n");
-            }
+            printf("    OKAY IT IS: %s\n", Pack[PackSize - 1][0]);
 
-            Pack[PackTarget][PackSize[PackTarget] - 1] = CasesCount(CASES, CASESSize)[0];
-
-            CASES = NULL;
-            CASES = malloc(sizeof(char**) * 1);
+            CASES = realloc(CASES, 0);
             CASESSize = 0;
-
-
-            if (nowCOUNTing == 5) {
-                if (PackSize[PackTarget] >= 2) {
-
-                }
-                else {
-                    static char TYP[] = "ERR";
-                    static char MSG[] = "Too short.";
-
-                    static char* ERR[2];
-                    ERR[0] = TYP;
-                    ERR[1] = MSG;
-
-                    static char** ERR_PACK[] = { ERR };
-                    static char*** ERR_PACKS[] = { ERR_PACK };
-
-                    return ERR_PACKS;
-                }
-
-                printf("okokok %s %d\n", Pack[PackTarget][1][0], PackSize[PackTarget]);
-
-                char** New = Pack[PackTarget][PackSize[PackTarget] - 1];
-                printf("NEW ADDED\n");
-                char** Last = Pack[PackTarget][PackSize[PackTarget] - 2]; //todo SHIT
-                printf("LAST ADDED\n");
-
-
-
-
-                if (strcmp(Last[0], "NUMBER") == 0 && strcmp(New[0], "NUMBER") == 0) {
-
-                    printf("%d\n", atoi(Last[1]) * atoi(New[1]));
-                }
-                else {
-                    static char TYP[] = "ERR";
-                    static char MSG[] = "Can't count this type of VALUE or VARIABLE.";
-
-                    static char* ERR[2];
-                    ERR[0] = TYP;
-                    ERR[1] = MSG;
-
-                    static char** ERR_PACK[] = { ERR };
-                    static char*** ERR_PACKS[] = { ERR_PACK };
-
-                    return ERR_PACKS;
-                }
-            }
-            else {
-                printf("NEXT TO DO\n");
-            }
-
-            nowCOUNTing = 0;
-        }
-
-        if (strcmp(PACK[index][0], "VARIABLE") == 0 || strcmp(PACK[index][0], "VALUE") == 0) {
-            if (nowCOUNTing) {
-
-            }
-            else {
-
-                CASESSize++;
-                CASES = realloc(CASES, sizeof(char**) * CASESSize); \
-                    CASES[CASESSize - 1] = PACK[index];
-            }
-        }
-
-        if (canDo==1) {
-            // , + -
-        }else if (canDo == 2){   
-
-            if (strcmp(PACK[index][0],"SYMBOL")==0){
-                if (SYMBOL_CASE[atoi(PACK[index][1])-1].COUNT==0){
-                    CASESSize ++;
-                    CASES = realloc(CASES, sizeof(char**)*CASESSize);
-                    CASES[CASESSize-1] = PACK[index];
-                }else{
-
-                }
-
-
-                if (strcmp(PACK[index][1],"5")==0) {
-                    nowCOUNTing = 5;
-                }
-
-
-                if (strcmp(PACK[index][1], "2") == 0) {
-                    CASESSize++;
-                    CASES = realloc(CASES, sizeof(char**) * CASESSize);
-                    CASES[CASESSize - 1] = PACK[index];
-                }
-
-                if (strcmp(PACK[index][1], "3") == 0) {
-                    CASESSize++;
-                    CASES = realloc(CASES, sizeof(char**) * CASESSize);
-                    CASES[CASESSize - 1] = PACK[index];
-                }
-            }
         }
     }
-    static char TYP[] = "GOOD";
-    static char MSG[] = "GOOD";
 
-    static char *ERR[2];
-    ERR[0] = TYP;
-    ERR[1] = MSG;
+    printf("    size is : %d\n", PackSize);
 
-    static char **ERR_PACK[] = {ERR};
-    static char ***ERR_PACKS[] = {ERR_PACK};
-
-    return ERR_PACKS;
-
-
+    *rePACK = Pack;
+    *rePACKSize = PackSize;
+    printf("    END: COUNT\n");
+    return;
 }
 
 #endif

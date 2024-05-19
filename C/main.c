@@ -12,9 +12,16 @@
 #include "version.h"
 
 
-
+void ColorText() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
 
 int main() {
+    ColorText();
 	LPWSTR* cmds;
 	int num;
 	cmds = CommandLineToArgvW(GetCommandLineW(), &num);
