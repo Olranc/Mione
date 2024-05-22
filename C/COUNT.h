@@ -9,6 +9,10 @@
 #include "memory.h"
 #include "CASE_type.h"
 
+void FunctionCall(char*FunctionAdress,char** Pack,int PacklSize) {
+
+}
+
 void toErrForCasesCount(char* reason,char * code,char***Pack) {
     static char* erPack[3];
     erPack[0] = "ERR";
@@ -18,52 +22,67 @@ void toErrForCasesCount(char* reason,char * code,char***Pack) {
 }
 
 void CasesCount(char***CASES,int CASESSize,char* **rePack){
+    //case()()
+    //x()
+    //y
 
     printf("    HERE: CasesCount\n");
+    printf("    Size is : %d\n", CASESSize);
 
     int bracketLVL = 0;
     int beforeBracket = 0;  //had to add 1 in this 
 
+    char*** InBracket = malloc(0);
+    int InBracketSize = 0;
+
+    char*** Pack = malloc(0);
+    int PackSize = 0;
+
     for (int index = 0;index<CASESSize;index++) {
-        printf("        CC : %s %s\n", CASES[index][0], CASES[index][1]);
-        printf("        D:%d\n",beforeBracket-1);
+        printf("        Index:%s %s\n",CASES[index][0],CASES[index][1]);
+        if (bracketLVL) {
+            InBracketSize++;
+            InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
+            InBracket[InBracketSize - 1] = CASES[index];
+            printf("        ADDED\n");
+        }
+        else {
+            if (strcmp(CASES[index][1], "7") == 0 && strcmp(CASES[index][0], "SYMBOL") == 0) {
 
-        if (beforeBracket&&beforeBracket-1>=0) {
-            if (strcmp(CASES[beforeBracket-1][0], "VALUE")==0||strcmp(CASES[beforeBracket-1][0], "VARIABLE")==0){
-                printf("        start by: %s %s\n", CASES[index][0], CASES[index][1]);
-                int BBType = 0; //Before Bracket Type
-
-                if (strcmp(CASES[beforeBracket-1][0], "VALUE")==0) BBType=atoi(memory[atoi(CASES[beforeBracket-1][1])-1][0]);
-                if (strcmp(CASES[beforeBracket-1][0], "VARIABLE")==0) BBType=atoi(memory[atoi(CASES[beforeBracket-1][1])-1][1]);
-
-                printf("        Before Bracket Type: %d\n", BBType);
-                if (BBType == 4){
-                    printf("        ok it is a function call\n");
-                }else {
-                    static char** erPack;
-                    toErrForCasesCount("It is not a Function,Can't to function call.", "1", &erPack);
-                    *rePack = erPack;
-                    printf("    !!!Found an ERROR by CasesCount\n");
-                    return;
-                }
+            }
+            else {
+                PackSize++;
+                Pack = realloc(Pack, sizeof(char**) * PackSize);
+                Pack[PackSize - 1] = CASES[index];
+                printf("        Pack Added\n");
             }
         }
+
 
         if (strcmp(CASES[index][0], "SYMBOL") == 0){
             if (strcmp(CASES[index][1], "7")==0){ // "("
                 if (bracketLVL == 0) {
                     beforeBracket = index; //-1+1
                 }
+                if (bracketLVL) {}else {
+                    InBracketSize++;
+                    InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
+                    InBracket[InBracketSize - 1] = CASES[index];
+                    printf("        ADDED\n");
+                }
                 bracketLVL++;
             }
             if (strcmp(CASES[index][1], "8")==0){ // ")"
                 bracketLVL--;
-                if (bracketLVL == 0) {
-                    beforeBracket = 1; //-1+1
-                }
             }
         }
     }
+
+    static char** erPack;
+    toErrForCasesCount("???", "1", &erPack);
+    //*rePack = erPack;
+    //printf("    !!!Found an ERROR by CasesCount\n");
+    //return;
 
     static char a[]= "NUMBER";
     static char w[]= "7";
@@ -83,18 +102,21 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
     char ***Pack = malloc(0);
     int PackSize = 0;
 
+    int lvl = 0;
+
     for (int index = 0;index<PACKSize;index++) {
         int addCASE = 0;
         int countCASE = 0;
 
-
-
         if (PACKSize-1 == index) {countCASE = 1,addCASE = 1;};
 
-        if (strcmp(PACK[index][0], "VALUE") == 0 || strcmp(PACK[index][0], "VALUE") == 0) addCASE = 1;
+        if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "7") == 0) lvl++;
+       
+
+        if (strcmp(PACK[index][0], "VALUE") == 0 || strcmp(PACK[index][0], "VARIABLE") == 0) addCASE = 1;
         if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 0) addCASE = 1;
 
-        if (addCASE) {
+        if (addCASE || lvl) {
             CASESSize++;
             CASES = realloc(CASES, sizeof(char **) * (CASESSize));
             CASES[CASESSize - 1] = PACK[index];
@@ -102,9 +124,9 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
 
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1) countCASE = 1;
-        printf("    ITEM : %s %s a:%d c:%d\n", PACK[index][0], PACK[index][1],addCASE,countCASE);
+        printf("    ITEM : %s %s a:%d c:%d %d\n", PACK[index][0], PACK[index][1],addCASE,countCASE, lvl);
 
-        if (countCASE) {
+        if (countCASE && ( lvl==0 || PACKSize-1 == index)) {
             PackSize++;
             Pack = realloc(Pack, sizeof(char **) * (PackSize));
             CasesCount(CASES, CASESSize, &(Pack[PackSize - 1]));
@@ -127,6 +149,8 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
             CASES = realloc(CASES, 0);
             CASESSize = 0;
         }
+
+        if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;
     }
 
     printf("    size is : %d\n", PackSize);

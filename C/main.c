@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
-#define MYFILE "index.mio" //D:\\
+#define MYFILE "D:\\index.mio" //D:\\
 
 #include <stdio.h>
 #include <string.h>

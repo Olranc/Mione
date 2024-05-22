@@ -17,13 +17,16 @@ int run() {
     cSize = 0;
     int LOCK =0;
 
+    int lvl =0;
+    int lvlStar = 0;
+
     for (int index = 0;index<MIOsize ;index++) { //HERE
         //printf("%s %s \n", MIO [index][0],MIO [index][1]);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
 
-
+            lvl =0;
 
             if (strcmp(TYPE, "HEAD")) {}
             else {//節省參訪時間
@@ -58,24 +61,34 @@ int run() {
                                     haveFullVV = 0;
                                 }
 
-                               // printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
-                                if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                                    if (MIOsize != ii+1){
-                                        if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
-                                            haveFullVV = 0;
-                                        }else{
-                                            int I = atoi(MIO [ii][1]) - 1;
 
-                                            if (SYMBOL_CASE[I].VV){
-                                                haveFullVV = 0;
-                                            }else{
-                                                haveFullVV = 1;
-                                            }
+                                if (strcmp(MIO [ii][0], "SYMBOL") == 0){
+                                    if (strcmp(MIO [ii][1], "7")==0){
+                                        lvl++;
+                                        lvlStar = ii+1;
+                                    }
+                                    if (strcmp(MIO [ii][1], "8")==0){
+                                        lvl--;
+                                        if (lvl){}else{
+                                            lvlStar = 0;
                                         }
                                     }
-
-
-
+                                    if (lvl==0){
+                                        if (MIOsize != ii+1){
+                                            if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
+                                                haveFullVV = 0;
+                                            }else{
+                                                int I = atoi(MIO [ii][1]) - 1;
+                                                if (SYMBOL_CASE[I].VV){
+                                                    haveFullVV = 0;
+                                                }else{
+                                                    haveFullVV = 1;
+                                                }
+                                            }
+                                        }
+                                    }else{
+                                        haveFullVV = 0;
+                                    }
                                 }
 
 
@@ -173,23 +186,34 @@ int run() {
 
                         //printf("OMG %s %s\n",MIO [ii][0],MIO [ii][1]);
                         if (strcmp(MIO [ii][0], "SYMBOL") == 0){
-                            if (MIOsize != ii+1){
-                                if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
-                                    haveFullVV = 0;
-                                }else{
-                                    int I = atoi(MIO [ii][1]) - 1;
-
-                                    if (SYMBOL_CASE[I].VV){
-                                        haveFullVV = 0;
-                                    }else{
-                                        haveFullVV = 1;
-                                    }
+                            if (strcmp(MIO [ii][1], "7")==0){
+                                lvl++;
+                                lvlStar = ii+1;
+                            }
+                            if (strcmp(MIO [ii][1], "8")==0){
+                                lvl--;
+                                if (lvl){}else{
+                                    lvlStar = 0;
                                 }
                             }
-
-
-
+                            if (lvl==0){
+                                if (MIOsize != ii+1){
+                                    if (strcmp(MIO [ii+1][0],"SYMBOL") == 0){
+                                        haveFullVV = 0;
+                                    }else{
+                                        int I = atoi(MIO [ii][1]) - 1;
+                                        if (SYMBOL_CASE[I].VV){
+                                            haveFullVV = 0;
+                                        }else{
+                                            haveFullVV = 1;
+                                        }
+                                    }
+                                }
+                            }else{
+                                haveFullVV = 0;
+                            }
                         }
+
 
 
 
@@ -256,6 +280,19 @@ int run() {
         }
 
        // printf("MAIN:%s %s\n",TYPE,ADDRESS);
+    }
+
+    if (lvl && lvlStar-1){
+        int lastIn = 0;
+        for (int eLines = 0; eLines < NL; eLines++) {
+            if (lvlStar-1<=(EveryLines[eLines]-1)){
+                lastIn = eLines+1;
+                printf("V/V IN %d\n",lastIn);
+                break;
+            }
+
+        }
+        prerr(lastIn,"''(' or '[' did not match with ')', ']'",1);
     }
 };
 

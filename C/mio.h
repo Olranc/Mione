@@ -17,7 +17,7 @@ int mioEnd(){
     else {
         EveryLines = malloc(sizeof(int) * 1);
     }
-    //printf("new line %d\n",NL);
+    printf("new line %d\n",NL);
     EveryLines[NL - 1] = cSize;
 }
 

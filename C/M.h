@@ -111,7 +111,6 @@ int set(char*** _while,int _whileSize,int firstI) { //1
             }
         }
         if (_whileSize-1 == i || (strcmp(TYPE,"PROMPT") == 0)){
-            printf("HEY %d\n",strcmp(TYPE,"PROMPT"));
             if (i){
                 if (nowTargetType == 0) { //是HEAD
                     PACKSize=0;
