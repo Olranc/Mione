@@ -12,7 +12,7 @@ int  MIOsize = 0;
 int cSize = 0;
 int* EveryLines = NULL;
 
-int run() {
+void run(char* ***OUTPUT,int * OPSize) {
     MIOsize = cSize;
     cSize = 0;
     int LOCK =0;
@@ -147,8 +147,8 @@ int run() {
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
-                        HEAD_CASE[i].fuc(PACK,PackSize,index);
-
+                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT);
+                        //TODO
                     }
                 }
             }

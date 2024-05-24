@@ -11,7 +11,7 @@
 #include "run.h"
 
 
-int V_V(char*** _while,int _whileSize,int firstI){
+void V_V(char*** _while,int _whileSize,int firstI){
     printf("[NEW V/V]\n");
     int Index_ = firstI-1;
 
@@ -88,7 +88,7 @@ int V_V(char*** _while,int _whileSize,int firstI){
 
 //HEAD
 
-int set(char*** _while,int _whileSize,int firstI) { //1
+void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT) { //1
     printf("[NEW HEAD: SET]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -153,6 +153,60 @@ int set(char*** _while,int _whileSize,int firstI) { //1
     }
     printf("[END HEAD: SET]\n\n");
 }
+
+void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT){
+    printf("[NEW HEAD: RETURN]\n");
+    char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
+    int PACKSize = 0;
+    int Index_ = firstI-1;
+    char* nowTargetType = 0; //0:HEAD
+
+    for (int i = 0; i < _whileSize; i++) {
+        Index_++;
+        char *TYPE = _while[i][0];
+        char *VALUE = _while[i][1];
+
+
+        if ((strcmp(TYPE, "VALUE") == 0 || strcmp(TYPE, "SYMBOL") == 0 || strcmp(TYPE, "VARIABLE") == 0)) {
+            printf("    %s %s\n", _while[i][0], _while[i][1]);
+            PACKSize++;
+            PACK = realloc(PACK, sizeof(char **) * (PACKSize));
+            PACK[PACKSize - 1] = _while[i];
+        }
+        if (_whileSize - 1 == i) {
+            char ***countPack;
+            int countPackSize;
+            COUNT(PACK, PACKSize, &countPack, &countPackSize);
+
+            PACKSize = 0;
+            free(PACK);
+            PACK = malloc(sizeof(char **));
+
+            if (strcmp(countPack[0][0], "ERR") == 0) {
+
+                int thisLine = 1;
+                for (int i = 0; i < NL; i++) {
+
+                    thisLine = i + 1;
+                    if (EveryLines[i] < Index_) {
+
+                    } else {
+                        break;
+                    }
+                }
+
+                prerr(thisLine, countPack[0][1], atoi(countPack[0][2]));
+            }
+            *OPSize = countPackSize;
+            *OUTPUT = countPack;
+            return;
+        }
+
+
+    }
+    printf("[END HEAD: RETURN]\n\n");
+}
+
 
 
 #endif

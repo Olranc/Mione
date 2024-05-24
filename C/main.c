@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
-#define MYFILE "D:\\index.mio" //D:\\
+#define MYFILE "index.mio" //D:\\
 
 #include <stdio.h>
 #include <string.h>
@@ -33,7 +33,7 @@ int main() {
 
             toBeCompile(m);
             compile();
-            run(); //run
+            run(NULL, 0); //run
 		}
 
 		if (wcscmp(cmds[1], L"home") == 0) {
@@ -65,7 +65,7 @@ int main() {
 	else if (num == 1) {
         toBeCompile(MYFILE  );
         compile();
-        run(); //run
+        run(NULL, 0); //run
 		printf("a... you might find page is here => 'mione home'\n\n");
 	}
 
