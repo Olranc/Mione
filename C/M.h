@@ -88,7 +88,7 @@ void V_V(char*** _while,int _whileSize,int firstI){
 
 //HEAD
 
-void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT) { //1
+void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize) { //1
     printf("[NEW HEAD: SET]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -154,7 +154,7 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT) 
     printf("[END HEAD: SET]\n\n");
 }
 
-void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT){
+void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize){
     printf("[NEW HEAD: RETURN]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -199,6 +199,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
             }
             *OPSize = countPackSize;
             *OUTPUT = countPack;
+            printf("[END HEAD: RETURN ; Warring : End by \"return\" HEAD.]\n\n");
             return;
         }
 
@@ -206,7 +207,9 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
     }
     printf("[END HEAD: RETURN]\n\n");
 }
+void get(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize){
 
+}
 
 
 #endif

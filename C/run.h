@@ -1,20 +1,18 @@
 int NL;
 int* EveryLines;
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize);
 
 #ifndef run_h
 #define run_h
 #include "CASE_type.h"
 #include "M.h"
 
-int NL = 0;
+
 char*** MIO = NULL;
-int  MIOsize = 0;
-int cSize = 0;
+
 int* EveryLines = NULL;
 
-void run(char* ***OUTPUT,int * OPSize) {
-    MIOsize = cSize;
-    cSize = 0;
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize) {
     int LOCK =0;
 
     int lvl =0;
@@ -147,7 +145,7 @@ void run(char* ***OUTPUT,int * OPSize) {
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
-                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT);
+                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize);
                         //TODO
                     }
                 }
@@ -230,15 +228,7 @@ void run(char* ***OUTPUT,int * OPSize) {
                             }else{
                                 haveFullVV ++;
                             }
-
-
-
                         }
-
-
-
-
-
 
 
                         if (strcmp(MIO [ii][0], "HEAD") == 0) {
@@ -294,6 +284,20 @@ void run(char* ***OUTPUT,int * OPSize) {
         }
         prerr(lastIn,"''(' or '[' did not match with ')', ']'",1);
     }
+    char *my;
+    if (*OPSize > 0) {
+        
+    }
+    else {
+        *OPSize++;
+        *OUTPUT = malloc(sizeof(char**));
+        (*OUTPUT)[0] = malloc(sizeof(char*)*2);
+        (*OUTPUT)[0][0] = "VALUE";
+        (*OUTPUT)[0][1] = "0";
+    }
+    to((*OUTPUT)[0], &my);
+   
+    printf("POWER OFF : %s\n",my);
 };
 
 

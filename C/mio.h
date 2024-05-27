@@ -9,16 +9,17 @@
 
 int pass = 0;
 
-int mioEnd(){
-    NL++;
+int mioEnd(int cSize,int *NL){
+    (*NL)++;
     if (EveryLines) {
-        EveryLines = realloc(EveryLines, sizeof(int) * NL);
+        EveryLines = realloc(EveryLines, sizeof(int) *  (*NL));
     }
     else {
         EveryLines = malloc(sizeof(int) * 1);
     }
-    printf("new line %d\n",NL);
-    EveryLines[NL - 1] = cSize;
+    printf("new line %d\n", (*NL));
+    EveryLines[ (*NL) - 1] = cSize;
+    printf("end of it\n");
 }
 
 // set							x								=								"hello"
@@ -27,21 +28,24 @@ int mioEnd(){
 // "a"=="a"
 // <虛擬記憶體位置> <符號ID> <虛擬記憶體位置>
 
-int setC(char* _type, char* _case, int _t) {
-    cSize++;
+int setC(char* _type, char* _case, int _t,int* acSize) {
+    (*acSize)++;
+
+    printf("HEY ME : %d\n",*acSize);
+
 
     if (MIO) {
-        printf("%d\n", cSize);
-        MIO = realloc(MIO  , cSize * sizeof(char**));
+        printf("%d\n", (*acSize));
+        MIO = realloc(MIO  , (*acSize) * sizeof(char**));
     }
     else {
         MIO = malloc(sizeof(char**));
     }
-    MIO  [cSize - 1] = malloc(sizeof(char*)*2);
+    MIO  [(*acSize) - 1] = malloc(sizeof(char*)*2);
 
 
-    MIO  [cSize - 1][0] = malloc(strlen(_type)+1);
-    strcpy(MIO  [cSize - 1][0], _type);
+    MIO  [(*acSize) - 1][0] = malloc(strlen(_type)+1);
+    strcpy(MIO  [(*acSize) - 1][0], _type);
 
 
     if (strcmp("VARIABLE", _type)) {}
@@ -83,17 +87,17 @@ int setC(char* _type, char* _case, int _t) {
 
 
 
-    MIO  [cSize - 1][1] = malloc(strlen(_case)+1);
-    strcpy(MIO  [cSize - 1][1], _case);
+    MIO  [(*acSize) - 1][1] = malloc(strlen(_case)+1);
+    strcpy(MIO  [(*acSize) - 1][1], _case);
 
-    printf("A:%s %s\n", MIO  [cSize - 1][1],MIO  [cSize - 1][0]);
+    printf("A:%s %s\n", MIO  [(*acSize) - 1][1],MIO  [(*acSize) - 1][0]);
     pass = 1;
 
     return 1;
 }
 
-int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
-
+int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
+    int cSize = *acSize;
 	//HEAD:HEAD_NAME
 
 	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
@@ -104,7 +108,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 		if (strcmp(HEADS[i], _case)) {
 		}
 		else {
-			setC("HEAD", _case, _type);
+			setC("HEAD", _case, _type,acSize);
 		}
 	}
 
@@ -114,7 +118,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 			if (strcmp(PROMPTS[i], _case)) {
 			}
 			else {
-				setC("PROMPT", _case, _type);
+				setC("PROMPT", _case, _type,acSize);
 			}
 		}
 	}
@@ -124,7 +128,7 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 			if (strcmp(SYMBOLS[i], _case)) {
 			}
 			else {
-				setC("SYMBOL", _case, _type);
+				setC("SYMBOL", _case, _type,acSize);
 			}
 		}
 	}
@@ -137,15 +141,15 @@ int mio(char* _case, int _type) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
 		
 	else {
 		if (_type == 6) {
-			setC("VARIABLE", _case, _type);
+			setC("VARIABLE", _case, _type,acSize);
 		}
 		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
-			setC("VALUE", _case, _type);
+			setC("VALUE", _case, _type,acSize);
 		}
 	}
 
     for (int i = 0;i<strlen(_case);i++){
-        if (_case[i] == '\n') mioEnd();
+        if (_case[i] == '\n') mioEnd(cSize,NL);
     }
 
 

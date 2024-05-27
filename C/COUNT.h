@@ -1,3 +1,5 @@
+void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize);
+
 #ifndef COUNT_H
 #define COUNT_H
 
@@ -8,10 +10,51 @@
 #include "run.h"
 #include "memory.h"
 #include "CASE_type.h"
+#include "mione.h"
 
 
-void FunctionCall(char*FunctionAdress,char*** Pack,int PacklSize,char * ***rePack,int * rePackSize) {
+void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePack,int * rePackSize) {
+    printf("    HERE: FunctionCall\n");
+    char *FucV ;
+    if (strcmp(FunctionAddress[0], "VALUE") == 0){
+        FucV = memory[atoi(FunctionAddress[1])-1][1];
+    }
+    if (strcmp(FunctionAddress[0], "VARIABLE") == 0){
+        FucV = memory[atoi(FunctionAddress[1])-1][2];
+    }
 
+    for (int i =0;i<strlen(FucV);i++){
+        if (i){
+            if (i==strlen(FucV)-1){
+                FucV[i-1] = 0;
+            }else{
+                FucV[i-1] =FucV[i];
+            }
+        }
+    }
+
+    for (int i = 0;i<PackSize;i++){
+        if (i){
+            if (i==PackSize-1){
+                Pack[i-1] = NULL;
+            }else{
+                Pack[i-1] = Pack[i];
+            }
+        }
+    }
+    PackSize = PackSize-2;
+
+    char **Fuc;
+    toBeCompile(FucV, &Fuc);
+    int c_size = compile(Fuc);
+
+    char ***FucReturn;
+    int FucReturnSize;
+
+    char*** CountedWithV;
+    int CountedWithVSize;
+    COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize);
+    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize);
 }
 
 void toErrForCasesCount(char* reason,char * code,char***Pack) {
@@ -99,7 +142,7 @@ void CasesCount(char***CASES,int CASESSize,char* **rePack){
                             if (VVType == 4) {
                                 char*** FunctionCalled;
                                 int SIZE;
-                                FunctionCall(Pack[PackSize - 1][1], InBracket, InBracketSize,&FunctionCalled,&SIZE);
+                                FunctionCall(Pack[PackSize - 1], InBracket, InBracketSize,&FunctionCalled,&SIZE);
                                 Pack[PackSize - 1] = NULL;
                                 PackSize--;
 
@@ -134,8 +177,8 @@ void CasesCount(char***CASES,int CASESSize,char* **rePack){
 
    
 
-    static char a[]= "NUMBER";
-    static char w[]= "7";
+    static char a[]= "VALUE";
+    static char w[]= "1";
 
     static char *aw[] = {a,w};
 

@@ -1,6 +1,6 @@
 
 
-
+void to(char **me,char**elsse);
 
 
 #ifndef memory_h
@@ -17,6 +17,25 @@ void lazy(char**ma,int S){
     output= malloc(size * sizeof(char));
     sprintf(output, "%d", S);
     *ma = output;
+}
+
+void to(char **me,char**elsse){
+    if (strcmp(me[1], "0") == 0) {
+        *elsse = "0";
+        return;
+    }
+    else {
+        if (strcmp(me[0], "VALUE") == 0) {
+            *elsse = memory[atoi(me[1]) - 1][1];
+            return;
+        }
+        if (strcmp(me[0], "VARIABLE") == 0) {
+            *elsse = memory[atoi(me[1]) - 1][2];
+
+            return;
+        }
+    }
+  
 }
 
 void cm(char** ma, char* v, int _type) {

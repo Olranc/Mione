@@ -1,3 +1,6 @@
+int toBeCompile(char* fileName,char ***THEFILE);
+int compile(char** THEFILE);
+
 #ifndef mione_h
 #define mione_h
 #include "mio.h"
@@ -105,10 +108,10 @@ int getWordType(int* var, char word) {
 };
 
 
-char **THEFILE;
 int L = 0;
 
-int toBeCompile(char* fileName) {
+int toBeCompile(char* fileName,char * **THEFILE) {
+    printf("COUNTING LINES...\n");
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
@@ -118,22 +121,23 @@ int toBeCompile(char* fileName) {
     }
 
     while (fgets(line, sizeof(line), file) != NULL) {
+
         L++;
 
-        if (THEFILE == NULL){
-            THEFILE = malloc(sizeof(char*) * L);
+        if ((*THEFILE) == NULL){
+            (*THEFILE) = malloc(sizeof(char*) * L);
 
         }  else{
-            THEFILE = realloc(THEFILE, sizeof(char*) * L);
+            (*THEFILE) = realloc((*THEFILE), sizeof(char*) * L);
         }
-        THEFILE[L-1] = malloc(strlen(line) + 1);
-        strcpy(THEFILE[L-1], line);
+        (*THEFILE)[L-1] = malloc(strlen(line) + 1);
+        strcpy((*THEFILE)[L-1], line);
     }
 
     fclose(file);
 }
 
-int compile() {
+int compile(char **THEFILE) {
     int lastCheckType = 0;
     int Line = 0;
 
@@ -165,6 +169,9 @@ int compile() {
     char* txt = malloc(sizeof(char) * 2);
     strcpy(txt, "\0");
 
+    int cSize = 0;
+
+    int NL = 0;
 
 
     for (int me = 0;me<L;me++){
@@ -527,7 +534,8 @@ int compile() {
             else {
                 //here
                 printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
-                mio((txt), lastWordType);
+
+                mio((txt), lastWordType,&cSize,&NL);
                 free((txt));
 
 
@@ -559,7 +567,7 @@ int compile() {
 
 
 
-    mioEnd(); //我不想進行大更改了 w
+    mioEnd(cSize,&NL); //我不想進行大更改了 w
 
     if (wordType == 2 || wordType == 11) {
         prerr(forErr[1], "The end of the string has not yet been declared.", 2);
@@ -576,8 +584,9 @@ int compile() {
 
 
     //MIONE
-
-    return 0;
+    int re = cSize;
+    cSize=0;
+    return re;
 }
 
 

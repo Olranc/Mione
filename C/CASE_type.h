@@ -7,7 +7,7 @@
 char* PROMPTS[];
 typedef  struct   {
     char* NAME;
-    void (*fuc)(char***,int,int,int*,char* ***);
+    void (*fuc)(char***,int,int,int*,char* ***,char ***,int);
 } THE_HEAD_CASE;
 
 typedef  struct   {
@@ -27,12 +27,14 @@ char* HEADS[] = {
         "input",
         "set",
         "return",
+        "get",
         ";"
 };
 THE_HEAD_CASE HEAD_CASE[] = {
         {"1",NULL},
         {"2",set},
-        {"3",return_}
+        {"3",return_},
+        {"4",return_}
 };
 
 THE_SYMBOL_CASE SYMBOL_CASE[] = {
