@@ -19,7 +19,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     int lvlStar = 0;
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
-        //printf("%s %s \n", MIO [index][0],MIO [index][1]);
+        printf("%s %s \n", MIO [index][0],MIO [index][1]);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
@@ -284,9 +284,10 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         }
         prerr(lastIn,"''(' or '[' did not match with ')', ']'",1);
     }
+
     char *my;
     if (*OPSize > 0) {
-        
+
     }
     else {
         *OPSize++;
@@ -295,8 +296,9 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         (*OUTPUT)[0][0] = "VALUE";
         (*OUTPUT)[0][1] = "0";
     }
-    to((*OUTPUT)[0], &my);
-   
+
+    to((*OUTPUT)[0], &my); // memory.h
+
     printf("POWER OFF : %s\n",my);
 };
 

@@ -20,6 +20,7 @@ void lazy(char**ma,int S){
 }
 
 void to(char **me,char**elsse){
+    printf("    [TO]\n");
     if (strcmp(me[1], "0") == 0) {
         *elsse = "0";
         return;
@@ -31,11 +32,10 @@ void to(char **me,char**elsse){
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
             *elsse = memory[atoi(me[1]) - 1][2];
-
             return;
         }
     }
-  
+    printf("    [TO : END]\n");
 }
 
 void cm(char** ma, char* v, int _type) {

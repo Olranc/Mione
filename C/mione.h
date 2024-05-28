@@ -1,5 +1,6 @@
-int toBeCompile(char* fileName,char ***THEFILE);
+void toBeCompileOnFile(char* fileName,char ***THEFILE);
 int compile(char** THEFILE);
+void toBeCompileWithCode(char* code, char*** THEFILE);
 
 #ifndef mione_h
 #define mione_h
@@ -110,7 +111,39 @@ int getWordType(int* var, char word) {
 
 int L = 0;
 
-int toBeCompile(char* fileName,char * **THEFILE) {
+void toBeCompileWithCode(char* code, char*** THEFILE){
+    printf("COUNTING LINES... (CODE MOD)\n");
+
+    char* aline = malloc(sizeof(char));
+    int lineword = 0;
+    for (int word = 0; word < strlen(code); word++) {
+        if (code[word] == '\n') {
+            L++;
+            if ((*THEFILE) == NULL) {
+                (*THEFILE) = malloc(sizeof(char*) * L);
+            }
+            else {
+                (*THEFILE) = realloc((*THEFILE), sizeof(char*) * L);
+            }
+            (*THEFILE)[L - 1] = malloc(strlen(aline) + 1);
+            strcpy((*THEFILE)[L - 1], aline);
+
+
+            aline = NULL;
+            aline = malloc(sizeof(char));
+            lineword = 0;
+
+        }
+        else {
+            aline = realloc(aline, sizeof(char) * (L + 1));
+            aline[lineword] = code[word];
+            lineword++;
+        }
+       
+    }
+}
+
+void toBeCompileOnFile(char* fileName,char * **THEFILE) {
     printf("COUNTING LINES...\n");
     FILE* file = fopen(fileName, "r");
     char line[2048];

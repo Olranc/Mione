@@ -45,7 +45,7 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     PackSize = PackSize-2;
 
     char **Fuc;
-    toBeCompile(FucV, &Fuc);
+    toBeCompileWithCode(FucV, &Fuc);
     int c_size = compile(Fuc);
 
     char ***FucReturn;

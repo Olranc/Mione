@@ -7,7 +7,7 @@
 #include "memory.h"
 
 
-int pass = 0;
+
 
 int mioEnd(int cSize,int *NL){
     (*NL)++;
@@ -28,7 +28,7 @@ int mioEnd(int cSize,int *NL){
 // "a"=="a"
 // <虛擬記憶體位置> <符號ID> <虛擬記憶體位置>
 
-int setC(char* _type, char* _case, int _t,int* acSize) {
+int setC(char* _type, char* _case, int _t,int* acSize,int *pass) {
     (*acSize)++;
 
     printf("HEY ME : %d\n",*acSize);
@@ -91,16 +91,17 @@ int setC(char* _type, char* _case, int _t,int* acSize) {
     strcpy(MIO  [(*acSize) - 1][1], _case);
 
     printf("A:%s %s\n", MIO  [(*acSize) - 1][1],MIO  [(*acSize) - 1][0]);
-    pass = 1;
+    *pass = 1;
 
     return 1;
 }
 
 int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
+    int pass = 0;
     int cSize = *acSize;
 	//HEAD:HEAD_NAME
 
-	printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
+	//printf("[CASE]:`%s`				[TYPE]:`%d` \n", _case, _type);
 	pass = 0;
 
 	for (int i = 0; i < sizeof(HEADS) / sizeof(char*); i = i + 1) {
@@ -108,7 +109,7 @@ int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIA
 		if (strcmp(HEADS[i], _case)) {
 		}
 		else {
-			setC("HEAD", _case, _type,acSize);
+			setC("HEAD", _case, _type,acSize,&pass);
 		}
 	}
 
@@ -118,7 +119,7 @@ int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIA
 			if (strcmp(PROMPTS[i], _case)) {
 			}
 			else {
-				setC("PROMPT", _case, _type,acSize);
+				setC("PROMPT", _case, _type,acSize,&pass);
 			}
 		}
 	}
@@ -128,7 +129,7 @@ int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIA
 			if (strcmp(SYMBOLS[i], _case)) {
 			}
 			else {
-				setC("SYMBOL", _case, _type,acSize);
+				setC("SYMBOL", _case, _type,acSize,&pass);
 			}
 		}
 	}
@@ -141,10 +142,10 @@ int mio(char* _case, int _type,int* acSize,int *NL) { // HEAD,PROMPT,VALUE,VARIA
 		
 	else {
 		if (_type == 6) {
-			setC("VARIABLE", _case, _type,acSize);
+			setC("VARIABLE", _case, _type,acSize,&pass);
 		}
 		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
-			setC("VALUE", _case, _type,acSize);
+			setC("VALUE", _case, _type,acSize,&pass);
 		}
 	}
 

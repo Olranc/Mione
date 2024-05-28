@@ -26,8 +26,8 @@ int main() {
 	int num;
 	cmds = CommandLineToArgvW(GetCommandLineW(), &num);
 
-    char *** end;
-    int endSizel;
+    char *** end = NULL;
+    int endSizel = 0;
 
     char ** THEFILE = NULL;
 
@@ -37,7 +37,7 @@ int main() {
 			char m[256];
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
 
-            toBeCompile(m,&THEFILE);
+			toBeCompileOnFile(m,&THEFILE);
             int c_size = compile(THEFILE);
             run(&end, &endSizel,c_size,NULL,0); //run
 		}
@@ -67,9 +67,13 @@ int main() {
         if (wcscmp(cmds[1], L"open_source") == 0){
             printf("\n\n\nMione : %s \n\n\n", "https://github.com/Mioprety/Mione");
         }
+		if (wcscmp(cmds[1], L"mxh") == 0) {
+			printf("\n\n\Your left made it for you.\n\n\n");
+		}
+		
 	}
 	else if (num == 1) {
-        toBeCompile(MYFILE,&THEFILE);
+		toBeCompileOnFile(MYFILE,&THEFILE);
         int c_size = compile(THEFILE);
         run(&end, &endSizel,c_size,NULL,0); //run
         printf("fin size : %d\n",c_size);
