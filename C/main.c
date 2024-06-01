@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
-#define MYFILE "D:\\index.mio" //D:\\
+#define MYFILE "index.mio" //D:\\
 
 #include <stdio.h>
 #include <string.h>
@@ -36,9 +36,10 @@ int main() {
 		if (wcscmp(cmds[1], L"o") == 0) {
 			char m[256];
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
+            int Lines = 0;
 
-			toBeCompileOnFile(m,&THEFILE);
-            int c_size = compile(THEFILE);
+			toBeCompileOnFile(m,&THEFILE,&Lines);
+            int c_size = compile(THEFILE,Lines);
             run(&end, &endSizel,c_size,NULL,0); //run
 		}
 
@@ -73,8 +74,9 @@ int main() {
 		
 	}
 	else if (num == 1) {
-		toBeCompileOnFile(MYFILE,&THEFILE);
-        int c_size = compile(THEFILE);
+        int Lines = 0;
+		toBeCompileOnFile(MYFILE,&THEFILE,&Lines);
+        int c_size = compile(THEFILE,Lines);
         run(&end, &endSizel,c_size,NULL,0); //run
         printf("fin size : %d\n",c_size);
         printf("a... you might find page is here => 'mione home'\n\n");

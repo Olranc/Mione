@@ -1,6 +1,6 @@
-void toBeCompileOnFile(char* fileName,char ***THEFILE);
-int compile(char** THEFILE);
-void toBeCompileWithCode(char* code, char*** THEFILE);
+void toBeCompileOnFile(char* fileName,char ***THEFILE,int *L);
+int compile(char** THEFILE,int Lines);
+void toBeCompileWithCode(char* code, char*** THEFILE,int * L);
 
 #ifndef mione_h
 #define mione_h
@@ -109,68 +109,81 @@ int getWordType(int* var, char word) {
 };
 
 
-int L = 0;
 
-void toBeCompileWithCode(char* code, char*** THEFILE){
+void toBeCompileWithCode(char* code, char* ** THEFILE,int *L){
+
     printf("COUNTING LINES... (CODE MOD)\n");
+
+
+    printf ("CODE IS : %s\n",code);
 
     char* aline = malloc(sizeof(char));
     int lineword = 0;
     for (int word = 0; word < strlen(code); word++) {
-        if (code[word] == '\n') {
-            L++;
+        printf("word number : %d\n",code[word]);
+
+        if (code[word] == '\n') {}else{
+            lineword++;
+
+            aline = realloc(aline, sizeof(char) * ((lineword) + 1));
+            aline[lineword-1] = code[word];
+            printf("WORD : %c\n",aline[lineword-1] );
+        }
+        if (code[word] == '\n' ||strlen(code)-1==word) {
+            aline[lineword] = 0;
+            (*L)++;
+
             if ((*THEFILE) == NULL) {
-                (*THEFILE) = malloc(sizeof(char*) * L);
+
+                (*THEFILE) = malloc(sizeof(char*) * (*L));
+
             }
             else {
-                (*THEFILE) = realloc((*THEFILE), sizeof(char*) * L);
+                (*THEFILE) = realloc((*THEFILE), sizeof(char*) * (*L));
             }
-            (*THEFILE)[L - 1] = malloc(strlen(aline) + 1);
-            strcpy((*THEFILE)[L - 1], aline);
+            (*THEFILE)[(*L) - 1] = malloc(strlen(aline) + 1);
+            strcpy((*THEFILE)[(*L) - 1], aline);
 
+            printf("HERE TO LOOK : %s\n",aline);
 
             aline = NULL;
             aline = malloc(sizeof(char));
             lineword = 0;
 
         }
-        else {
-            aline = realloc(aline, sizeof(char) * (L + 1));
-            aline[lineword] = code[word];
-            lineword++;
-        }
-       
+       printf("times ends\n");
     }
 }
 
-void toBeCompileOnFile(char* fileName,char * **THEFILE) {
+void toBeCompileOnFile(char* fileName,char * **THEFILE,int *L) {
+
     printf("COUNTING LINES...\n");
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
     if (file == NULL) {
         printf("Cant open file\n");
-        return 1;
+        return;
     }
 
     while (fgets(line, sizeof(line), file) != NULL) {
 
-        L++;
+        (*L)++;
 
         if ((*THEFILE) == NULL){
-            (*THEFILE) = malloc(sizeof(char*) * L);
+            (*THEFILE) = malloc(sizeof(char*) * (*L));
 
         }  else{
-            (*THEFILE) = realloc((*THEFILE), sizeof(char*) * L);
+            (*THEFILE) = realloc((*THEFILE), sizeof(char*) * (*L));
         }
-        (*THEFILE)[L-1] = malloc(strlen(line) + 1);
-        strcpy((*THEFILE)[L-1], line);
+        (*THEFILE)[(*L)-1] = malloc(strlen(line) + 1);
+        strcpy((*THEFILE)[(*L)-1], line);
     }
 
     fclose(file);
 }
 
-int compile(char **THEFILE) {
+int compile(char **THEFILE,int L) {
     int lastCheckType = 0;
     int Line = 0;
 
