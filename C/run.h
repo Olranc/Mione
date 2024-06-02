@@ -13,13 +13,14 @@ char*** MIO = NULL;
 int* EveryLines = NULL;
 
 void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize) {
+    printf("RUN!\n");
     int LOCK =0;
 
     int lvl =0;
     int lvlStar = 0;
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
-        printf("%s %s \n", MIO [index][0],MIO [index][1]);
+
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
@@ -286,20 +287,23 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     }
 
     char *my;
+    printf("OPSIZE : %d\n",*OPSize);
     if (*OPSize > 0) {
+        printf("AS\n");
 
     }
     else {
+        printf("MODED\n");
         *OPSize++;
         *OUTPUT = malloc(sizeof(char**));
         (*OUTPUT)[0] = malloc(sizeof(char*)*2);
         (*OUTPUT)[0][0] = "VALUE";
         (*OUTPUT)[0][1] = "0";
     }
-
+    printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
     to((*OUTPUT)[0], &my); // memory.h
 
-    printf("POWER OFF : %s\n",my);
+    printf("THIS POWER OFF : %s\n",my);
 };
 
 

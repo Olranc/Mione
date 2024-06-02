@@ -65,7 +65,7 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     int c_size = compile(Fuc,Lines);
 
     char ***FucReturn;
-    int FucReturnSize;
+    int FucReturnSize = 0;
 
     char*** CountedWithV;
     int CountedWithVSize;
@@ -179,6 +179,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
 
                                 *rePack = ReturnPACK;
                                 *rePackSize = ReturnPACKSize;
+                                printf("i am : %d\n",ReturnPACKSize);
 
                             }
                             else {
@@ -196,9 +197,15 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
             }
         }
     }
+    if (*rePackSize){}else{
+        static char a[] = "VALUE";
+        static char b[] = "1";
+        static char*  unk[] = {a,b};
+        static char** unknown[] = {unk};
 
-
-
+        *rePack = unknown;
+        *rePackSize = 1;
+    }
 }
 
 void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
@@ -249,30 +256,35 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
                     Pack = realloc(Pack, sizeof(char **) * (PackSize));
                     Pack[PackSize-1] = thatRerPack[ii];
                 }
+
+                if (strcmp(Pack[PackSize - 1][0], "ERR")==0){
+
+                    printf("    !!!Caught an ERROR from CasesCount\n");
+                    static char *errPack[3];
+                    errPack[0] = Pack[PackSize - 1][0];
+                    errPack[1] = Pack[PackSize - 1][1];
+                    errPack[2] = Pack[PackSize - 1][2];
+                    static char **erPack[] = {errPack};
+                    *rePACK = erPack;
+                    *rePACKSize = 1;
+                    return;
+                }else{
+                    //可以外方
+                    //請 CaseCount 回傳 VALUE:0
+
+                    //最後有做到了
+                }
+
+                printf("    OKAY IT IS: %s\n", Pack[PackSize - 1][0]);
+
+                CASES = realloc(CASES, 0);
+                CASESSize = 0;
             }else{
                 //麻煩之後的我
             }
-
+            printf("Here?\n");
             printf("HERE HAS ERR %s?\n",*(Pack[PackSize - 1]));
-            if (strcmp(Pack[PackSize - 1][0], "ERR")==0){
 
-                printf("    !!!Caught an ERROR from CasesCount\n");
-                static char *errPack[3];
-                errPack[0] = Pack[PackSize - 1][0];
-                errPack[1] = Pack[PackSize - 1][1];
-                errPack[2] = Pack[PackSize - 1][2];
-                static char **erPack[] = {errPack};
-                *rePACK = erPack;
-                *rePACKSize = 1;
-                return;
-            }else{
-                //可以外方
-            }
-
-            printf("    OKAY IT IS: %s\n", Pack[PackSize - 1][0]);
-
-            CASES = realloc(CASES, 0);
-            CASESSize = 0;
         }
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;

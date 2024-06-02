@@ -23,16 +23,13 @@ void to(char **me,char**elsse){
     printf("    [TO]\n");
     if (strcmp(me[1], "0") == 0) {
         *elsse = "0";
-        return;
     }
     else {
         if (strcmp(me[0], "VALUE") == 0) {
             *elsse = memory[atoi(me[1]) - 1][1];
-            return;
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
             *elsse = memory[atoi(me[1]) - 1][2];
-            return;
         }
     }
     printf("    [TO : END]\n");
