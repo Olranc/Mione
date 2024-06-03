@@ -1,5 +1,8 @@
+#define Mione "You owned."
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
+
 #define MYFILE "index.mio" //D:\\
 
 #include <stdio.h>
@@ -43,7 +46,7 @@ int main() {
             run(&end, &endSizel,c_size,NULL,0); //run
 		}
 
-		if (wcscmp(cmds[1], L"home") == 0) {
+		if (wcscmp(cmds[1], L"mione") == 0) {
 
 			printf("==================================================================\n");
 			printf("          ____                                                \n");
@@ -79,7 +82,7 @@ int main() {
         int c_size = compile(THEFILE,Lines);
         run(&end, &endSizel,c_size,NULL,0); //run
         printf("fin size : %d\n",c_size);
-        printf("a... you might find page is here => 'mione home'\n\n");
+        printf("Mione ,you owned.\n\n");
 	}
 
 

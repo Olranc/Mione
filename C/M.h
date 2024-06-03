@@ -197,6 +197,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
 
                 prerr(thisLine, countPack[0][1], atoi(countPack[0][2]));
             }
+            printf("mtfk: %s %s\n",countPack[0][0],countPack[0][1]);
             *OPSize = countPackSize;
             *OUTPUT = countPack;
             printf("[END HEAD: RETURN ; Warring : End by \"return\" HEAD.]\n\n");

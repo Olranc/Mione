@@ -287,6 +287,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     }
 
     char *my;
+    char *mytype;
     printf("OPSIZE : %d\n",*OPSize);
     if (*OPSize > 0) {
         printf("AS\n");
@@ -301,9 +302,9 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         (*OUTPUT)[0][1] = "0";
     }
     printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
-    to((*OUTPUT)[0], &my); // memory.h
+    to((*OUTPUT)[0], &my,&mytype); // memory.h
 
-    printf("THIS POWER OFF : %s\n",my);
+    printf("THIS POWER OFF : %s (Type:%s)\n",my,mytype);
 };
 
 

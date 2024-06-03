@@ -1,6 +1,4 @@
-
-
-void to(char **me,char**elsse);
+void to(char **me,char**elsse,char**type);
 
 
 #ifndef memory_h
@@ -19,17 +17,27 @@ void lazy(char**ma,int S){
     *ma = output;
 }
 
-void to(char **me,char**elsse){
+void to(char **me,char**elsse,char**type){
     printf("    [TO]\n");
+    //printf("%s %s for to;\n",*type,*elsse);
     if (strcmp(me[1], "0") == 0) {
-        *elsse = "0";
+        *elsse = "NULL";
+        *type = "0";
     }
     else {
         if (strcmp(me[0], "VALUE") == 0) {
+            printf("VAL %s\n",memory[3][0]);
             *elsse = memory[atoi(me[1]) - 1][1];
+            printf("1 %s\n",me[1]); //todo 1:NULL 0:VALUE
+            *type = memory[atoi(me[1]) - 1][0];
+            printf("2\n");
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
+            printf("VAR\n");
             *elsse = memory[atoi(me[1]) - 1][2];
+            printf("1\n");
+            *type = memory[atoi(me[1]) - 1][1];
+            printf("2\n");
         }
     }
     printf("    [TO : END]\n");
@@ -111,4 +119,4 @@ void cm_v(char ** ma,int _type,char* v) { //
     lazy(ma,mSize);
 }
 
-#endif
+#endif /* memory_h */
