@@ -19,16 +19,17 @@ void lazy(char**ma,int S){
 
 void to(char **me,char**elsse,char**type){
     printf("    [TO]\n");
-    //printf("%s %s for to;\n",*type,*elsse);
     if (strcmp(me[1], "0") == 0) {
+
         *elsse = "NULL";
         *type = "0";
     }
     else {
+
         if (strcmp(me[0], "VALUE") == 0) {
-            printf("VAL %s\n",memory[3][0]);
+            printf("VAL \n");
             *elsse = memory[atoi(me[1]) - 1][1];
-            printf("1 %s\n",me[1]); //todo 1:NULL 0:VALUE
+            printf("1 %s\n",me[1]);
             *type = memory[atoi(me[1]) - 1][0];
             printf("2\n");
         }

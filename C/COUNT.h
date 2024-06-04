@@ -78,7 +78,7 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
 
     *rePack = FucReturn;
     *rePackSize = FucReturnSize;
-    printf("# CALLED %d\n",FucReturnSize);
+    printf("# CALLED %s %s\n",FucReturn[0][0],FucReturn[0][1]);
 }
 
 void toErrForCasesCount(char* reason,char * code,char***Pack) {
@@ -185,6 +185,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                                 CASES = malloc(0);
 
 
+                                printf("jjjjjjjjjj : %s %s\n",Pack[0][0],Pack[0][1]);
                                 *rePack = ReturnPACK;
                                 *rePackSize = ReturnPACKSize;
                             }
@@ -203,7 +204,9 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
             }
         }
     }
+    printf("Oh okay%d\n",*rePackSize);
     if (*rePackSize){
+        printf("Yes?\n");
         if (strcmp(*rePack[0][0],"ERR")==0){
 
         }else{
@@ -211,6 +214,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                 printf("test: %s %s\n",((*rePack)[i][1]),((*rePack)[i][0]));
                 char*value;
                 char*type;
+                printf("haaaaaa : %s %s\n",(*rePack)[i][0],(*rePack)[i][1]);
                 to((*rePack)[i],&value,&type);
                 (*rePack)[i][1] = value;
                 (*rePack)[i][0] = type;
@@ -218,13 +222,19 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
             }
         }
     }else{
-        static char a[] = "0";
-        static char b[] = "NULL";
-        static char*  ni[] = {a,b};
-        static char** nil[] = {ni};
+        if (PackSize){
+            *rePack = Pack;
+            *rePackSize = PackSize;
+        }else{
+            static char a[] = "0";
+            static char b[] = "NULL";
+            static char*  ni[] = {a,b};
+            static char** nil[] = {ni};
 
-        *rePack = nil;
-        *rePackSize = 1;
+            *rePack = nil;
+            *rePackSize = 1;
+        }
+
     }
 }
 
@@ -267,7 +277,10 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
 
             char ***thatRerPack;
             int thatRerPackSize = 0;
+            printf("nah bro : %s %s\n",PACK[0][0],PACK[0][1]);
+
             CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize);
+
             printf("wtf : %d\n",thatRerPackSize);
             if (thatRerPackSize){
                 for (int ii =0;ii<thatRerPackSize;ii++){
@@ -275,10 +288,21 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
                     PackSize++;
                     Pack = realloc(Pack, sizeof(char **) * (PackSize));
                     Pack[PackSize-1] = thatRerPack[ii];
+                    char***butter = malloc(0);
+                    printf("HAHAHAHAHAHA : %s %s\n",Pack[PackSize-1][0],Pack[PackSize-1][1]);
                     for (int i =0;i<CASESSize;i++){
+                        butter = realloc(butter, sizeof(char **) * (i+1));
+                        *butter = malloc(sizeof(char *) * 2);
+                        to(  Pack[PackSize-1],&(butter)[i][0],&(butter)[i][1]);
                         printf("    CASE HERE: %s %s\n",CASES[i][0],CASES[i][1]);
                     }
-                    printf(" me anying : %s %s\n",Pack[PackSize-1][0],Pack[PackSize-1][1]);
+
+
+                    printf(" me anying : %s %s\n",butter[PackSize-1][0],butter[PackSize-1][1]); //todo
+
+                    Pack = butter;
+                    PackSize = PackSize;
+                    printf("    END: COUNT\n");
                 }
 
                 if (strcmp(Pack[PackSize - 1][0], "ERR")==0){
@@ -316,7 +340,9 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
 
     for (int i = 0;i<PackSize;i++){
         char *ma;
-        cm_v(&ma, atoi(Pack[i][0]),Pack[i][1]);
+
+
+        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0]);
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
         printf("    PACKED : %s %s\n",Pack[i][0],Pack[i][1]);

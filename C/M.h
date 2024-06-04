@@ -176,6 +176,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
         if (_whileSize - 1 == i) {
             char ***countPack;
             int countPackSize;
+            printf("okkkkkkk: %s %s\n",PACK[0][0],PACK[0][1]);
             COUNT(PACK, PACKSize, &countPack, &countPackSize);
 
             PACKSize = 0;
