@@ -19,8 +19,8 @@ void lazy(char**ma,int S){
 
 void to(char **me,char**elsse,char**type){
     printf("    [TO]\n");
+    printf("Hmmm OKAY : %s %s\n",me[0],me[1]);
     if (strcmp(me[1], "0") == 0) {
-
         *elsse = "NULL";
         *type = "0";
     }
@@ -28,10 +28,13 @@ void to(char **me,char**elsse,char**type){
 
         if (strcmp(me[0], "VALUE") == 0) {
             printf("VAL \n");
+            printf("1 %s\n",memory[atoi(me[1]) - 1][0]);
+
             *elsse = memory[atoi(me[1]) - 1][1];
-            printf("1 %s\n",me[1]);
+            printf("2 %s \n",memory[atoi(me[1]) - 1][1]);
+
             *type = memory[atoi(me[1]) - 1][0];
-            printf("2\n");
+            printf("end\n");
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
             printf("VAR\n");

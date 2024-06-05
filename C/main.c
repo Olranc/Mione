@@ -33,6 +33,7 @@ int main() {
     int endSizel = 0;
 
     char ** THEFILE = NULL;
+    char ***MIO=NULL;
 
 	
 	if (num >= 2) {
@@ -42,8 +43,8 @@ int main() {
             int Lines = 0;
 
 			toBeCompileOnFile(m,&THEFILE,&Lines);
-            int c_size = compile(THEFILE,Lines);
-            run(&end, &endSizel,c_size,NULL,0); //run
+            int c_size = compile(THEFILE,Lines,&MIO);
+            run(&end, &endSizel,c_size,NULL,0,MIO); //run
 		}
 
 		if (wcscmp(cmds[1], L"mione") == 0) {
@@ -79,8 +80,8 @@ int main() {
 	else if (num == 1) {
         int Lines = 0;
 		toBeCompileOnFile(MYFILE,&THEFILE,&Lines);
-        int c_size = compile(THEFILE,Lines);
-        run(&end, &endSizel,c_size,NULL,0); //run
+        int c_size = compile(THEFILE,Lines,&MIO);
+        run(&end, &endSizel,c_size,NULL,0,MIO); //run
         printf("fin size : %d\n",c_size);
         printf("Mione ,you owned.\n\n");
 	}

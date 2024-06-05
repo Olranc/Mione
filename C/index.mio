@@ -1,1 +1,7 @@
-return 555
+set x = $
+    set x = $
+        return "I"
+    @()
+    return "LOVE"
+@()
+return "YOU"

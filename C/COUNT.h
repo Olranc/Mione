@@ -62,7 +62,9 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     char **Fuc = NULL;
     int Lines = 0;
     toBeCompileWithCode(FucV, &Fuc,&Lines);
-    int c_size = compile(Fuc,Lines);
+    char***MIO=NULL;
+    int c_size = compile(Fuc,Lines,&MIO);
+    printf("cSize : %d\n",c_size);
 
     char ***FucReturn;
     int FucReturnSize = 0;
@@ -70,15 +72,10 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     char*** CountedWithV;
     int CountedWithVSize;
     COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize);
-    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize);
-
-    for (int i  = 0;i<FucReturnSize;i++){
-        printf("    ABC: %s %s\n",FucReturn[i][0],FucReturn[i][1]);
-    }
+    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO);
 
     *rePack = FucReturn;
     *rePackSize = FucReturnSize;
-    printf("# CALLED %s %s\n",FucReturn[0][0],FucReturn[0][1]);
 }
 
 void toErrForCasesCount(char* reason,char * code,char***Pack) {
@@ -95,7 +92,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
     //y
 
     printf("    HERE: CasesCount\n");
-    printf("    Size is : %d\n", CASESSize);
 
     int bracketLVL = 0;
     int beforeBracket = 0;  //had to add 1 in this 
@@ -114,12 +110,10 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
     };
 
     for (int index = 0;index<CASESSize;index++) {
-        printf("        Index:%s %s\n",CASES[index][0],CASES[index][1]);
         if (bracketLVL) {
             InBracketSize++;
             InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
             InBracket[InBracketSize - 1] = CASES[index];
-            printf("        ADDED\n");
         }
         else {
             if (strcmp(CASES[index][1], "7") == 0 && strcmp(CASES[index][0], "SYMBOL") == 0) {
@@ -129,7 +123,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                 PackSize++;
                 Pack = realloc(Pack, sizeof(char**) * PackSize);
                 Pack[PackSize - 1] = CASES[index];
-                printf("        Pack Added\n");
             }
         }
 
@@ -144,7 +137,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                     InBracketSize++;
                     InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
                     InBracket[InBracketSize - 1] = CASES[index];
-                    printf("        ADDED\n");
                 }
                 bracketLVL++;
             }
@@ -184,10 +176,8 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                                 CASES = NULL;
                                 CASES = malloc(0);
 
-
-                                printf("jjjjjjjjjj : %s %s\n",Pack[0][0],Pack[0][1]);
-                                *rePack = ReturnPACK;
-                                *rePackSize = ReturnPACKSize;
+                                Pack = ReturnPACK;
+                                PackSize = ReturnPACKSize;
                             }
                             else {
                                 static char** err;
@@ -206,19 +196,15 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
     }
     printf("Oh okay%d\n",*rePackSize);
     if (*rePackSize){
-        printf("Yes?\n");
         if (strcmp(*rePack[0][0],"ERR")==0){
 
         }else{
             for (int i =0;i<*rePackSize;i++){
-                printf("test: %s %s\n",((*rePack)[i][1]),((*rePack)[i][0]));
                 char*value;
                 char*type;
-                printf("haaaaaa : %s %s\n",(*rePack)[i][0],(*rePack)[i][1]);
                 to((*rePack)[i],&value,&type);
                 (*rePack)[i][1] = value;
                 (*rePack)[i][0] = type;
-                printf("        Cool : %s %s\n",(*rePack)[i][0],(*rePack)[i][1]);
             }
         }
     }else{
@@ -226,8 +212,8 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
             *rePack = Pack;
             *rePackSize = PackSize;
         }else{
-            static char a[] = "0";
-            static char b[] = "NULL";
+            static char a[] = "VALUE";
+            static char b[] = "0";
             static char*  ni[] = {a,b};
             static char** nil[] = {ni};
 
@@ -241,11 +227,10 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
 void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
     printf("    HERE: COUNT\n");
 
-    char ***CASES = malloc(0);
-
+    char ***CASES = malloc(0); // a()
     int CASESSize = 0;
 
-    char ***Pack = malloc(0);
+    char ***Pack = malloc(0); // 1 + a()
     int PackSize = 0;
 
     int lvl = 0;
@@ -266,46 +251,22 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
             CASESSize++;
             CASES = realloc(CASES, sizeof(char **) * (CASESSize));
             CASES[CASESSize - 1] = PACK[index];
+            printf("added case %s %s\n",CASES[CASESSize - 1][0],CASES[CASESSize - 1][1]);
         }
 
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1) countCASE = 1;
-        printf("    ITEM : %s %s a:%d c:%d %d\n", PACK[index][0], PACK[index][1],addCASE,countCASE, lvl);
 
         if (countCASE && ( lvl==0 || PACKSize-1 == index)) {
 
 
             char ***thatRerPack;
             int thatRerPackSize = 0;
-            printf("nah bro : %s %s\n",PACK[0][0],PACK[0][1]);
 
             CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize);
 
-            printf("wtf : %d\n",thatRerPackSize);
             if (thatRerPackSize){
-                for (int ii =0;ii<thatRerPackSize;ii++){
-                    printf("%d\n",ii);
-                    PackSize++;
-                    Pack = realloc(Pack, sizeof(char **) * (PackSize));
-                    Pack[PackSize-1] = thatRerPack[ii];
-                    char***butter = malloc(0);
-                    printf("HAHAHAHAHAHA : %s %s\n",Pack[PackSize-1][0],Pack[PackSize-1][1]);
-                    for (int i =0;i<CASESSize;i++){
-                        butter = realloc(butter, sizeof(char **) * (i+1));
-                        *butter = malloc(sizeof(char *) * 2);
-                        to(  Pack[PackSize-1],&(butter)[i][0],&(butter)[i][1]);
-                        printf("    CASE HERE: %s %s\n",CASES[i][0],CASES[i][1]);
-                    }
-
-
-                    printf(" me anying : %s %s\n",butter[PackSize-1][0],butter[PackSize-1][1]); //todo
-
-                    Pack = butter;
-                    PackSize = PackSize;
-                    printf("    END: COUNT\n");
-                }
-
-                if (strcmp(Pack[PackSize - 1][0], "ERR")==0){
+                if (strcmp(thatRerPack[thatRerPackSize - 1][0], "ERR")==0){
 
                     printf("    !!!Caught an ERROR from CasesCount\n");
                     static char *errPack[3];
@@ -317,22 +278,26 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
                     *rePACKSize = 1;
                     return;
                 }else{
-                    //可以外方
-                    //請 CaseCount 回傳 <TYPE>:<VALUE>
+                    for (int ii =0;ii<thatRerPackSize;ii++){
+                        printf("new\n");
+                        PackSize++;
+                        Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                        Pack[PackSize-1] = malloc(sizeof(char*)*2);
 
-                    //最後有做到了
+                        to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]));
+                    }
                 }
 
-                printf("    OKAY IT IS: %s\n", Pack[PackSize - 1][0]);
 
-                CASES = realloc(CASES, 0);
+
+
+
+                CASES = NULL;
+                CASES = malloc(0);
                 CASESSize = 0;
             }else{
-                //麻煩之後的我
+                //how?!!!
             }
-            printf("Here?\n");
-            printf("HERE HAS ERR %s?\n",*(Pack[PackSize - 1]));
-
         }
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;
@@ -340,15 +305,11 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
 
     for (int i = 0;i<PackSize;i++){
         char *ma;
-
-
         cm_v(&ma, atoi(Pack[i][1]),Pack[i][0]);
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
-        printf("    PACKED : %s %s\n",Pack[i][0],Pack[i][1]);
     }
 
-    printf("    size is : %d\n", PackSize);
     *rePACK = Pack;
     *rePACKSize = PackSize;
     printf("    END: COUNT\n");

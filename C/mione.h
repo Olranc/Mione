@@ -1,5 +1,5 @@
 void toBeCompileOnFile(char* fileName,char ***THEFILE,int *L);
-int compile(char** THEFILE,int Lines);
+int compile(char** THEFILE,int Lines,char* *** MIO );
 void toBeCompileWithCode(char* code, char*** THEFILE,int * L);
 
 #ifndef mione_h
@@ -183,7 +183,7 @@ void toBeCompileOnFile(char* fileName,char * **THEFILE,int *L) {
     fclose(file);
 }
 
-int compile(char **THEFILE,int L) {
+int compile(char **THEFILE,int L,char* *** MIO ) {
     int lastCheckType = 0;
     int Line = 0;
 
@@ -581,7 +581,7 @@ int compile(char **THEFILE,int L) {
                 //here
                 printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
 
-                mio((txt), lastWordType,&cSize,&NL);
+                mio((txt), lastWordType,&cSize,&NL,MIO);
                 free((txt));
 
 

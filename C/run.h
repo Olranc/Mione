@@ -1,6 +1,6 @@
 int NL;
 int* EveryLines;
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize);
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char*** MIO );
 
 #ifndef run_h
 #define run_h
@@ -8,19 +8,18 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 #include "M.h"
 
 
-char*** MIO = NULL;
-
 int* EveryLines = NULL;
 
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize) {
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO ) {
     printf("RUN!\n");
     int LOCK =0;
 
     int lvl =0;
     int lvlStar = 0;
+    printf("MIOsize : %d\n",MIOsize);
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
-
+        printf("MAIN: %d %d %s %s\n",MIOsize,index,MIO [index][0],MIO [index][1]);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
@@ -146,8 +145,11 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
+                        for (int i = 0; i < PackSize; i++){
+                            printf("    HAHA:%s %s\n",PACK[i][0],PACK[i][1]);
+
+                        }
                         HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize);
-                        //TODO
                     }
                 }
             }
@@ -290,8 +292,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     char *mytype;
     printf("OPSIZE : %d\n",*OPSize);
     if (*OPSize > 0) {
-        printf("AS\n");
-
+        printf("A AS\n");
     }
     else {
         printf("MODED\n");
@@ -304,7 +305,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
     to((*OUTPUT)[0], &my,&mytype); // memory.h
 
-    printf("THIS POWER OFF : %s (Type:%s)\n",my,mytype);
+    printf("THIS POWER OFF : ADDRESS : %s %s (Type:%s)\n", (*OUTPUT)[0][1],my,mytype);
 };
 
 
