@@ -11,7 +11,7 @@
 #include "run.h"
 
 
-void V_V(char*** _while,int _whileSize,int firstI){
+void V_V(char*** _while,int _whileSize,int firstI,int MEMORY_GROUP ){
     printf("[NEW V/V]\n");
     int Index_ = firstI-1;
 
@@ -52,7 +52,7 @@ void V_V(char*** _while,int _whileSize,int firstI){
             }else{ //是 PROMPT
                 char *** countPack;
                 int countPackSize;
-                COUNT(PACK,PACKSize,&countPack,&countPackSize);
+                COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP);
 
                 PACKSize=0;
                 free(PACK);
@@ -88,7 +88,7 @@ void V_V(char*** _while,int _whileSize,int firstI){
 
 //HEAD
 
-void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize) { //1
+void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ) { //1
     printf("[NEW HEAD: SET]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -119,7 +119,7 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
                 }else{ //是 PROMPT
                     char *** countPack;
                     int countPackSize;
-                    COUNT(PACK,PACKSize,&countPack,&countPackSize);
+                    COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP);
 
                     PACKSize=0;
                     free(PACK);
@@ -154,7 +154,7 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
     printf("[END HEAD: SET]\n\n");
 }
 
-void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize){
+void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ){
     printf("[NEW HEAD: RETURN]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -177,7 +177,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
             char ***countPack;
             int countPackSize;
             printf("okkkkkkk: %s %s\n",PACK[0][0],PACK[0][1]);
-            COUNT(PACK, PACKSize, &countPack, &countPackSize);
+            COUNT(PACK, PACKSize, &countPack, &countPackSize,MEMORY_GROUP);
 
             PACKSize = 0;
             free(PACK);
@@ -209,7 +209,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
     }
     printf("[END HEAD: RETURN]\n\n");
 }
-void get(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize){
+void get(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ){
 
 }
 

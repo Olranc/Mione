@@ -1,4 +1,4 @@
-void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize);
+void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize,int MEMORY_GROUP);
 
 #ifndef COUNT_H
 #define COUNT_H
@@ -14,15 +14,12 @@ void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize);
 #include "prerr.h"
 
 
-void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePack,int * rePackSize) {
+void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePack,int * rePackSize,int MEMORY_GROUP ) {
     printf("    HERE: FunctionCall\n");
     char *FucV = NULL;
-    if (strcmp(FunctionAddress[0], "VALUE") == 0){
-        FucV = memory[atoi(FunctionAddress[1])-1][1];
-    }
-    if (strcmp(FunctionAddress[0], "VARIABLE") == 0){
-        FucV = memory[atoi(FunctionAddress[1])-1][2];
-    }
+    char* useless;
+
+    to(FunctionAddress,&FucV,&useless,MEMORY_GROUP);
 
 
     if (FucV == NULL) {
@@ -59,11 +56,16 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
 
     printf("OOOOOK : %s",FucV);
 
+    memory=realloc(memory,sizeof(char***)*(MEMORY_GROUP+1+1));
+    memory[MEMORY_GROUP+1] = NULL;
+    mSize = realloc(mSize,sizeof(int)*(MEMORY_GROUP+1+1));
+    mSize[MEMORY_GROUP+1] = 0;
+
     char **Fuc = NULL;
     int Lines = 0;
     toBeCompileWithCode(FucV, &Fuc,&Lines);
     char***MIO=NULL;
-    int c_size = compile(Fuc,Lines,&MIO);
+    int c_size = compile(Fuc,Lines,&MIO,MEMORY_GROUP+1);
     printf("cSize : %d\n",c_size);
 
     char ***FucReturn;
@@ -71,14 +73,14 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
 
     char*** CountedWithV;
     int CountedWithVSize;
-    COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize);
-    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO);
+    COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize,MEMORY_GROUP+1);
+    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO,MEMORY_GROUP+1);
 
     *rePack = FucReturn;
     *rePackSize = FucReturnSize;
 }
 
-void toErrForCasesCount(char* reason,char * code,char***Pack) {
+void toErrForCasesCount(char* reason,char * code,char***Pack ) {
     static char* erPack[3];
     erPack[0] = "ERR";
     erPack[1] = reason;
@@ -86,7 +88,7 @@ void toErrForCasesCount(char* reason,char * code,char***Pack) {
     *Pack = erPack;
 }
 
-void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
+void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int MEMORY_GROUP ){
     //case()()
     //x()
     //y
@@ -147,18 +149,14 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
                 else {
                     if (bracketType == 1) { // Calling Function
                         if (strcmp(Pack[PackSize-1][0], "VALUE") == 0 || strcmp(Pack[PackSize - 1][0], "VARIABLE") == 0) {
-                            int VVType = 0;//might be 4,Function
-                            if (strcmp(Pack[PackSize - 1][0], "VALUE") == 0) {
-                                VVType = atoi(memory[atoi(Pack[PackSize - 1][1])-1][0]);
-                            }
-                            if (strcmp(Pack[PackSize - 1][0], "VARIABLE") == 0) {
-                                VVType = atoi(memory[atoi(Pack[PackSize - 1][1])-1][1]);
-                            }
+                            char* VVType;//might be 4,Function
+                            char*useless;
 
-                            if (VVType == 4) {
+                            to(Pack[PackSize - 1],&useless,&VVType,MEMORY_GROUP);
+                            if (strcmp(VVType ,"4")==0) {
                                 char*** ReturnPACK;
                                 int ReturnPACKSize;
-                                FunctionCall(Pack[PackSize - 1], InBracket, InBracketSize,&ReturnPACK,&ReturnPACKSize);
+                                FunctionCall(Pack[PackSize - 1], InBracket, InBracketSize,&ReturnPACK,&ReturnPACKSize,MEMORY_GROUP);
                                 Pack[PackSize - 1] = NULL;
                                 PackSize--;
 
@@ -202,7 +200,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
             for (int i =0;i<*rePackSize;i++){
                 char*value;
                 char*type;
-                to((*rePack)[i],&value,&type);
+                to((*rePack)[i],&value,&type,MEMORY_GROUP);
                 (*rePack)[i][1] = value;
                 (*rePack)[i][0] = type;
             }
@@ -224,7 +222,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize){
     }
 }
 
-void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
+void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMORY_GROUP ){ //
     printf("    HERE: COUNT\n");
 
     char ***CASES = malloc(0); // a()
@@ -263,7 +261,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
             char ***thatRerPack;
             int thatRerPackSize = 0;
 
-            CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize);
+            CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize,MEMORY_GROUP);
 
             if (thatRerPackSize){
                 if (strcmp(thatRerPack[thatRerPackSize - 1][0], "ERR")==0){
@@ -284,7 +282,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
                         Pack = realloc(Pack, sizeof(char **) * (PackSize));
                         Pack[PackSize-1] = malloc(sizeof(char*)*2);
 
-                        to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]));
+                        to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]),MEMORY_GROUP);
                     }
                 }
 
@@ -305,7 +303,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize){ //
 
     for (int i = 0;i<PackSize;i++){
         char *ma;
-        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0]);
+        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP);
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
     }

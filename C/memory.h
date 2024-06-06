@@ -1,12 +1,11 @@
-void to(char **me,char**elsse,char**type);
+int* mSize;
+char**** memory;
+void to(char **me,char**value,char**type,int MEMORY_GROUP );
 
 
 #ifndef memory_h
 #define memory_h
-char*** memory = NULL;
-int Type = 0;
-
-int mSize = 0;
+char**** memory = NULL;
 
 
 void lazy(char**ma,int S){
@@ -17,41 +16,42 @@ void lazy(char**ma,int S){
     *ma = output;
 }
 
-void to(char **me,char**elsse,char**type){
+void to(char **me,char**value,char**type,int MEMORY_GROUP  ){
     printf("    [TO]\n");
     printf("Hmmm OKAY : %s %s\n",me[0],me[1]);
     if (strcmp(me[1], "0") == 0) {
-        *elsse = "NULL";
+        *value = "NULL";
         *type = "0";
     }
     else {
 
         if (strcmp(me[0], "VALUE") == 0) {
             printf("VAL \n");
-            printf("1 %s\n",memory[atoi(me[1]) - 1][0]);
+            printf("1 MG:%d %s\n",MEMORY_GROUP,memory[MEMORY_GROUP][atoi(me[1]) - 1][0]);
 
-            *elsse = memory[atoi(me[1]) - 1][1];
-            printf("2 %s \n",memory[atoi(me[1]) - 1][1]);
+            *value = memory[MEMORY_GROUP][atoi(me[1]) - 1][1];
+            printf("2 %s \n",memory[MEMORY_GROUP][atoi(me[1]) - 1][1]);
 
-            *type = memory[atoi(me[1]) - 1][0];
+            *type = memory[MEMORY_GROUP][atoi(me[1]) - 1][0];
             printf("end\n");
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
             printf("VAR\n");
-            *elsse = memory[atoi(me[1]) - 1][2];
+            *value = memory[MEMORY_GROUP][atoi(me[1]) - 1][2];
             printf("1\n");
-            *type = memory[atoi(me[1]) - 1][1];
+            *type = memory[MEMORY_GROUP][atoi(me[1]) - 1][1];
             printf("2\n");
         }
     }
     printf("    [TO : END]\n");
 }
 
-void cm(char** ma, char* v, int _type) {
-    // memory = {   {"x",2,"sssss"}   }
-
-    for (int i = 0; i <mSize;i++){
-        if (strcmp(memory[i][0], v)==0)
+void cm(char** ma, char* v, int _type,int MEMORY_GROUP ) {
+    // memory[MEMORY_GROUP] = {   {"x",2,"sssss"}   }
+    printf("into : %d\n",MEMORY_GROUP);
+    for (int i = 0; i <mSize[MEMORY_GROUP];i++){
+        printf("uhno:%d\n",i)   ;
+        if (strcmp(memory[MEMORY_GROUP][i][0], v)==0)
         {
             lazy(ma,i+1);
 
@@ -59,68 +59,73 @@ void cm(char** ma, char* v, int _type) {
         }
     }
 
-    mSize++;
-    if (memory) {
-        memory = realloc(memory, sizeof(char**) * mSize);
+    mSize[MEMORY_GROUP]++;
+    if (memory[MEMORY_GROUP]) {
+        memory[MEMORY_GROUP] = realloc(memory[MEMORY_GROUP], sizeof(char**) * mSize[MEMORY_GROUP]);
     }
     else {
-        memory = malloc(sizeof(char**));
+        printf("yesss entered\n");
+        memory[MEMORY_GROUP] = malloc(sizeof(char**));
     }
+    printf("ohhhhhh ? %d\n",MEMORY_GROUP);
 
-    memory[mSize - 1] = malloc(sizeof(char*) * 3);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1] = malloc(sizeof(char*) * 3);
 
 
 
 
-    memory[mSize - 1][0] = malloc(strlen(v) + 1);
-    strcpy(memory[mSize - 1][0], v);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0] = malloc(strlen(v) + 1);
+    strcpy(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0], v);
 
-    memory[mSize - 1][1] = malloc(strlen("1") + 1);
-    strcpy(memory[mSize - 1][1], "1");
-    //sprintf(memory[mSize - 1][0], "%d", _type);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1] = malloc(strlen("1") + 1);
+    strcpy(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1], "1");
+    //sprintf(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0], "%d", _type);
 
-    memory[mSize - 1][2] = malloc(strlen("NULL") + 1);
-    strcpy(memory[mSize - 1][2], "NULL");
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][2] = malloc(strlen("NULL") + 1);
+    strcpy(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][2], "NULL");
 
-    
+
 
 
     printf("    [MEMORY CREATED]\n");
-    printf("                    [SPACENAME]:'%s'\n", memory[mSize - 1][0]);
-    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][1]);
-    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][2]);
-    printf("    [ADDRESS]:'%d\n", mSize);
+    printf("                    [SPACENAME]:'%s'\n", memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0]);
+    printf("                    [VALUETYPE]:'%s'\n", memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1]);
+    printf("                    [VALUE]:'%s'\n", memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][2]);
+    printf("                    [GROUP]:'%d'\n", MEMORY_GROUP);
 
-    lazy(ma,mSize);
+    printf("    [ADDRESS]:'%d\n", mSize[MEMORY_GROUP]);
+
+    lazy(ma,mSize[MEMORY_GROUP]);
 }
 
-void cm_v(char ** ma,int _type,char* v) { //
-    mSize++;
+void cm_v(char ** ma,int _type,char* v,int MEMORY_GROUP ) { //
+    mSize[MEMORY_GROUP]++;
 
-    if (memory) {
-        memory = realloc(memory, sizeof(char**) * mSize);
+    if (memory[MEMORY_GROUP]) {
+        memory[MEMORY_GROUP] = realloc(memory[MEMORY_GROUP], sizeof(char**) * mSize[MEMORY_GROUP]);
     }
     else {
-        memory = malloc(sizeof(char**));
+        memory[MEMORY_GROUP] = malloc(sizeof(char**));
     }
 
-    memory[mSize - 1] = malloc(sizeof(char*) * 2);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1] = malloc(sizeof(char*) * 2);
 
 
-    memory[mSize - 1][0] = malloc(32);
-    sprintf(memory[mSize - 1][0], "%d", _type);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0] = malloc(32);
+    sprintf(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0], "%d", _type);
 
-    memory[mSize - 1][1] = malloc(strlen(v) + 1);
-    strcpy(memory[mSize - 1][1],v);
+    memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1] = malloc(strlen(v) + 1);
+    strcpy(memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1],v);
 
 
 
     printf("    [MEMORY CREATED]\n");
-    printf("                    [VALUETYPE]:'%s'\n", memory[mSize - 1][0]);
-    printf("                    [VALUE]:'%s'\n", memory[mSize - 1][1]);
-    printf("    [ADDRESS]:'%d\n", mSize);
+    printf("                    [VALUETYPE]:'%s'\n", memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][0]);
+    printf("                    [VALUE]:'%s'\n", memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1][1]);
+    printf("                    [GROUP]:'%d'\n", MEMORY_GROUP);
+    printf("    [ADDRESS]:'%d\n", mSize[MEMORY_GROUP]);
 
-    lazy(ma,mSize);
+    lazy(ma,mSize[MEMORY_GROUP]);
 }
 
 #endif /* memory_h */

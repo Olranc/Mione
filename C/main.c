@@ -43,8 +43,13 @@ int main() {
             int Lines = 0;
 
 			toBeCompileOnFile(m,&THEFILE,&Lines);
-            int c_size = compile(THEFILE,Lines,&MIO);
-            run(&end, &endSizel,c_size,NULL,0,MIO); //run
+            memory=malloc(sizeof(char***)*1);
+            memory[0] = NULL;
+            mSize = malloc(sizeof(int)*1);
+            mSize[0] = 0;
+
+            int c_size = compile(THEFILE,Lines,&MIO,0);
+            run(&end, &endSizel,c_size,NULL,0,MIO,0); //run
 		}
 
 		if (wcscmp(cmds[1], L"mione") == 0) {
@@ -73,15 +78,20 @@ int main() {
             printf("\n\n\nMione : %s \n\n\n", "https://github.com/Mioprety/Mione");
         }
 		if (wcscmp(cmds[1], L"mxh") == 0) {
-			printf("\n\n\Your left made it for you.\n\n\n");
+			printf("\n\nYour left made it for you.\n\n\n");
 		}
 		
 	}
 	else if (num == 1) {
         int Lines = 0;
 		toBeCompileOnFile(MYFILE,&THEFILE,&Lines);
-        int c_size = compile(THEFILE,Lines,&MIO);
-        run(&end, &endSizel,c_size,NULL,0,MIO); //run
+        memory=malloc(sizeof(char***)*1);
+        memory[0] = NULL;
+        mSize = malloc(sizeof(int)*1);
+        mSize[0] = 0;
+
+        int c_size = compile(THEFILE,Lines,&MIO,0);
+        run(&end, &endSizel,c_size,NULL,0,MIO,0); //run
         printf("fin size : %d\n",c_size);
         printf("Mione ,you owned.\n\n");
 	}

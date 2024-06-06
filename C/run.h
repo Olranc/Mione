@@ -1,6 +1,6 @@
 int NL;
 int* EveryLines;
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char*** MIO );
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char*** MIO,int MEMORY_GROUP );
 
 #ifndef run_h
 #define run_h
@@ -10,7 +10,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 
 int* EveryLines = NULL;
 
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO ) {
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO,int MEMORY_GROUP  ) {
     printf("RUN!\n");
     int LOCK =0;
 
@@ -149,7 +149,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                             printf("    HAHA:%s %s\n",PACK[i][0],PACK[i][1]);
 
                         }
-                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize);
+                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize,MEMORY_GROUP);
                     }
                 }
             }
@@ -266,7 +266,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                 }
                 //printf("here: %d\n",LOCK);
                 //printf("OMG paired with HEAD\n");
-                V_V(PACK,PackSize,index);
+                V_V(PACK,PackSize,index,MEMORY_GROUP);
 
             }
 
@@ -303,7 +303,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         (*OUTPUT)[0][1] = "0";
     }
     printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
-    to((*OUTPUT)[0], &my,&mytype); // memory.h
+    to((*OUTPUT)[0], &my,&mytype,MEMORY_GROUP); // memory.h
 
     printf("THIS POWER OFF : ADDRESS : %s %s (Type:%s)\n", (*OUTPUT)[0][1],my,mytype);
 };

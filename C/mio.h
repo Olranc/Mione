@@ -28,7 +28,7 @@ int mioEnd(int cSize,int *NL){
 // "a"=="a"
 // <虛擬記憶體位置> <符號ID> <虛擬記憶體位置>
 
-int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ) {
+int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ,int MEMORY_GROUP ) {
     (*acSize)++;
 
     printf("HEY ME : %d\n",*acSize);
@@ -51,14 +51,14 @@ int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ) 
     if (strcmp("VARIABLE", _type)) {}
     else {
         char* ma;
-        cm(&ma, _case, _t);
+        cm(&ma, _case, _t,MEMORY_GROUP);
         _case = ma;
     }
     if (strcmp("VALUE", _type)) {}
     else {
 
         char* ma;
-        cm_v(&ma, _t, _case);
+        cm_v(&ma, _t, _case,MEMORY_GROUP);
         _case = ma;
     }
 
@@ -96,7 +96,7 @@ int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ) 
     return 1;
 }
 
-int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
+int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GROUP) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
     int pass = 0;
     int cSize = *acSize;
 	//HEAD:HEAD_NAME
@@ -109,7 +109,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ) { // HEAD,PRO
 		if (strcmp(HEADS[i], _case)) {
 		}
 		else {
-			setC("HEAD", _case, _type,acSize,&pass,MIO);
+			setC("HEAD", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
 		}
 	}
 
@@ -119,7 +119,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ) { // HEAD,PRO
 			if (strcmp(PROMPTS[i], _case)) {
 			}
 			else {
-				setC("PROMPT", _case, _type,acSize,&pass,MIO);
+				setC("PROMPT", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
 			}
 		}
 	}
@@ -129,7 +129,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ) { // HEAD,PRO
 			if (strcmp(SYMBOLS[i], _case)) {
 			}
 			else {
-				setC("SYMBOL", _case, _type,acSize,&pass,MIO);
+				setC("SYMBOL", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
 			}
 		}
 	}
@@ -142,10 +142,10 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ) { // HEAD,PRO
 		
 	else {
 		if (_type == 6) {
-			setC("VARIABLE", _case, _type,acSize,&pass,MIO);
+			setC("VARIABLE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
 		}
 		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
-			setC("VALUE", _case, _type,acSize,&pass,MIO);
+			setC("VALUE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
 		}
 	}
 
