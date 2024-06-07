@@ -16,7 +16,7 @@ void lazy(char**ma,int S){
     *ma = output;
 }
 
-void to(char **me,char**value,char**type,int MEMORY_GROUP  ){
+void to(char **me,char**value,char**type,int MEMORY_GROUP){
     printf("    [TO]\n");
     printf("Hmmm OKAY : %s %s\n",me[0],me[1]);
     if (strcmp(me[1], "0") == 0) {
@@ -27,7 +27,7 @@ void to(char **me,char**value,char**type,int MEMORY_GROUP  ){
 
         if (strcmp(me[0], "VALUE") == 0) {
             printf("VAL \n");
-            printf("1 MG:%d %s\n",MEMORY_GROUP,memory[MEMORY_GROUP][atoi(me[1]) - 1][0]);
+            printf("1 MG:%d %d %d %s\n",MEMORY_GROUP,mSize[MEMORY_GROUP],atoi(me[1]) - 1,memory[MEMORY_GROUP][atoi(me[1]) - 1][0]);
 
             *value = memory[MEMORY_GROUP][atoi(me[1]) - 1][1];
             printf("2 %s \n",memory[MEMORY_GROUP][atoi(me[1]) - 1][1]);

@@ -234,6 +234,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
     int lvl = 0;
 
     for (int index = 0;index<PACKSize;index++) {
+        printf("index : %s %s\n",PACK[index][0],PACK[index][1]);
         int addCASE = 0;
         int countCASE = 0;
 
@@ -293,20 +294,25 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                 CASES = NULL;
                 CASES = malloc(0);
                 CASESSize = 0;
+
             }else{
                 //how?!!!
             }
+
         }
+
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;
     }
 
     for (int i = 0;i<PackSize;i++){
         char *ma;
-        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP);
+
+        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP -1);
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
     }
+
 
     *rePACK = Pack;
     *rePACKSize = PackSize;

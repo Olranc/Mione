@@ -1,8 +1,10 @@
-
 set x = $
-    set y = $
-        return "I"
+    set z = $
+        set h = $
+            return 10
+        @()
+        return "Nah"
     @()
-    return "LOVE"
+    return "Hello"
 @()
-return "YOU"
+return "World"

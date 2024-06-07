@@ -303,7 +303,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         (*OUTPUT)[0][1] = "0";
     }
     printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
-    to((*OUTPUT)[0], &my,&mytype,MEMORY_GROUP); // memory.h
+    to((*OUTPUT)[0], &my,&mytype,MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP-1); // memory.h
 
     printf("THIS POWER OFF : ADDRESS : %s %s (Type:%s)\n", (*OUTPUT)[0][1],my,mytype);
 };
