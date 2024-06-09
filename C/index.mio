@@ -1,10 +1,5 @@
-set x = $
-    set z = $
-        set h = $
-            return 10
-        @()
-        return "Nah"
-    @()
-    return "Hello"
-@()
-return "World"
+return $
+    return $
+        return "fuck you"
+    @
+@()()

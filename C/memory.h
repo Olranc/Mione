@@ -17,8 +17,6 @@ void lazy(char**ma,int S){
 }
 
 void to(char **me,char**value,char**type,int MEMORY_GROUP){
-    printf("    [TO]\n");
-    printf("Hmmm OKAY : %s %s\n",me[0],me[1]);
     if (strcmp(me[1], "0") == 0) {
         *value = "NULL";
         *type = "0";
@@ -26,31 +24,19 @@ void to(char **me,char**value,char**type,int MEMORY_GROUP){
     else {
 
         if (strcmp(me[0], "VALUE") == 0) {
-            printf("VAL \n");
-            printf("1 MG:%d %d %d %s\n",MEMORY_GROUP,mSize[MEMORY_GROUP],atoi(me[1]) - 1,memory[MEMORY_GROUP][atoi(me[1]) - 1][0]);
-
             *value = memory[MEMORY_GROUP][atoi(me[1]) - 1][1];
-            printf("2 %s \n",memory[MEMORY_GROUP][atoi(me[1]) - 1][1]);
-
             *type = memory[MEMORY_GROUP][atoi(me[1]) - 1][0];
-            printf("end\n");
         }
         if (strcmp(me[0], "VARIABLE") == 0) {
-            printf("VAR\n");
             *value = memory[MEMORY_GROUP][atoi(me[1]) - 1][2];
-            printf("1\n");
             *type = memory[MEMORY_GROUP][atoi(me[1]) - 1][1];
-            printf("2\n");
         }
     }
-    printf("    [TO : END]\n");
 }
 
 void cm(char** ma, char* v, int _type,int MEMORY_GROUP ) {
     // memory[MEMORY_GROUP] = {   {"x",2,"sssss"}   }
-    printf("into : %d\n",MEMORY_GROUP);
     for (int i = 0; i <mSize[MEMORY_GROUP];i++){
-        printf("uhno:%d\n",i)   ;
         if (strcmp(memory[MEMORY_GROUP][i][0], v)==0)
         {
             lazy(ma,i+1);
@@ -64,11 +50,8 @@ void cm(char** ma, char* v, int _type,int MEMORY_GROUP ) {
         memory[MEMORY_GROUP] = realloc(memory[MEMORY_GROUP], sizeof(char**) * mSize[MEMORY_GROUP]);
     }
     else {
-        printf("yesss entered\n");
         memory[MEMORY_GROUP] = malloc(sizeof(char**));
     }
-    printf("ohhhhhh ? %d\n",MEMORY_GROUP);
-
     memory[MEMORY_GROUP][mSize[MEMORY_GROUP] - 1] = malloc(sizeof(char*) * 3);
 
 

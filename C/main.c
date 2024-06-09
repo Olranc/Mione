@@ -92,8 +92,8 @@ int main() {
 
         int c_size = compile(THEFILE,Lines,&MIO,0);
         run(&end, &endSizel,c_size,NULL,0,MIO,0); //run
-        printf("fin size : %d\n",c_size);
-        printf("Mione ,you owned.\n\n");
+
+        printf("\n\nMione ,you owned.\n\n");
 	}
 
 

@@ -11,15 +11,14 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 int* EveryLines = NULL;
 
 void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO,int MEMORY_GROUP  ) {
-    printf("RUN!\n");
+    printf("\033[44;37m [RUN START] \033[0m\n");
     int LOCK =0;
 
     int lvl =0;
     int lvlStar = 0;
-    printf("MIOsize : %d\n",MIOsize);
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
-        printf("MAIN: %d %d %s %s\n",MIOsize,index,MIO [index][0],MIO [index][1]);
+        printf("    [CASE]: '%s' '%s\n",MIO[index][0],MIO[index][1]);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
@@ -145,10 +144,6 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
-                        for (int i = 0; i < PackSize; i++){
-                            printf("    HAHA:%s %s\n",PACK[i][0],PACK[i][1]);
-
-                        }
                         HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize,MEMORY_GROUP);
                     }
                 }
@@ -240,8 +235,6 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 
 
 
-                        //printf("HERE:%s %s %d\n",MIO [ii][0],MIO [ii][1],canWrite);
-
                         if (canWrite){
                             PackSize++;
                             PACK = realloc(PACK, sizeof(char **) * PackSize);
@@ -264,15 +257,12 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                 if (canWrite){ //有時候很好奇之前是怎麼做到的w
                     LOCK = MIOsize -0;// 若正常，就要讓他便不正常w
                 }
-                //printf("here: %d\n",LOCK);
-                //printf("OMG paired with HEAD\n");
                 V_V(PACK,PackSize,index,MEMORY_GROUP);
 
             }
 
         }
 
-       // printf("MAIN:%s %s\n",TYPE,ADDRESS);
     }
 
     if (lvl && lvlStar-1){
@@ -280,7 +270,6 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         for (int eLines = 0; eLines < NL; eLines++) {
             if (lvlStar-1<=(EveryLines[eLines]-1)){
                 lastIn = eLines+1;
-                printf("V/V IN %d\n",lastIn);
                 break;
             }
 
@@ -290,22 +279,18 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 
     char *my;
     char *mytype;
-    printf("OPSIZE : %d\n",*OPSize);
     if (*OPSize > 0) {
-        printf("A AS\n");
     }
     else {
-        printf("MODED\n");
         *OPSize++;
         *OUTPUT = malloc(sizeof(char**));
         (*OUTPUT)[0] = malloc(sizeof(char*)*2);
         (*OUTPUT)[0][0] = "VALUE";
         (*OUTPUT)[0][1] = "0";
     }
-    printf("err? %s %s\n",(*OUTPUT)[0][0],(*OUTPUT)[0][1]);
     to((*OUTPUT)[0], &my,&mytype,MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP-1); // memory.h
 
-    printf("THIS POWER OFF : ADDRESS : %s %s (Type:%s)\n", (*OUTPUT)[0][1],my,mytype);
+    printf("\033[41;33m [POWER OFFED] : '%s' <%s> \033[0m\n",my,mytype);
 };
 
 

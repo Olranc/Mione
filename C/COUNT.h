@@ -15,7 +15,7 @@ void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize,int MEMO
 
 
 void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePack,int * rePackSize,int MEMORY_GROUP ) {
-    printf("    HERE: FunctionCall\n");
+    printf("                    [FUNCTION CALL]:'%d'\n",MEMORY_GROUP);
     char *FucV = NULL;
     char* useless;
 
@@ -50,11 +50,6 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     }
     PackSize = PackSize-2;
 
-    for (int i = 0;i<PackSize;i++){
-        printf("to there : %s %s;",Pack[i][0],Pack[i][1]);
-    }
-
-    printf("OOOOOK : %s",FucV);
 
     memory=realloc(memory,sizeof(char***)*(MEMORY_GROUP+1+1));
     memory[MEMORY_GROUP+1] = NULL;
@@ -66,7 +61,6 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     toBeCompileWithCode(FucV, &Fuc,&Lines);
     char***MIO=NULL;
     int c_size = compile(Fuc,Lines,&MIO,MEMORY_GROUP+1);
-    printf("cSize : %d\n",c_size);
 
     char ***FucReturn;
     int FucReturnSize = 0;
@@ -93,39 +87,37 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
     //x()
     //y
 
-    printf("    HERE: CasesCount\n");
 
     int bracketLVL = 0;
-    int beforeBracket = 0;  //had to add 1 in this 
+    int beforeBracket = 0;
 
     int bracketType = 1;//0:Call Function 1:Choose Table Child
 
     char*** InBracket = malloc(0);
     int InBracketSize = 0;
 
-    char*** Pack = malloc(0);
-    int PackSize = 0;
-
     int FucReIsVs[]={
             0, //開始
             1 //長度
     };
 
+    printf("%d\n",MEMORY_GROUP);
+    for (int i = 0;i<CASESSize;i++){
+        printf("bca : %s %s\n",CASES[i][0],CASES[i][1]);
+    }
+
     for (int index = 0;index<CASESSize;index++) {
+        printf("                [CASE COUNT]:'%s' '%s'\n",CASES[index][0],CASES[index][1]);
+
         if (bracketLVL) {
+            printf("added : %s %s\n",CASES[index][0],CASES[index][1]);
             InBracketSize++;
             InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
             InBracket[InBracketSize - 1] = CASES[index];
         }
         else {
-            if (strcmp(CASES[index][1], "7") == 0 && strcmp(CASES[index][0], "SYMBOL") == 0) {
 
-            }
-            else {
-                PackSize++;
-                Pack = realloc(Pack, sizeof(char**) * PackSize);
-                Pack[PackSize - 1] = CASES[index];
-            }
+
         }
 
 
@@ -133,8 +125,10 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
             if (strcmp(CASES[index][1], "7")==0){ // "("
                 bracketType = 1;
                 if (bracketLVL == 0) {
-                    beforeBracket = index; //-1+1
+                    beforeBracket = index; //要加一 -1+1
                 }
+
+
                 if (bracketLVL) {}else {
                     InBracketSize++;
                     InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
@@ -142,40 +136,89 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
                 }
                 bracketLVL++;
             }
+
+
             if (strcmp(CASES[index][1], "8")==0){ // ")"
                 bracketLVL--;
 
-                if (bracketLVL) {}
-                else {
+                if (bracketLVL) {
+
+                }
+                else{
                     if (bracketType == 1) { // Calling Function
-                        if (strcmp(Pack[PackSize-1][0], "VALUE") == 0 || strcmp(Pack[PackSize - 1][0], "VARIABLE") == 0) {
+                        if (strcmp(CASES[beforeBracket-1][0], "VALUE") == 0 || strcmp(CASES[beforeBracket-1][0], "VARIABLE") == 0) {
                             char* VVType;//might be 4,Function
                             char*useless;
 
-                            to(Pack[PackSize - 1],&useless,&VVType,MEMORY_GROUP);
+
+                            to(CASES[beforeBracket-1],&useless,&VVType,MEMORY_GROUP);
+
+
                             if (strcmp(VVType ,"4")==0) {
                                 char*** ReturnPACK;
                                 int ReturnPACKSize;
-                                FunctionCall(Pack[PackSize - 1], InBracket, InBracketSize,&ReturnPACK,&ReturnPACKSize,MEMORY_GROUP);
-                                Pack[PackSize - 1] = NULL;
-                                PackSize--;
+
+                                FunctionCall(CASES[beforeBracket-1], InBracket, InBracketSize,&ReturnPACK,&ReturnPACKSize,MEMORY_GROUP);
+
+                                //CASES[beforeBracket-1] = NULL;
+                                //CASESSize--;
 
                                 if (ReturnPACKSize){
-                                    FucReIsVs[0] = PackSize-1;
+                                    FucReIsVs[0] = beforeBracket-1;
                                     FucReIsVs[1] = ReturnPACKSize;
                                 }
+                                int shit;
+                                if (ReturnPACKSize>1+InBracketSize){
+                                    printf("nah\n");
 
-                                for (int i = 0; i < ReturnPACKSize; i++) {
-                                    PackSize++;
-                                    Pack[PackSize - 1] = ReturnPACK[i];
+                                    CASES = realloc(CASES, sizeof(char **) * (CASESSize + ReturnPACKSize));
+                                    int wasMax = CASESSize;
+                                    CASESSize = CASESSize + ReturnPACKSize;
+
+                                    for (int i = 0; i < wasMax-beforeBracket+1; i++) {
+                                        CASES[wasMax+i] = CASES[beforeBracket-1+i];
+                                    }
+
+                                    for (int i =0 ;i<ReturnPACKSize;i++){
+                                        CASES[beforeBracket-1+i] = ReturnPACK[i];
+                                    }
+                                }else{
+
+                                    for (int i = 0;i<ReturnPACKSize;i++){
+                                        CASES[beforeBracket-1+i] = ReturnPACK[i];
+                                        shit = beforeBracket-1+i;
+                                    }
+
+                                    for (int i =0;i < 3-ReturnPACKSize;i++){
+                                        CASES[beforeBracket-1+1+i] = CASES[beforeBracket-1+1+i+InBracketSize];
+                                    }
+                                    CASESSize = CASESSize - 3 + ReturnPACKSize;
+
+
+                                    CASES = realloc(CASES, sizeof(char **) * (CASESSize));
+
+
+
                                 }
 
-                                CASESSize = 0;
-                                CASES = NULL;
-                                CASES = malloc(0);
+                                printf("SHIT : %s %s\n",CASES[shit][0],CASES[shit][1]);
 
-                                Pack = ReturnPACK;
-                                PackSize = ReturnPACKSize;
+                                index = beforeBracket-1;
+                                InBracketSize = 0;
+                                InBracket = NULL;
+                                InBracket = malloc(0);
+
+
+                                *rePackSize =0;
+
+
+                                //a()+1
+                                //@@@+1
+                                //1@@+1
+                                //1+1
+
+
+
                             }
                             else {
                                 static char** err;
@@ -184,31 +227,31 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
                                 *rePackSize = 1;
                                 return;
                             }
+
                         }
                     }
                 }
 
                 bracketType = 0; //end bracket
             }
+
         }
+        printf("shit???\n");
     }
-    printf("Oh okay%d\n",*rePackSize);
+    printf("end\n");
+
+
+
     if (*rePackSize){
         if (strcmp(*rePack[0][0],"ERR")==0){
 
         }else{
-            for (int i =0;i<*rePackSize;i++){
-                char*value;
-                char*type;
-                to((*rePack)[i],&value,&type,MEMORY_GROUP);
-                (*rePack)[i][1] = value;
-                (*rePack)[i][0] = type;
-            }
+
         }
     }else{
-        if (PackSize){
-            *rePack = Pack;
-            *rePackSize = PackSize;
+        if (CASESSize){
+            *rePack = CASES;
+            *rePackSize = CASESSize;
         }else{
             static char a[] = "VALUE";
             static char b[] = "0";
@@ -220,10 +263,10 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
         }
 
     }
+    printf("end???\n");
 }
 
 void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMORY_GROUP ){ //
-    printf("    HERE: COUNT\n");
 
     char ***CASES = malloc(0); // a()
     int CASESSize = 0;
@@ -233,8 +276,13 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
     int lvl = 0;
 
+    printf("%d\n",MEMORY_GROUP);
+    for (int i = 0;i<PACKSize;i++){
+        printf("                HEHE:'%s' '%s'\n",PACK[i][0],PACK[i][1]);
+    }
+
     for (int index = 0;index<PACKSize;index++) {
-        printf("index : %s %s\n",PACK[index][0],PACK[index][1]);
+        printf("                [COUNT]:'%s' '%s'\n",PACK[index][0],PACK[index][1]);
         int addCASE = 0;
         int countCASE = 0;
 
@@ -250,7 +298,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
             CASESSize++;
             CASES = realloc(CASES, sizeof(char **) * (CASESSize));
             CASES[CASESSize - 1] = PACK[index];
-            printf("added case %s %s\n",CASES[CASESSize - 1][0],CASES[CASESSize - 1][1]);
         }
 
 
@@ -263,11 +310,9 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
             int thatRerPackSize = 0;
 
             CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize,MEMORY_GROUP);
-
             if (thatRerPackSize){
                 if (strcmp(thatRerPack[thatRerPackSize - 1][0], "ERR")==0){
 
-                    printf("    !!!Caught an ERROR from CasesCount\n");
                     static char *errPack[3];
                     errPack[0] = Pack[PackSize - 1][0];
                     errPack[1] = Pack[PackSize - 1][1];
@@ -277,8 +322,8 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                     *rePACKSize = 1;
                     return;
                 }else{
+
                     for (int ii =0;ii<thatRerPackSize;ii++){
-                        printf("new\n");
                         PackSize++;
                         Pack = realloc(Pack, sizeof(char **) * (PackSize));
                         Pack[PackSize-1] = malloc(sizeof(char*)*2);
@@ -286,9 +331,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                         to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]),MEMORY_GROUP);
                     }
                 }
-
-
-
 
 
                 CASES = NULL;
@@ -308,7 +350,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
     for (int i = 0;i<PackSize;i++){
         char *ma;
 
-        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP -1);
+        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP -1 );
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
     }
@@ -316,8 +358,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
     *rePACK = Pack;
     *rePACKSize = PackSize;
-    printf("    END: COUNT\n");
-    return;
 }
 
 #endif

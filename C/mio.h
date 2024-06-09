@@ -17,9 +17,7 @@ int mioEnd(int cSize,int *NL){
     else {
         EveryLines = malloc(sizeof(int) * 1);
     }
-    printf("new line %d\n", (*NL));
     EveryLines[ (*NL) - 1] = cSize;
-    printf("end of it\n");
 }
 
 // set							x								=								"hello"
@@ -31,11 +29,8 @@ int mioEnd(int cSize,int *NL){
 int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ,int MEMORY_GROUP ) {
     (*acSize)++;
 
-    printf("HEY ME : %d\n",*acSize);
-
 
     if ((*MIO)) {
-        printf("%d\n", (*acSize));
         (*MIO) = realloc((*MIO)  , (*acSize) * sizeof(char**));
     }
     else {

@@ -112,22 +112,18 @@ int getWordType(int* var, char word) {
 
 void toBeCompileWithCode(char* code, char* ** THEFILE,int *L){
 
-    printf("COUNTING LINES... (CODE MOD)\n");
 
 
-    printf ("CODE IS : %s\n",code);
 
     char* aline = malloc(sizeof(char));
     int lineword = 0;
     for (int word = 0; word < strlen(code); word++) {
-        printf("word number : %d\n",code[word]);
 
         if (code[word] == '\n') {}else{
             lineword++;
 
             aline = realloc(aline, sizeof(char) * ((lineword) + 1));
             aline[lineword-1] = code[word];
-            printf("WORD : %c\n",aline[lineword-1] );
         }
         if (code[word] == '\n' ||strlen(code)-1==word) {
             aline[lineword] = 0;
@@ -144,20 +140,17 @@ void toBeCompileWithCode(char* code, char* ** THEFILE,int *L){
             (*THEFILE)[(*L) - 1] = malloc(strlen(aline) + 1);
             strcpy((*THEFILE)[(*L) - 1], aline);
 
-            printf("HERE TO LOOK : %s\n",aline);
 
             aline = NULL;
             aline = malloc(sizeof(char));
             lineword = 0;
 
         }
-       printf("times ends\n");
     }
 }
 
 void toBeCompileOnFile(char* fileName,char * **THEFILE,int *L) {
 
-    printf("COUNTING LINES...\n");
     FILE* file = fopen(fileName, "r");
     char line[2048];
 
@@ -596,7 +589,7 @@ int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP ) {
 
 
 
-             printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
+             //printf("%d '%d' '%c' '%d' '%d' '%d'\n", i,wordType, word, checkType,canCount,forErr[0]);
             lastWordType = wordType;
             lastCheckType = checkType;
 
