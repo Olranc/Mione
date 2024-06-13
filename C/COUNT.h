@@ -311,11 +311,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
     int lvl = 0;
 
-    printf("%d\n",MEMORY_GROUP);
-    for (int i = 0;i<PACKSize;i++){
-        printf("                HEHE:'%s' '%s'\n",PACK[i][0],PACK[i][1]);
-    }
-
     for (int index = 0;index<PACKSize;index++) {
         printf("                [COUNT]:'%s' '%s'\n",PACK[index][0],PACK[index][1]);
         int addCASE = 0;
@@ -376,10 +371,69 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                 //how?!!!
             }
 
+            if (strcmp(PACK[index][0], "SYMBOL")==0){
+                PackSize++;
+                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                Pack[PackSize - 1] = PACK[index];
+            }
+
         }
 
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;
+    }
+
+
+
+
+    char *nowSymbol = "0"; //這在外面我看了好頭痛
+    for (int i = 0;i<PackSize;i++){
+        printf("PACK : %s %s\n",Pack[i][0],Pack[i][1]);
+        int MaxLevel = 3;
+
+        //Pack[i][0]; // `$print()@` or `SYMBOL`
+        //Pack[i][1]; // `4`:type or `1`:address
+
+
+        if (strcmp(Pack[i][0],"SYMBOL")==0){
+            for (int level = 0;level<MaxLevel;level++){
+                int nowLevel = MaxLevel - level;
+
+                if (nowLevel == 3){
+                    if (strcmp(Pack[i][1],"2")==0){//我知道這很白目，但我喜歡這樣寫
+                        nowSymbol = "2";
+                        printf("hmmm %s\n",nowSymbol);
+                        break;
+                    }else if (strcmp(Pack[i][1],"3")==0){
+                        nowSymbol = "3";
+                        break;
+
+                    }
+                }
+            }
+        }else{
+            //VV會通過
+            printf("haaaaaaa : %s\n",nowSymbol);
+            if (strcmp(nowSymbol,"0")==0){}else{
+                if (strcmp(nowSymbol,"2")==0){ //我記得這是 "-" 號
+                    char** toSub = Pack[i-2]; // `1` - 1
+                    char** subTo = Pack[i]; // `1` + 1
+
+                    if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
+
+                    }else{
+                        static char *errPack[3];
+                        errPack[0] = "ERR";
+                        errPack[1] = "It is not a number?";
+                        errPack[2] = "0";
+                        static char **erPack[] = {errPack};
+                        *rePACK = erPack;
+                        *rePACKSize = 1;
+                        return;
+                    }
+                }
+            }
+        }
     }
 
     for (int i = 0;i<PackSize;i++){

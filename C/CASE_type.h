@@ -37,7 +37,7 @@ THE_HEAD_CASE HEAD_CASE[] = {
         {"4",return_}
 };
 
-THE_SYMBOL_CASE SYMBOL_CASE[] = {
+THE_SYMBOL_CASE SYMBOL_CASE[] = { //VV代表這個符號後面的VV是否還可以在這一段程式句裡面
         {"1",1,1},
         {"2",1,1},
         {"3",1,1},

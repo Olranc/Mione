@@ -157,6 +157,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
     char* nowTargetType = 0; //0:HEAD
 
     for (int i = 0; i < _whileSize; i++) {
+        printf("            [FUCK] : '%s' '%s'\n",_while[i][0],_while[i][1]);
         Index_++;
         char *TYPE = _while[i][0];
         char *VALUE = _while[i][1];
