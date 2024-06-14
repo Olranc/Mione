@@ -1,1 +1,2 @@
-return "a"-1
+return $return 100@()-1
+
