@@ -102,6 +102,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
     };
 
     printf("%d\n",MEMORY_GROUP);
+
     for (int i = 0;i<CASESSize;i++){
         printf("bca : %s %s\n",CASES[i][0],CASES[i][1]);
     }
@@ -131,6 +132,8 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
 
                 if (bracketLVL) {}else {
+                    printf("added on 7: %s %s\n",CASES[index][0],CASES[index][1]);
+
                     InBracketSize++;
                     InBracket = realloc(InBracket, sizeof(char**) * InBracketSize);
                     InBracket[InBracketSize - 1] = CASES[index];
@@ -171,7 +174,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
                                     }
                                     int shit;
                                     if (ReturnPACKSize>1+InBracketSize){
-                                        printf("nah\n");
 
                                         CASES = realloc(CASES, sizeof(char **) * (CASESSize + ReturnPACKSize));
                                         int wasMax = CASESSize;
@@ -203,7 +205,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
                                     }
 
-                                    printf("SHIT : %s %s\n",CASES[shit][0],CASES[shit][1]);
 
                                     index = beforeBracket-1;
                                     InBracketSize = 0;
@@ -244,12 +245,28 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
                             }
                         }
 
+                        for (int i = 0; i < thePackSize; i++) {
+                            printf("cc : %s %s\n", thePack[i][0], thePack[i][1]);
+                        }
+
+
                         if (thePackSize){
                             char ***CountedPACK;
                             int CountedPACKSize;
 
+                            for (int i = 0; i < thePackSize; i++) {
+                                printf("thePack : %s %s\n", thePack[i][0], thePack[i][1]);
+                            }
+
                             COUNT(thePack, thePackSize, &CountedPACK, &CountedPACKSize, MEMORY_GROUP);
 
+                            for (int i = 0; i < thePackSize; i++) {
+                                printf("thePack : %s %s\n", thePack[i][0], thePack[i][1]);
+                            }
+
+                            for (int i = 0; i < CountedPACKSize; i++) {
+                                printf("COUNTEDPACK : %s %s\n", CountedPACK[i][0], CountedPACK[i][1]);
+                            }
                             *rePack = CountedPACK;
                             *rePackSize = CountedPACKSize;
 
@@ -264,6 +281,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
                             *rePackSize = 1;
                         }
                     }
+
                 }
 
 
@@ -271,9 +289,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
             }
 
         }
-        printf("shit???\n");
     }
-    printf("end\n");
 
 
 
@@ -298,7 +314,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
         }
 
     }
-    printf("end???\n");
 }
 
 void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMORY_GROUP ){ //
@@ -327,7 +342,9 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         if (addCASE || lvl) {
             int shit =0;
             if (strcmp(PACK[index][0], "SYMBOL") == 0) {
-                if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1){}else shit = 1;
+                //if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1){}else
+
+                shit = 1;
             }else shit = 1;
 
             if (shit){
@@ -362,12 +379,14 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                 }else{
 
                     for (int ii =0;ii<thatRerPackSize;ii++){
+                        printf("REPACK : %s %s\n",thatRerPack[ii][0],thatRerPack[ii][1]);
                         PackSize++;
                         Pack = realloc(Pack, sizeof(char **) * (PackSize));
                         Pack[PackSize-1] = malloc(sizeof(char*)*2);
 
                         to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]),MEMORY_GROUP);
-                        printf("ADD ONE %s %s\n",thatRerPack[ii][0],thatRerPack[ii][1]);
+                        printf("is : %s %s\n",Pack[PackSize-1][0],Pack[PackSize-1][1]);
+
                     }
                 }
 
@@ -381,10 +400,13 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
             }
 
             if (strcmp(PACK[index][0], "SYMBOL")==0){
-                printf("ME ADD\n");
-                PackSize++;
-                Pack = realloc(Pack, sizeof(char **) * (PackSize));
-                Pack[PackSize - 1] = PACK[index];
+                if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1) {
+                    printf("ME ADD %s\n",PACK[index][1]);
+                    PackSize++;
+                    Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                    Pack[PackSize - 1] = PACK[index];
+                }
+
             }
 
         }
@@ -397,10 +419,9 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
     for (int i = 0;i<PackSize;i++) {
         printf("PACK : %s %s\n",Pack[i][0],Pack[i][1]);
-
     }
 
-
+    printf("end\n");
 
     char *nowSymbol = "0"; //這在外面我看了好頭痛
     for (int i = 0;i<PackSize;i++){
@@ -430,7 +451,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
             if (strcmp(nowSymbol,"0")==0){}else{
                 if (strcmp(nowSymbol,"2")==0){ //我記得這是 "-" 號
                     char** toSub = Pack[i-2]; // `1` - 1
-                    char** subTo = Pack[i]; // 1 + `1`
+                    char** subTo = Pack[i]; // 1 - `1`
 
                     if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
                         int minuend = atoi(toSub[0]);
@@ -442,6 +463,46 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
                         char out[size];
                         sprintf(out,"%d",minuend-subtrahend);
+
+                        Pack[i-2][1] = "5";
+                        Pack[i-2][0] = out;
+
+                        for (int ii = 0;ii<PackSize;ii++){
+                            if (ii>PackSize-i){
+                                Pack[ii-1] = Pack[ii];
+                                Pack[ii+1] = NULL;
+                            }
+
+                        }
+                        PackSize = PackSize-2;
+                        Pack = realloc(Pack, sizeof(char **) * (PackSize));
+
+                        i = i-2;
+                        nowSymbol = "0";
+                    }else{
+                        static char *errPack[3];
+                        errPack[0] = "ERR";
+                        errPack[1] = "It is not a number?";
+                        errPack[2] = "0";
+                        static char **erPack[] = {errPack};
+                        *rePACK = erPack;
+                        *rePACKSize = 1;
+                        return;
+                    }
+                }else if (strcmp(nowSymbol,"3")==0){ //我記得這是 "+" 號
+                    char** toSub = Pack[i-2]; // `1` + 1
+                    char** subTo = Pack[i]; // 1 + `1`
+
+                    if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
+                        int minuend = atoi(toSub[0]);
+                        int subtrahend = atoi(subTo[0]);
+
+                        int size = snprintf(NULL, 0, "%d", minuend+subtrahend) + 1;
+
+
+
+                        char out[size];
+                        sprintf(out,"%d",minuend+subtrahend);
 
                         Pack[i-2][1] = "5";
                         Pack[i-2][0] = out;
@@ -484,6 +545,10 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         *rePACK = erPack;
         *rePACKSize = 1;
         return;
+    }
+
+    for (int i = 0;i<PackSize;i++){
+        printf("for end : %s %s\n",Pack[i][0],Pack[i][1]);
     }
 
     for (int i = 0;i<PackSize;i++){
