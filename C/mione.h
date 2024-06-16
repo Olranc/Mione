@@ -1,5 +1,5 @@
 void toBeCompileOnFile(char* fileName,char ***THEFILE,int *L);
-int compile(char** THEFILE,int Lines,char* *** MIO,int MEMORY_GROUP );
+int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP,int* NL,int **EveryLine);
 void toBeCompileWithCode(char* code, char*** THEFILE,int * L);
 
 #ifndef mione_h
@@ -139,6 +139,7 @@ void toBeCompileWithCode(char* code, char* ** THEFILE,int *L){
             }
             (*THEFILE)[(*L) - 1] = malloc(strlen(aline) + 1);
             strcpy((*THEFILE)[(*L) - 1], aline);
+            strcat((*THEFILE)[(*L) - 1],"\n");
 
 
             aline = NULL;
@@ -176,7 +177,7 @@ void toBeCompileOnFile(char* fileName,char * **THEFILE,int *L) {
     fclose(file);
 }
 
-int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP ) {
+int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP,int* NL,int **EveryLine) {
     int lastCheckType = 0;
     int Line = 0;
 
@@ -209,8 +210,6 @@ int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP ) {
     strcpy(txt, "\0");
 
     int cSize = 0;
-
-    int NL = 0;
 
 
     for (int me = 0;me<L;me++){
@@ -574,7 +573,7 @@ int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP ) {
                 //here
                 printf("| [CASE]:`%s`				[TYPE]:`%d`| \n", txt, lastWordType);
 
-                mio((txt), lastWordType,&cSize,&NL,MIO,MEMORY_GROUP);
+                mio((txt), lastWordType,&cSize,NL,MIO,MEMORY_GROUP,EveryLine);
                 free((txt));
 
 
@@ -605,8 +604,8 @@ int compile(char **THEFILE,int L,char* *** MIO,int MEMORY_GROUP ) {
 
 
 
+    mioEnd(cSize,NL,EveryLine,MEMORY_GROUP); //我不想進行大更改了 w
 
-    mioEnd(cSize,&NL); //我不想進行大更改了 w
 
     if (wordType == 2 || wordType == 11) {
         prerr(forErr[1], "The end of the string has not yet been declared.", 2);

@@ -11,7 +11,7 @@
 #include "run.h"
 
 
-void V_V(char*** _while,int _whileSize,int firstI,int MEMORY_GROUP ){
+void V_V(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP,int NL,int* EveryLines ){
     printf("        [NEW V/V]\n");
     int Index_ = firstI-1;
 
@@ -72,6 +72,19 @@ void V_V(char*** _while,int _whileSize,int firstI,int MEMORY_GROUP ){
                     }
 
                     prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
+
+                    //char Line[12];
+                    //sprintf(Line, "%d", (thisLine) + thisLine);
+
+                    //char ***Err = malloc(sizeof(char**));
+                    //Err[0] = malloc(sizeof(char*)*4);
+                    //Err[0][0] = "ERR";
+                    //Err[0][1] = countPack[0][2];
+                    //Err[0][2] = countPack[0][1];
+                    //Err[0][3] = "1";
+                    //*OUTPUT = Err;
+
+                    //return;
                 }
 
             }
@@ -87,7 +100,7 @@ void V_V(char*** _while,int _whileSize,int firstI,int MEMORY_GROUP ){
 
 //HEAD
 
-void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ) { //1
+void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP,int NL,int* EveryLines ) { //1
     printf("        [NEW HEAD: SET]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -116,25 +129,59 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
                 char *** countPack;
                 int countPackSize;
                 COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP);
+                printf("end?\n");
 
                 PACKSize=0;
                 free(PACK);
                 PACK = malloc(sizeof(char**));
 
                 if (strcmp(countPack[0][0],"ERR") == 0){
-
                     int thisLine = 1;
-                    for (int i = 0;i<NL;i++){
+                    int lastLine =0;
+
+                    int vindex=-1;
+                    printf("nnn %d\n",Index_);
+                    for (int i = 0; i < NL; i++) {
+
+
 
                         thisLine = i+1;
-                        if (EveryLines[i]<Index_){
+                        if (EveryLines[i] < Index_) {
 
-                        }else{
+                        } else {
                             break;
                         }
+                        if (vindex == EveryLines[i]){}else{
+                            lastLine = i+1;
+                            vindex=EveryLines[i];
+                        }
+
                     }
 
-                    prerr(thisLine,countPack[0][1],atoi(countPack[0][2]));
+
+                    char ***Err = malloc(sizeof(char**));
+                    Err[0] = malloc(sizeof(char*)*5);
+                    Err[0][0] = "ERR";
+                    Err[0][1] = malloc(12);
+                    if (countPack[0][3]==NULL){
+                        sprintf( Err[0][1], "%d", thisLine);
+                    }else{
+                        sprintf( Err[0][1], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+                        printf("thisLine %d\n",thisLine);
+                        printf("lastLine : %d\n",lastLine);
+                        printf("inside %s\n",countPack[0][1]);
+                        printf("all line : %s\n",countPack[0][4]);
+                        printf("no: %d\n", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+
+                    }
+                    Err[0][2] = countPack[0][1];
+                    Err[0][3] = "1";
+                    Err[0][4] = malloc(12);
+                    sprintf(Err[0][4], "%d",NL-1);
+                    *OUTPUT = Err;
+                    *OPSize = 1;
+
+                    return;
                 }else{
                     //一定會用到這裡
                 }
@@ -149,7 +196,7 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
     printf("        [END HEAD: SET]\n\n");
 }
 
-void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ){
+void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP,int NL,int* EveryLines ){
     printf("        [NEW HEAD: RETURN]\n");
     char *** PACK = malloc(sizeof(char**)*1); //給V/V與Symbol用
     int PACKSize = 0;
@@ -173,26 +220,59 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
         if (_whileSize - 1 == i) {
             char ***countPack;
             int countPackSize;
+
             COUNT(PACK, PACKSize, &countPack, &countPackSize,MEMORY_GROUP);
 
             PACKSize = 0;
             free(PACK);
             PACK = malloc(sizeof(char **));
-
             if (strcmp(countPack[0][0], "ERR") == 0) {
-
                 int thisLine = 1;
+                int lastLine =0;
+
+                int vindex=-1;
+                printf("nnn %d\n",Index_);
                 for (int i = 0; i < NL; i++) {
 
-                    thisLine = i + 1;
+
+
+                    thisLine = i+1;
                     if (EveryLines[i] < Index_) {
 
                     } else {
                         break;
                     }
+                    if (vindex == EveryLines[i]){}else{
+                        lastLine = i+1;
+                        vindex=EveryLines[i];
+                    }
+
                 }
 
-                prerr(thisLine, countPack[0][1], atoi(countPack[0][2]));
+
+                char ***Err = malloc(sizeof(char**));
+                Err[0] = malloc(sizeof(char*)*5);
+                Err[0][0] = "ERR";
+                Err[0][1] = malloc(12);
+                if (countPack[0][3]==NULL){
+                    sprintf( Err[0][1], "%d", thisLine);
+                }else{
+                    sprintf( Err[0][1], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+                    printf("thisLine %d\n",thisLine);
+                    printf("lastLine : %d\n",lastLine);
+                    printf("inside %s\n",countPack[0][1]);
+                    printf("all line : %s\n",countPack[0][4]);
+                    printf("no: %d\n", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+
+                }
+                Err[0][2] = countPack[0][2];
+                Err[0][3] = "1";
+                Err[0][4] = malloc(12);
+                sprintf(Err[0][4], "%d",NL-1);
+                *OUTPUT = Err;
+                *OPSize = 1;
+
+                return;
             }
             *OPSize = countPackSize;
             *OUTPUT = countPack;
@@ -204,7 +284,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
     }
     printf("        [END HEAD: RETURN]\n\n");
 }
-void get(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP ){
+void get(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,char *** fucIn,int fucInSize,int MEMORY_GROUP,int NL,int* EveryLines ){
 
 }
 

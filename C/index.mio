@@ -1,2 +1,7 @@
-return ($return 999@())+(1)
+return $
 
+    set x = $@ + 1
+
+
+
+@()

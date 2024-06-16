@@ -1,5 +1,6 @@
 #define Mione "You owned."
-
+//ᣌ⪥
+//  ᴥ
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINDOWS
 
@@ -42,14 +43,22 @@ int main() {
 			WideCharToMultiByte(CP_ACP, 0, cmds[2], -1, m, sizeof(m), NULL, NULL);
             int Lines = 0;
 
+            int NL = 0;
+            int *EveryLine = NULL ;
 			toBeCompileOnFile(m,&THEFILE,&Lines);
             memory=malloc(sizeof(char***)*1);
             memory[0] = NULL;
             mSize = malloc(sizeof(int)*1);
             mSize[0] = 0;
 
-            int c_size = compile(THEFILE,Lines,&MIO,0);
-            run(&end, &endSizel,c_size,NULL,0,MIO,0); //run
+            int c_size = compile(THEFILE,Lines,&MIO,0,&NL,&EveryLine);
+            run(&end, &endSizel,c_size,NULL,0,MIO,0,NL,EveryLine); //run
+
+            if (endSizel > 0){
+                if (strcmp(end[0][0],"ERR") == 0){
+                    prerr(atoi(end[0][1]),end[0][2],atoi(end[0][3]));
+                }
+            }
 		}
 
 		if (wcscmp(cmds[1], L"mione") == 0) {
@@ -83,15 +92,26 @@ int main() {
 		
 	}
 	else if (num == 1) {
+
         int Lines = 0;
+
+        int NL= 0;
+        int *EveryLine =NULL ;
 		toBeCompileOnFile(MYFILE,&THEFILE,&Lines);
         memory=malloc(sizeof(char***)*1);
         memory[0] = NULL;
         mSize = malloc(sizeof(int)*1);
         mSize[0] = 0;
 
-        int c_size = compile(THEFILE,Lines,&MIO,0);
-        run(&end, &endSizel,c_size,NULL,0,MIO,0); //run
+        int c_size = compile(THEFILE,Lines,&MIO,0,&NL,&EveryLine);
+        run(&end, &endSizel,c_size,NULL,0,MIO,0,NL,EveryLine); //run
+
+        if (endSizel > 0){
+            if (strcmp(end[0][0],"ERR") == 0){
+                printf("OH %s\n",end[0][3]);
+                prerr(atoi(end[0][1]),end[0][2],atoi(end[0][3]));
+            }
+        }
 
         printf("\n\nMione ,you owned.\n\n");
 	}

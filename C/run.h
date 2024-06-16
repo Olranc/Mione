@@ -1,6 +1,4 @@
-int NL;
-int* EveryLines;
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char*** MIO,int MEMORY_GROUP );
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO,int MEMORY_GROUP  ,int NL, int * EveryLines);
 
 #ifndef run_h
 #define run_h
@@ -8,9 +6,8 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
 #include "M.h"
 
 
-int* EveryLines = NULL;
 
-void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO,int MEMORY_GROUP  ) {
+void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVSize,char *** MIO,int MEMORY_GROUP  ,int NL, int * EveryLines) {
     printf("\033[44;37m [RUN START] \033[0m\n");
     int LOCK =0;
 
@@ -18,7 +15,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
     int lvlStar = 0;
 
     for (int index = 0;index<MIOsize ;index++) { //HERE
-        printf("    [CASE]: '%s' '%s\n",MIO[index][0],MIO[index][1]);
+        printf("    [CASE]: '%s' '%s' '%d'\n",MIO[index][0],MIO[index][1],MEMORY_GROUP);
         if (LOCK <= index){
             char *TYPE = MIO [index][0];
             char *ADDRESS = MIO [index][1];
@@ -144,7 +141,9 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                         }
                         //printf("here: %d\n",LOCK);
                         //printf("OMG paired with HEAD\n");
-                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize,MEMORY_GROUP);
+                        HEAD_CASE[i].fuc(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize,MEMORY_GROUP,NL,EveryLines);
+
+
                     }
                 }
             }
@@ -257,13 +256,14 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
                 if (canWrite){ //有時候很好奇之前是怎麼做到的w
                     LOCK = MIOsize -0;// 若正常，就要讓他便不正常w
                 }
-                V_V(PACK,PackSize,index,MEMORY_GROUP);
+                V_V(PACK,PackSize,index,OPSize,OUTPUT,callingV,callingVSize,MEMORY_GROUP,NL,EveryLines);
 
             }
 
         }
 
     }
+
 
     if (lvl && lvlStar-1){
         int lastIn = 0;
@@ -274,12 +274,34 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
             }
 
         }
-        prerr(lastIn,"''(' or '[' did not match with ')', ']'",1);
+
+        int size = snprintf(NULL, 0, "%d", lastIn) + 1;
+        int size2 = snprintf(NULL, 0, "%d", EveryLines[NL-1]) + 1;
+
+        *OPSize = 1;
+        char Line[size];
+        char ALLLine[size2];
+        sprintf(Line, "%d", lastIn);
+        sprintf(ALLLine, "%d", EveryLines[NL-1]);
+
+
+        char ***Err = malloc(sizeof(char**));
+        Err[0] = malloc(sizeof(char*)*5);
+        Err[0][0] = "ERR";
+        Err[0][1] = Line;
+        Err[0][2] = "''(' or '[' did not match with ')', ']'";
+        Err[0][3] = "1";
+        Err[0][4] = ALLLine;//all line
+        *OUTPUT = Err;
+
+        return;
     }
 
     char *my;
     char *mytype;
     if (*OPSize > 0) {
+
+        if (strcmp((*OUTPUT)[0][0],"ERR")==0) return;
     }
     else {
         *OPSize++;
@@ -288,6 +310,7 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         (*OUTPUT)[0][0] = "VALUE";
         (*OUTPUT)[0][1] = "0";
     }
+
     to((*OUTPUT)[0], &my,&mytype,MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP-1); // memory.h
 
     printf("\033[41;33m [POWER OFFED] : '%s' <%s> \033[0m\n",my,mytype);

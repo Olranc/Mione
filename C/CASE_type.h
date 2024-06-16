@@ -7,7 +7,7 @@
 char* PROMPTS[];
 typedef  struct   {
     char* NAME;
-    void (*fuc)(char***,int,int,int*,char* ***,char ***,int,int);
+    void (*fuc)(char***,int,int,int*,char* ***,char ***,int,int,int,int*);
 } THE_HEAD_CASE;
 
 typedef  struct   {

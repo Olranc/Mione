@@ -51,16 +51,20 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     PackSize = PackSize-2;
 
 
+
     memory=realloc(memory,sizeof(char***)*(MEMORY_GROUP+1+1));
     memory[MEMORY_GROUP+1] = NULL;
     mSize = realloc(mSize,sizeof(int)*(MEMORY_GROUP+1+1));
     mSize[MEMORY_GROUP+1] = 0;
 
+    int ChildNL = 0;
+    int * ChildEveryLine = NULL;
+
     char **Fuc = NULL;
     int Lines = 0;
     toBeCompileWithCode(FucV, &Fuc,&Lines);
     char***MIO=NULL;
-    int c_size = compile(Fuc,Lines,&MIO,MEMORY_GROUP+1);
+    int c_size = compile(Fuc,Lines,&MIO,MEMORY_GROUP+1,&ChildNL,&ChildEveryLine);
 
     char ***FucReturn;
     int FucReturnSize = 0;
@@ -68,8 +72,11 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     char*** CountedWithV;
     int CountedWithVSize;
     COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize,MEMORY_GROUP+1);
-    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO,MEMORY_GROUP+1);
+    run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO,MEMORY_GROUP+1,ChildNL,ChildEveryLine);
 
+    for (int i = 0;i<5;i++) {
+        printf("re : %s \n",FucReturn[0][i]);
+    }
     *rePack = FucReturn;
     *rePackSize = FucReturnSize;
 }
@@ -167,6 +174,18 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
                                     //CASES[beforeBracket-1] = NULL;
                                     //CASESSize--;
+                                    if (ReturnPACKSize){
+                                        if (strcmp(ReturnPACK[0][0], "ERR")==0){
+
+                                            *rePack =ReturnPACK;
+                                            *rePackSize = 1;
+                                            for (int i = 0;i<5;i++) {
+                                                printf("hyper : %s \n",(*rePack)[0][i]);
+                                            }
+
+                                            return;
+                                        }
+                                    }
 
                                     if (ReturnPACKSize){
                                         FucReIsVs[0] = beforeBracket-1;
@@ -366,15 +385,17 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
             CasesCount(CASES, CASESSize, &thatRerPack,&thatRerPackSize,MEMORY_GROUP);
             if (thatRerPackSize){
+
                 if (strcmp(thatRerPack[thatRerPackSize - 1][0], "ERR")==0){
 
-                    static char *errPack[3];
-                    errPack[0] = Pack[PackSize - 1][0];
-                    errPack[1] = Pack[PackSize - 1][1];
-                    errPack[2] = Pack[PackSize - 1][2];
-                    static char **erPack[] = {errPack};
-                    *rePACK = erPack;
+                    for (int i = 0;i<5;i++){
+                        printf("my boy : %s\n",thatRerPack[0][i]);
+                    }
+
+                    *rePACK = thatRerPack;
                     *rePACKSize = 1;
+
+
                     return;
                 }else{
 
@@ -546,11 +567,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         *rePACKSize = 1;
         return;
     }
-
-    for (int i = 0;i<PackSize;i++){
-        printf("for end : %s %s\n",Pack[i][0],Pack[i][1]);
-    }
-
     for (int i = 0;i<PackSize;i++){
         char *ma;
 
@@ -558,7 +574,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
     }
-
 
     *rePACK = Pack;
     *rePACKSize = PackSize;

@@ -9,15 +9,16 @@
 
 
 
-int mioEnd(int cSize,int *NL){
-    (*NL)++;
-    if (EveryLines) {
-        EveryLines = realloc(EveryLines, sizeof(int) *  (*NL));
+int mioEnd(int cSize,int *NLL,int **EveryLines,int MEMORY_GROUP){
+    printf("ADD LINE %d %d %d\n",(*NLL),MEMORY_GROUP,cSize);
+    (*NLL)++;
+    if ((*EveryLines)) {
+        (*EveryLines) = realloc((*EveryLines), sizeof(int) *  (*NLL));
     }
     else {
-        EveryLines = malloc(sizeof(int) * 1);
+        (*EveryLines) = malloc(sizeof(int) * 1);
     }
-    EveryLines[ (*NL) - 1] = cSize;
+    (*EveryLines)[ (*NLL) - 1] = cSize;
 }
 
 // set							x								=								"hello"
@@ -26,7 +27,7 @@ int mioEnd(int cSize,int *NL){
 // "a"=="a"
 // <虛擬記憶體位置> <符號ID> <虛擬記憶體位置>
 
-int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ,int MEMORY_GROUP ) {
+int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ,int MEMORY_GROUP,int **EveryLines ) {
     (*acSize)++;
 
 
@@ -85,13 +86,12 @@ int setC(char* _type, char* _case, int _t,int* acSize,int *pass,char* *** MIO ,i
     (*MIO)  [(*acSize) - 1][1] = malloc(strlen(_case)+1);
     strcpy((*MIO)  [(*acSize) - 1][1], _case);
 
-    printf("A:%s %s\n", (*MIO)  [(*acSize) - 1][1],(*MIO)  [(*acSize) - 1][0]);
     *pass = 1;
 
     return 1;
 }
 
-int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GROUP) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
+int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GROUP,int **EveryLines) { // HEAD,PROMPT,VALUE,VARIABLE,SYMBOL
     int pass = 0;
     int cSize = *acSize;
 	//HEAD:HEAD_NAME
@@ -104,7 +104,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GRO
 		if (strcmp(HEADS[i], _case)) {
 		}
 		else {
-			setC("HEAD", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
+			setC("HEAD", _case, _type,acSize,&pass,MIO,MEMORY_GROUP,EveryLines);
 		}
 	}
 
@@ -114,7 +114,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GRO
 			if (strcmp(PROMPTS[i], _case)) {
 			}
 			else {
-				setC("PROMPT", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
+				setC("PROMPT", _case, _type,acSize,&pass,MIO,MEMORY_GROUP,   EveryLines);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GRO
 			if (strcmp(SYMBOLS[i], _case)) {
 			}
 			else {
-				setC("SYMBOL", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
+				setC("SYMBOL", _case, _type,acSize,&pass,MIO,MEMORY_GROUP,EveryLines);
 			}
 		}
 	}
@@ -137,16 +137,18 @@ int mio(char* _case, int _type,int* acSize,int *NL,char* *** MIO ,int MEMORY_GRO
 		
 	else {
 		if (_type == 6) {
-			setC("VARIABLE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
+			setC("VARIABLE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP,EveryLines);
 		}
 		if (_type == 2 || _type == 3 || _type == 4 || _type == 5 || _type == 8) {
-			setC("VALUE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP);
+			setC("VALUE", _case, _type,acSize,&pass,MIO,MEMORY_GROUP,EveryLines);
 		}
 	}
 
     for (int i = 0;i<strlen(_case);i++){
-        if (_case[i] == '\n') mioEnd(cSize,NL);
+
+        if (_case[i] == '\n') {printf("from here\n");mioEnd(cSize,NL,EveryLines,MEMORY_GROUP);}
     }
+
 
 
     return 1;
