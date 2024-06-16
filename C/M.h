@@ -162,20 +162,20 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
                     char ***Err = malloc(sizeof(char**));
                     Err[0] = malloc(sizeof(char*)*5);
                     Err[0][0] = "ERR";
-                    Err[0][1] = malloc(12);
+                    Err[0][1] = countPack[0][1];
+
+                    for (int i = 0; i < 5; i++) {
+                        printf("pack %s\n",countPack[0][i]);
+                    }
+                    Err[0][2] = countPack[0][2];
+                    Err[0][3] = malloc(12);
                     if (countPack[0][3]==NULL){
-                        sprintf( Err[0][1], "%d", thisLine);
+                        sprintf( Err[0][3], "%d", thisLine);
+
                     }else{
-                        sprintf( Err[0][1], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
-                        printf("thisLine %d\n",thisLine);
-                        printf("lastLine : %d\n",lastLine);
-                        printf("inside %s\n",countPack[0][1]);
-                        printf("all line : %s\n",countPack[0][4]);
-                        printf("no: %d\n", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+                        sprintf( Err[0][3], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][3]));
 
                     }
-                    Err[0][2] = countPack[0][1];
-                    Err[0][3] = "1";
                     Err[0][4] = malloc(12);
                     sprintf(Err[0][4], "%d",NL-1);
                     *OUTPUT = Err;
@@ -253,20 +253,20 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
                 char ***Err = malloc(sizeof(char**));
                 Err[0] = malloc(sizeof(char*)*5);
                 Err[0][0] = "ERR";
-                Err[0][1] = malloc(12);
-                if (countPack[0][3]==NULL){
-                    sprintf( Err[0][1], "%d", thisLine);
-                }else{
-                    sprintf( Err[0][1], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
-                    printf("thisLine %d\n",thisLine);
-                    printf("lastLine : %d\n",lastLine);
-                    printf("inside %s\n",countPack[0][1]);
-                    printf("all line : %s\n",countPack[0][4]);
-                    printf("no: %d\n", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][1]));
+                Err[0][1] = countPack[0][1];
 
+                for (int i = 0; i < 5; i++) {
+                    printf("return pack %s\n",countPack[0][i]);
                 }
                 Err[0][2] = countPack[0][2];
-                Err[0][3] = "1";
+                Err[0][3] = malloc(12);
+                if (countPack[0][3]==NULL){
+                    sprintf( Err[0][3], "%d", thisLine);
+                    printf("Touched\n");
+                }else{
+                    sprintf( Err[0][3], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][3]));
+                    printf("%s\n",Err[0][3]);
+                }
                 Err[0][4] = malloc(12);
                 sprintf(Err[0][4], "%d",NL-1);
                 *OUTPUT = Err;

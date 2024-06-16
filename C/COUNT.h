@@ -74,9 +74,7 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
     COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize,MEMORY_GROUP+1);
     run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO,MEMORY_GROUP+1,ChildNL,ChildEveryLine);
 
-    for (int i = 0;i<5;i++) {
-        printf("re : %s \n",FucReturn[0][i]);
-    }
+
     *rePack = FucReturn;
     *rePackSize = FucReturnSize;
 }
@@ -84,8 +82,9 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
 void toErrForCasesCount(char* reason,char * code,char***Pack ) {
     static char* erPack[3];
     erPack[0] = "ERR";
-    erPack[1] = reason;
-    erPack[2] = code;
+    erPack[1] = code;
+    erPack[2] = reason;
+
     *Pack = erPack;
 }
 
@@ -110,9 +109,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
     printf("%d\n",MEMORY_GROUP);
 
-    for (int i = 0;i<CASESSize;i++){
-        printf("bca : %s %s\n",CASES[i][0],CASES[i][1]);
-    }
 
     for (int index = 0;index<CASESSize;index++) {
         printf("                [CASE COUNT]:'%s' '%s'\n",CASES[index][0],CASES[index][1]);
@@ -179,9 +175,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
                                             *rePack =ReturnPACK;
                                             *rePackSize = 1;
-                                            for (int i = 0;i<5;i++) {
-                                                printf("hyper : %s \n",(*rePack)[0][i]);
-                                            }
+
 
                                             return;
                                         }
@@ -503,8 +497,8 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                     }else{
                         static char *errPack[3];
                         errPack[0] = "ERR";
-                        errPack[1] = "It is not a number?";
-                        errPack[2] = "0";
+                        errPack[1] = "0";
+                        errPack[2] = "It's not a number.";
                         static char **erPack[] = {errPack};
                         *rePACK = erPack;
                         *rePACKSize = 1;
@@ -543,8 +537,8 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                     }else{
                         static char *errPack[3];
                         errPack[0] = "ERR";
-                        errPack[1] = "It is not a number?";
-                        errPack[2] = "0";
+                        errPack[1] = "0";
+                        errPack[2] = "It is not a number.";
                         static char **erPack[] = {errPack};
                         *rePACK = erPack;
                         *rePACKSize = 1;
@@ -560,8 +554,8 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
     }else{
         static char *errPack[3];
         errPack[0] = "ERR";
-        errPack[1] = "SYMBOL need a VV after it.";
-        errPack[2] = "0";
+        errPack[1] = "0";
+        errPack[2] = "SYMBOL need a VV after it.";
         static char **erPack[] = {errPack};
         *rePACK = erPack;
         *rePACKSize = 1;

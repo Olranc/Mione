@@ -56,7 +56,7 @@ int main() {
 
             if (endSizel > 0){
                 if (strcmp(end[0][0],"ERR") == 0){
-                    prerr(atoi(end[0][1]),end[0][2],atoi(end[0][3]));
+                    prerr(atoi(end[0][3]),end[0][2],atoi(end[0][1]));
                 }
             }
 		}
@@ -109,7 +109,7 @@ int main() {
         if (endSizel > 0){
             if (strcmp(end[0][0],"ERR") == 0){
                 printf("OH %s\n",end[0][3]);
-                prerr(atoi(end[0][1]),end[0][2],atoi(end[0][3]));
+                prerr(atoi(end[0][3]),end[0][2],atoi(end[0][1]));
             }
         }
 
