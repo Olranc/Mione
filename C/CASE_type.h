@@ -65,12 +65,12 @@ char* SYMBOLS[] = {
 };
 
 char* PROMPTS[] = {
-	"do",
-	"then",
-	"else",
-    "as",
-	"=",
-    "=>"
+        "do",
+        "then",
+        "else",
+        "as",
+        "=",
+        "=>"
 };
 
 
@@ -78,22 +78,22 @@ char* PROMPTS[] = {
 
 
 int vI(char* _type,char** v, char* NAME) {
-	char** c = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? NULL : SYMBOLS) : PROMPTS) : HEADS);
+    char** c = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? NULL : SYMBOLS) : PROMPTS) : HEADS);
 
-	int size = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? 0 : sizeof(SYMBOLS)) : sizeof(PROMPTS)) : sizeof(HEADS))/sizeof(char*);
-	if (c != NULL) {
-		int i = 0;
-		for (NULL; i < size; i++) {
-			if (strcmp(NAME, c[i])) {}
+    int size = (strcmp(_type, "HEAD") ? (strcmp(_type, "PROMPT") ? (strcmp(_type, "SYMBOL") ? 0 : sizeof(SYMBOLS)) : sizeof(PROMPTS)) : sizeof(HEADS))/sizeof(char*);
+    if (c != NULL) {
+        int i = 0;
+        for (NULL; i < size; i++) {
+            if (strcmp(NAME, c[i])) {}
 
-			else {
-				*v = malloc(sizeof((i + 1) / 10 + 2));
-				sprintf(*v, "%d", i + 1);
-				
-			}
-		}
-	}
-	
+            else {
+                *v = malloc(sizeof((i + 1) / 10 + 2));
+                sprintf(*v, "%d", i + 1);
+
+            }
+        }
+    }
+
 }
 
 
