@@ -347,7 +347,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         if (PACKSize-1 == index) {countCASE = 1,addCASE = 1;};
 
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "7") == 0) lvl++;
-       
+
 
         if (strcmp(PACK[index][0], "VALUE") == 0 || strcmp(PACK[index][0], "VARIABLE") == 0) addCASE = 1;
         if (strcmp(PACK[index][0], "SYMBOL") == 0) if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 0) addCASE = 1;
@@ -430,254 +430,202 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
         if (strcmp(PACK[index][0], "SYMBOL") == 0)  if (strcmp(PACK[index][1], "8") == 0) lvl--;
     }
 
-    printf("abc : %d\n",PackSize);
+    int MaxLevel = 3;
 
-    for (int i = 0;i<PackSize;i++) {
-        printf("PACK : %s %s\n",Pack[i][0],Pack[i][1]);
-    }
-
-    printf("end\n");
 
     char *nowSymbol = "0"; //這在外面我看了好頭痛
-    for (int i = 0;i<PackSize;i++){
-        int MaxLevel = 3;
+    for (int level = 0;level<MaxLevel;level++){
+        int nowLevel = MaxLevel - level;
+        nowSymbol = "0";
 
         //Pack[i][0]; // `$print()@` or `SYMBOL`
         //Pack[i][1]; // `4`:type or `1`:address
+        for (int i = 0;i<PackSize;i++){
+            if (strcmp(Pack[i][0],"SYMBOL")==0){
+                nowSymbol = Pack[i][1];
+                printf("pass to be %s\n",nowSymbol);
+
+            }else{
+                //VV會通過
+
+                if (strcmp(nowSymbol,"0")==0){}else{
+                    if (nowLevel == 1){
+                        if (strcmp(nowSymbol,"2")==0){ //我記得這是 "-" 號
+                            char** toSub = Pack[i-2]; // `1` - 1
+                            char** subTo = Pack[i]; // 1 - `1`
+
+                            if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
+                                int minuend = atoi(toSub[0]);
+                                int subtrahend = atoi(subTo[0]);
+
+                                int answer = minuend - subtrahend;
+
+                                int size = snprintf(NULL, 0, "%d", answer) + 1;
 
 
-        if (strcmp(Pack[i][0],"SYMBOL")==0){
-            for (int level = 0;level<MaxLevel;level++){
-                int nowLevel = MaxLevel - level;
-
-                if (nowLevel == 1){
-                    if (strcmp(Pack[i][1],"2")==0){//我知道這很白目，但我喜歡這樣寫
-                        nowSymbol = "2";
-                        break;
-                    }else if (strcmp(Pack[i][1],"3")==0){
-                        nowSymbol = "3";
-                        printf("hey \n");
-                        break;
-
-                    }
-                }
-                if (nowLevel == 2){
-                    if (strcmp(Pack[i][1],"5")==0){//我知道這很白目，但我喜歡這樣寫
-                        nowSymbol = "5";
-                        printf("oh\n");
-                        break;
-                    }else if (strcmp(Pack[i][1],"6")==0){
-                        nowSymbol = "6";
-                        break;
-
-                    }
-                }
-            }
-        }else{
-            //VV會通過
-            printf("hhhhh\n");
-
-            if (strcmp(nowSymbol,"0")==0){}else{
-                if (strcmp(nowSymbol,"2")==0){ //我記得這是 "-" 號
-                    char** toSub = Pack[i-2]; // `1` - 1
-                    char** subTo = Pack[i]; // 1 - `1`
-
-                    if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
-                        int minuend = atoi(toSub[0]);
-                        int subtrahend = atoi(subTo[0]);
-
-                        int answer = minuend - subtrahend;
-
-                        int size = snprintf(NULL, 0, "%d", answer) + 1;
+                                char out[size];
+                                sprintf(out, "%d", answer);
 
 
-                        char out[size];
-                        sprintf(out, "%d", answer);
+                                // 11 + 11 +11
+                                // 22 NULL NULL + 11
+                                // 22 + 11
+
+                                Pack[i - 2][1] = "5";
+                                Pack[i - 2][0] = out;
 
 
-                        // 11 + 11 +11
-                        // 22 NULL NULL + 11
-                        // 22 + 11
-
-                        Pack[i - 2][1] = "5";
-                        Pack[i - 2][0] = out;
+                                int PackSizeShallBe = PackSize;
 
 
-                        int PackSizeShallBe = PackSize;
-
-
-                        for (int ii = 0; ii < PackSize; ii++) {
-                            if (ii >= i-1) {
-
-                                Pack[ii] = NULL;
-
-
-                                if (ii+2 > PackSize) {
-                                    PackSizeShallBe=PackSizeShallBe-2;
-
-                                }else{
-                                    Pack[ii] = Pack[ii+2];
+                                for (int ii = i-1; ii < PackSize; ii++) {
+                                    Pack[ii] = NULL;
+                                    if (ii+2 > PackSize-1) {
+                                        PackSizeShallBe--;
+                                    }else{
+                                        Pack[ii] = Pack[ii+2];
+                                    }
                                 }
+
+
+                                PackSize = PackSizeShallBe;
+
+                                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                                i=i-2;
+
+                                nowSymbol = "0";
+
+                            }else{
+                                static char *errPack[3];
+                                errPack[0] = "ERR";
+                                errPack[1] = "0";
+                                errPack[2] = "It's not a number.";
+                                static char **erPack[] = {errPack};
+                                *rePACK = erPack;
+                                *rePACKSize = 1;
+                                return;
+                            }
+                        }else if (strcmp(nowSymbol,"3")==0){ //我記得這是 "+" 號
+                            char** toSub = Pack[i-2]; // `1` + 1
+                            char** subTo = Pack[i]; // 1 + `1`
+
+                            printf("end\n");
+
+                            if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
+                                int minuend = atoi(toSub[0]);
+                                int subtrahend = atoi(subTo[0]);
+
+                                int answer = minuend + subtrahend;
+
+                                int size = snprintf(NULL, 0, "%d", answer) + 1;
+
+
+                                char out[size];
+                                sprintf(out, "%d", answer);
+
+
+                                // 11 + 11 +11
+                                // 22 NULL NULL + 11
+                                // 22 + 11
+
+                                Pack[i - 2][1] = "5";
+                                Pack[i - 2][0] = out;
+
+
+                                int PackSizeShallBe = PackSize;
+
+
+                                for (int ii = i-1; ii < PackSize; ii++) {
+                                    Pack[ii] = NULL;
+                                    if (ii+2 > PackSize-1) {
+                                        PackSizeShallBe--;
+                                    }else{
+                                        Pack[ii] = Pack[ii+2];
+
+                                    }
+                                }
+                                PackSize = PackSizeShallBe;
+
+
+
+
+                                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                                i=i-2;
+
+                                nowSymbol = "0";
+                            }else{
+                                static char *errPack[3];
+                                errPack[0] = "ERR";
+                                errPack[1] = "0";
+                                errPack[2] = "It is not a number.++";
+                                static char **erPack[] = {errPack};
+                                *rePACK = erPack;
+                                *rePACKSize = 1;
+                                return;
                             }
                         }
+                    }else if (nowLevel == 2){
 
-                        PackSize = PackSizeShallBe;
+                        if (strcmp(nowSymbol,"5")==0) { //我記得這是 "*" 號
+                            char **toSub = Pack[i - 2];
+                            char **subTo = Pack[i];
 
-                        Pack = realloc(Pack, sizeof(char **) * (PackSize));
-                        i=i-2;
+                            if (strcmp(toSub[1], "5") == 0 && strcmp(subTo[1], "5") == 0) {
+                                int minuend = atoi(toSub[0]);
+                                int subtrahend = atoi(subTo[0]);
 
-                        for (int i = 0;i<PackSize;i++){
-                            printf("nah + : %s %s\n",Pack[i][0],Pack[i][1]);
-                        }
+                                int answer = minuend * subtrahend;
 
-                        nowSymbol = "0";
-
-                    }else{
-                        static char *errPack[3];
-                        errPack[0] = "ERR";
-                        errPack[1] = "0";
-                        errPack[2] = "It's not a number.";
-                        static char **erPack[] = {errPack};
-                        *rePACK = erPack;
-                        *rePACKSize = 1;
-                        return;
-                    }
-                }else if (strcmp(nowSymbol,"3")==0){ //我記得這是 "+" 號
-                    char** toSub = Pack[i-2]; // `1` + 1
-                    char** subTo = Pack[i]; // 1 + `1`
-                    for (int i = 0;i<PackSize;i++){
-                        printf("SHIT : %s %s\n",Pack[i][0],Pack[i][1]);
-                    }
-                    printf("end\n");
-
-                    if (strcmp(toSub[1],"5")==0 && strcmp(subTo[1],"5")==0){
-                        int minuend = atoi(toSub[0]);
-                        int subtrahend = atoi(subTo[0]);
-
-                        int answer = minuend + subtrahend;
-
-                        int size = snprintf(NULL, 0, "%d", answer) + 1;
+                                int size = snprintf(NULL, 0, "%d", answer) + 1;
 
 
-                        char out[size];
-                        sprintf(out, "%d", answer);
+                                char out[size];
+                                sprintf(out, "%d", answer);
 
 
-                        // 11 + 11 +11
-                        // 22 NULL NULL + 11
-                        // 22 + 11
+                                // 11 + 11 +11
+                                // 22 NULL NULL + 11
+                                // 22 + 11
 
-                        Pack[i - 2][1] = "5";
-                        Pack[i - 2][0] = out;
+                                Pack[i - 2][1] = "5";
+                                Pack[i - 2][0] = out;
 
-
-                        int PackSizeShallBe = PackSize;
-
-
-                        for (int ii = 0; ii < PackSize; ii++) {
-                            if (ii >= i-1) {
-
-                                Pack[ii] = NULL;
+                                int PackSizeShallBe = PackSize;
 
 
-                                if (ii+2 > PackSize) {
-                                    PackSizeShallBe=PackSizeShallBe-2;
-
-                                }else{
-                                    Pack[ii] = Pack[ii+2];
+                                for (int ii = i-1; ii < PackSize; ii++) {
+                                    Pack[ii] = NULL;
+                                    if (ii+2 > PackSize-1) {
+                                        PackSizeShallBe--;
+                                    }else{
+                                        Pack[ii] = Pack[ii+2];
+                                    }
                                 }
+
+
+                                PackSize = PackSizeShallBe;
+
+                                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+
+                                i=i-2;
+
+                                nowSymbol = "0";
+
+                            } else {
+                                static char *errPack[3];
+                                errPack[0] = "ERR";
+                                errPack[1] = "0";
+                                errPack[2] = "It's not a number.**";
+                                static char **erPack[] = {errPack};
+                                *rePACK = erPack;
+                                *rePACKSize = 1;
+                                return;
                             }
                         }
-
-                        PackSize = PackSizeShallBe;
-
-                        Pack = realloc(Pack, sizeof(char **) * (PackSize));
-                        i=i-2;
-
-                        for (int i = 0;i<PackSize;i++){
-                            printf("nah + : %s %s\n",Pack[i][0],Pack[i][1]);
-                        }
-
-                        nowSymbol = "0";
-
-                    }else{
-                        static char *errPack[3];
-                        errPack[0] = "ERR";
-                        errPack[1] = "0";
-                        errPack[2] = "It is not a number.";
-                        static char **erPack[] = {errPack};
-                        *rePACK = erPack;
-                        *rePACKSize = 1;
-                        return;
-                    }
-                }else if (strcmp(nowSymbol,"5")==0) { //我記得這是 "*" 號
-                    char **toSub = Pack[i - 2];
-                    char **subTo = Pack[i];
-
-
-                    if (strcmp(toSub[1], "5") == 0 && strcmp(subTo[1], "5") == 0) {
-                        int minuend = atoi(toSub[0]);
-                        int subtrahend = atoi(subTo[0]);
-
-                        int answer = minuend * subtrahend;
-
-                        int size = snprintf(NULL, 0, "%d", answer) + 1;
-
-
-                        char out[size];
-                        sprintf(out, "%d", answer);
-
-
-                        // 11 + 11 +11
-                        // 22 NULL NULL + 11
-                        // 22 + 11
-
-                        Pack[i - 2][1] = "5";
-                        Pack[i - 2][0] = out;
-
-                        int PackSizeShallBe = PackSize;
-                        printf("sssss %d\n",PackSize);
-
-
-                        for (int ii = 0; ii < PackSize; ii++) {
-                            if (ii >= i-1) {
-
-                                Pack[ii] = NULL;
-
-
-                                if (ii+2 > PackSize) {
-                                    PackSizeShallBe=PackSizeShallBe-2;
-                                }else{
-                                    Pack[ii] = Pack[ii+2];
-                                }
-                            }
-                        }
-
-
-                        PackSize = PackSizeShallBe;
-                        printf("sssss %d\n",PackSize);
-                        Pack = realloc(Pack, sizeof(char **) * (PackSize));
-                        for (int i = 0;i<PackSize;i++){
-
-                            printf("nah * : %s %s\n",Pack[i][0],Pack[i][1]);
-
-                        }
-                        i=i-2;
-
-                        nowSymbol = "0";
-
-                    } else {
-                        static char *errPack[3];
-                        errPack[0] = "ERR";
-                        errPack[1] = "0";
-                        errPack[2] = "It's not a number.";
-                        static char **erPack[] = {errPack};
-                        *rePACK = erPack;
-                        *rePACKSize = 1;
-                        return;
                     }
                 }
             }
+            printf("motive : %d\n",i);
         }
     }
     if (strcmp(nowSymbol,"0")==0){
