@@ -1,4 +1,4 @@
-void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize,int MEMORY_GROUP);
+void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize,int MEMORY_GROUP,int beFake);
 
 #ifndef COUNT_H
 #define COUNT_H
@@ -6,6 +6,7 @@ void COUNT(char*** PACK, int PACKSize, char**** rePACK, int* rePACKSize,int MEMO
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "run.h"
 #include "memory.h"
@@ -79,7 +80,7 @@ void FunctionCall(char**FunctionAddress,char*** Pack,int PackSize,char * ***rePa
 
     char*** CountedWithV;
     int CountedWithVSize;
-    COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize,MEMORY_GROUP+1);
+    COUNT(Pack,PackSize,&CountedWithV,&CountedWithVSize,MEMORY_GROUP+1,0);
     run(&FucReturn,&FucReturnSize,c_size, CountedWithV, CountedWithVSize,MIO,MEMORY_GROUP+1,ChildNL,ChildEveryLine);
 
 
@@ -114,8 +115,6 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
             0, //開始
             1 //長度
     };
-
-
 
     for (int index = 0;index<CASESSize;index++) {
         printf("                [CASE COUNT]:'%s' '%s'\n",CASES[index][0],CASES[index][1]);
@@ -157,7 +156,9 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
                 }
                 else{
+
                     if (beforeBracket){
+
                         if (bracketType == 1) { // Calling Function
                             if (strcmp(CASES[beforeBracket-1][0], "VALUE") == 0 || strcmp(CASES[beforeBracket-1][0], "VARIABLE") == 0) {
                                 char* VVType;//might be 4,Function
@@ -271,8 +272,11 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
 
 
 
-                            COUNT(thePack, thePackSize, &CountedPACK, &CountedPACKSize, MEMORY_GROUP);
-
+                            COUNT(thePack, thePackSize, &CountedPACK, &CountedPACKSize, MEMORY_GROUP,1);
+                            printf("has THAT\n");
+                            for (int i = 0; i <CountedPACKSize;i++){
+                                printf("this : %s %s %d\n",CountedPACK[i][0],CountedPACK[i][1],MEMORY_GROUP);
+                            }
                             *rePack = CountedPACK;
                             *rePackSize = CountedPACKSize;
 
@@ -331,7 +335,7 @@ void CasesCount(char***CASES,int CASESSize,char* ***rePack,int *rePackSize,int M
     }
 }
 
-void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMORY_GROUP ){ //
+void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMORY_GROUP,int beFake ){ //
 
     char ***CASES = malloc(0); // a()
     int CASESSize = 0;
@@ -396,7 +400,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                         Pack[PackSize-1] = malloc(sizeof(char*)*2);
 
                         to(thatRerPack[ii],&(Pack[PackSize-1][0]),&(Pack[PackSize-1][1]),MEMORY_GROUP);
-
+                        printf("fucck you %s %s %s %s %d\n",Pack[PackSize-1][0],Pack[PackSize-1][1],"VALUE",thatRerPack[ii][1],MEMORY_GROUP);
                     }
                 }
 
@@ -623,6 +627,120 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                                 return;
                             }
                         }
+                        if (strcmp(nowSymbol,"6")==0) { //我記得這是 "/" 號
+                            char **toSub = Pack[i - 2];
+                            char **subTo = Pack[i];
+
+                            if (strcmp(toSub[1], "5") == 0 && strcmp(subTo[1], "5") == 0) {
+                                int minuend = atoi(toSub[0]);
+                                int subtrahend = atoi(subTo[0]);
+
+                                int answer = minuend / subtrahend;
+
+                                int size = snprintf(NULL, 0, "%d", answer) + 1;
+
+
+                                char *out = malloc(size);
+                                sprintf(out, "%d", answer);
+
+
+                                // 11 + 11 +11
+                                // 22 NULL NULL + 11
+                                // 22 + 11
+
+                                Pack[i - 2][1] = "5";
+                                Pack[i - 2][0] = out;
+
+                                int PackSizeShallBe = PackSize;
+
+
+                                for (int ii = i-1; ii < PackSize; ii++) {
+                                    Pack[ii] = NULL;
+                                    if (ii+2 > PackSize-1) {
+                                        PackSizeShallBe--;
+                                    }else{
+                                        Pack[ii] = Pack[ii+2];
+                                    }
+                                }
+
+
+                                PackSize = PackSizeShallBe;
+
+                                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+
+                                i=i-2;
+
+                                nowSymbol = "0";
+
+                            } else {
+                                static char *errPack[3];
+                                errPack[0] = "ERR";
+                                errPack[1] = "0";
+                                errPack[2] = "It's not a number.**";
+                                static char **erPack[] = {errPack};
+                                *rePACK = erPack;
+                                *rePACKSize = 1;
+                                return;
+                            }
+                        }
+                    }else if (nowLevel == 3){
+                        if (strcmp(nowSymbol,"4")==0) { //我記得這是 "^" 號
+                            char **toSub = Pack[i - 2];
+                            char **subTo = Pack[i];
+
+                            if (strcmp(toSub[1], "5") == 0 && strcmp(subTo[1], "5") == 0) {
+                                int minuend = atoi(toSub[0]);
+                                int subtrahend = atoi(subTo[0]);
+
+                                int answer = pow(minuend, subtrahend);
+
+
+                                int size = snprintf(NULL, 0, "%d", answer) + 1;
+
+
+                                char *out = malloc(size);
+                                sprintf(out, "%d", answer);
+
+
+                                // 11 + 11 +11
+                                // 22 NULL NULL + 11
+                                // 22 + 11
+
+                                Pack[i - 2][1] = "5";
+                                Pack[i - 2][0] = out;
+
+                                int PackSizeShallBe = PackSize;
+
+
+                                for (int ii = i-1; ii < PackSize; ii++) {
+                                    Pack[ii] = NULL;
+                                    if (ii+2 > PackSize-1) {
+                                        PackSizeShallBe--;
+                                    }else{
+                                        Pack[ii] = Pack[ii+2];
+                                    }
+                                }
+
+
+                                PackSize = PackSizeShallBe;
+
+                                Pack = realloc(Pack, sizeof(char **) * (PackSize));
+
+                                i=i-2;
+
+                                nowSymbol = "0";
+
+                            } else {
+                                static char *errPack[3];
+                                errPack[0] = "ERR";
+                                errPack[1] = "0";
+                                errPack[2] = "It's not a number.**";
+                                static char **erPack[] = {errPack};
+                                *rePACK = erPack;
+                                *rePACKSize = 1;
+                                return;
+                            }
+                        }
                     }
                 }
             }
@@ -644,10 +762,12 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
     for (int i = 0;i<PackSize;i++){
         char *ma;
 
-        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP -1 );
+        cm_v(&ma, atoi(Pack[i][1]),Pack[i][0],beFake ? MEMORY_GROUP :(MEMORY_GROUP-1 < 0 ? 0 : MEMORY_GROUP -1) );
+        printf("packed %s %s to %s %s\n",Pack[i][0],Pack[i][1],"VALUE",ma);
         Pack[i][0] = "VALUE";
         Pack[i][1] = ma;
     }
+
 
     *rePACK = Pack;
     *rePACKSize = PackSize;

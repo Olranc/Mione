@@ -50,7 +50,7 @@ void V_V(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
             }else{ //是 PROMPT
                 char *** countPack;
                 int countPackSize;
-                COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP);
+                COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP,0);
 
                 PACKSize=0;
                 free(PACK);
@@ -126,7 +126,7 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
             }else{ //是 PROMPT
                 char *** countPack;
                 int countPackSize;
-                COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP);
+                COUNT(PACK,PACKSize,&countPack,&countPackSize,MEMORY_GROUP,0);
                 printf("end?\n");
 
                 PACKSize=0;
@@ -231,7 +231,7 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
             char ***countPack;
             int countPackSize;
 
-            COUNT(PACK, PACKSize, &countPack, &countPackSize,MEMORY_GROUP);
+            COUNT(PACK, PACKSize, &countPack, &countPackSize,MEMORY_GROUP,0);
 
             PACKSize = 0;
             free(PACK);
