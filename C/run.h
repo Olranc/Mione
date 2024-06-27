@@ -279,18 +279,19 @@ void run(char* ***OUTPUT,int * OPSize,int MIOsize,char ***callingV,int callingVS
         int size2 = snprintf(NULL, 0, "%d", EveryLines[NL-1]) + 1;
 
         *OPSize = 1;
-        char Line[size];
-        char ALLLine[size2];
+        char* Line = malloc(size);
+        char* ALLLine = malloc(size2);
         sprintf(Line, "%d", lastIn);
-        sprintf(ALLLine, "%d", EveryLines[NL-1]);
+        sprintf(ALLLine, "%d", NL);
 
+        printf("haha : %s\n",ALLLine);
 
         char ***Err = malloc(sizeof(char**));
         Err[0] = malloc(sizeof(char*)*5);
         Err[0][0] = "ERR";
         Err[0][1] = Line;
         Err[0][2] = "''(' or '[' did not match with ')', ']'";
-        Err[0][3] = "1";
+        Err[0][3] = ALLLine;
         Err[0][4] = ALLLine;//all line
         *OUTPUT = Err;
 

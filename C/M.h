@@ -34,8 +34,6 @@ void V_V(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
         Index_++;
         char* TYPE = _while[i][0];
         char* VALUE = _while[i][1];
-        printf("    %s %s\n",_while[i][0],_while[i][1]);
-
 
         if ((strcmp(TYPE,"VALUE") == 0 || strcmp(TYPE,"SYMBOL") == 0 || strcmp(TYPE,"VARIABLE") == 0)){
             PACKSize++;
@@ -162,24 +160,36 @@ void set(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTPUT,c
                     char ***Err = malloc(sizeof(char**));
                     Err[0] = malloc(sizeof(char*)*5);
                     Err[0][0] = "ERR";
-                    Err[0][1] = countPack[0][1];
-
-                    for (int i = 0; i < 5; i++) {
-                        printf("pack %s\n",countPack[0][i]);
-                    }
                     Err[0][2] = countPack[0][2];
                     Err[0][3] = malloc(12);
-                    if (countPack[0][3]==NULL){
-                        sprintf( Err[0][3], "%d", thisLine);
 
+
+                    if (countPack[0][1][0]=='-'){
+                        char  *nah = malloc(strlen(countPack[0][1]));
+                        strcpy(nah,countPack[0][1]);
+
+                        int strLen = strlen(nah);
+
+
+
+                        for (int i =0;i<strLen;i++){
+                            if (i){
+                                nah[i-1] = nah[i];
+                            }
+                            nah[i] = 0;
+                        }
+                        nah = realloc(nah,strLen-1);
+                        //strcpy(Err[0][1],nah);
+                        Err[0][1] = nah;
+                        sprintf( Err[0][3], "%d", thisLine);
                     }else{
                         sprintf( Err[0][3], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][3]));
-
                     }
                     Err[0][4] = malloc(12);
                     sprintf(Err[0][4], "%d",NL-1);
                     *OUTPUT = Err;
                     *OPSize = 1;
+
 
                     return;
                 }else{
@@ -253,24 +263,39 @@ void return_(char*** _while,int _whileSize,int firstI,int* OPSize,char* *** OUTP
                 char ***Err = malloc(sizeof(char**));
                 Err[0] = malloc(sizeof(char*)*5);
                 Err[0][0] = "ERR";
-                Err[0][1] = countPack[0][1];
-
-                for (int i = 0; i < 5; i++) {
-                    printf("return pack %s\n",countPack[0][i]);
-                }
                 Err[0][2] = countPack[0][2];
                 Err[0][3] = malloc(12);
-                if (countPack[0][3]==NULL){
+
+
+                if (countPack[0][1][0]=='-'){
+
+                    char  *nah = malloc(strlen(countPack[0][1]));
+                    strcpy(nah,countPack[0][1]);
+
+                    int strLen = strlen(nah);
+
+
+
+                    for (int i =0;i<strLen;i++){
+                        printf("a%d\n",i);
+                        if (i){
+                            nah[i-1] = nah[i];
+                        }
+                        nah[i] = 0;
+                    }
+                    nah = realloc(nah,strLen-1);
+                   // strcpy(Err[0][1],nah);
+                   Err[0][1] = nah;
                     sprintf( Err[0][3], "%d", thisLine);
-                    printf("Touched\n");
                 }else{
+
                     sprintf( Err[0][3], "%d", thisLine-atoi(countPack[0][4])+ atoi(countPack[0][3]));
-                    printf("%s\n",Err[0][3]);
                 }
                 Err[0][4] = malloc(12);
                 sprintf(Err[0][4], "%d",NL-1);
                 *OUTPUT = Err;
                 *OPSize = 1;
+
 
                 return;
             }
