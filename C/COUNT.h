@@ -394,7 +394,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                 }else{
 
                     for (int ii =0;ii<thatRerPackSize;ii++){
-                        printf("++\n");
+                        printf("++397\n");
                         PackSize++;
                         Pack = realloc(Pack, sizeof(char **) * (PackSize));
                         Pack[PackSize-1] = malloc(sizeof(char*)*2);
@@ -415,7 +415,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
 
             if (strcmp(PACK[index][0], "SYMBOL")==0){
                 if (SYMBOL_CASE[atoi(PACK[index][1]) - 1].COUNT == 1) {
-                    printf("++\n");
+                    printf("++418\n");
                     PackSize++;
                     Pack = realloc(Pack, sizeof(char **) * (PackSize));
                     Pack[PackSize - 1] = PACK[index];
@@ -440,7 +440,6 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
     for (int level = 0;level<MaxLevel;level++){
         int nowLevel = MaxLevel - level;
         nowSymbol = "0";
-        printf("going\n");
 
         //Pack[i][0]; // `$print()@` or `SYMBOL`
         //Pack[i][1]; // `4`:type or `1`:address
@@ -457,6 +456,7 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                 if (strcmp(nowSymbol,"0")==0){}else{
                     if (nowLevel == 1){
                         if (strcmp(nowSymbol,"2")==0){ //我記得這是 "-" 號
+                            printf("my shit : %d %s %s\n",PackSize,Pack[i-2][0],Pack[i-2][1]);
                             char** toSub = Pack[i-2]; // `1` - 1
                             char** subTo = Pack[i]; // 1 - `1`
 
@@ -502,14 +502,54 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                                 nowSymbol = "0";
 
                             }else{
-                                static char *errPack[3];
-                                errPack[0] = "ERR";
-                                errPack[1] = "-555";
-                                errPack[2] = "It's not a number.";
-                                static char **erPack[] = {errPack};
-                                *rePACK = erPack;
-                                *rePACKSize = 1;
-                                return;
+                                if (strcmp(toSub[0],"NULL")==0 && strcmp(toSub[1],"0")==0) { //真正的NULL
+                                    int ans = 0-atoi(subTo[0]);
+                                    int size = snprintf(NULL, 0, "%d", ans) + 1;
+
+
+                                    char *out = malloc(size);
+                                    sprintf(out, "%d", ans);
+
+
+                                    // 11 + 11 +11
+                                    // 22 NULL NULL + 11
+                                    // 22 + 11
+
+                                    Pack[i - 2][1] = "5";
+                                    Pack[i - 2][0] = out;
+
+
+                                    int PackSizeShallBe = PackSize;
+
+
+                                    for (int ii = i-1; ii < PackSize; ii++) {
+                                        Pack[ii] = NULL;
+                                        if (ii+2 > PackSize-1) {
+                                            PackSizeShallBe--;
+                                        }else{
+                                            Pack[ii] = Pack[ii+2];
+                                        }
+                                    }
+
+
+                                    PackSize = PackSizeShallBe;
+
+                                    Pack = realloc(Pack, sizeof(char **) * (PackSize));
+                                    i=i-2;
+
+                                    nowSymbol = "0";
+                                }else{
+                                    static char *errPack[3];
+                                    errPack[0] = "ERR";
+                                    errPack[1] = "-555";
+                                    errPack[2] = "It's not a number.";
+                                    static char **erPack[] = {errPack};
+                                    *rePACK = erPack;
+                                    *rePACKSize = 1;
+                                    return;
+                                }
+
+
                             }
                         }else if (strcmp(nowSymbol,"3")==0){ //我記得這是 "+" 號
                             char** toSub = Pack[i-2]; // `1` + 1
