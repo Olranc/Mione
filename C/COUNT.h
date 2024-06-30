@@ -419,7 +419,12 @@ void COUNT (char***PACK,int PACKSize,char * ***rePACK,int * rePACKSize,int MEMOR
                     PackSize++;
                     Pack = realloc(Pack, sizeof(char **) * (PackSize));
                     Pack[PackSize - 1] = PACK[index];
-                    printf("a'%s' '%s' %d\n",Pack[index][0],Pack[index][1],PackSize);
+
+
+
+                    printf("a-1 : %s %s\n",PACK[index][0],PACK[index][1]);
+                    printf("a'%s' '%s' %d\n",Pack[PackSize - 1][0],Pack[PackSize - 1][1],PackSize);
+             
 
                 }
 
