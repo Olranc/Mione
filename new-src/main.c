@@ -9,7 +9,15 @@
 #include "Obj.h"
 #include "ftm.h"
 #include "prerr.h"
+#include "value.h"
+#include "ctm.h"
 #include "ttm.h"
+#include "stt.h"
+#include "hpsvv.h"
+
+
+
+
 
 int OMode (int main)
 {

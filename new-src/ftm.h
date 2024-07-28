@@ -4,6 +4,7 @@
 // Created by calle on 24-7-26.
 //
 
+#include "ttm.h"
 mioObj* new(const char* fileName);
 
 #ifndef FTM_H
@@ -29,7 +30,11 @@ mioObj* new(const char* fileName){
         Mio = realloc(Mio,sizeof(char*)*(MionSize));
         Mio[MionSize-1] = malloc(strlen(line)+1);
         strcpy(Mio[MionSize-1],line);
+
+
     }
+
+    tts(Mio,MionSize);
     fclose(f);
 
 }
