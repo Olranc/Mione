@@ -1,4 +1,4 @@
-//Text to Mione Object
+//Text to Mione Objects
 
 //
 // Created by calle on 24-7-26.
@@ -54,8 +54,9 @@ mioObj* tts(const char**main,const int mainSLen)
             char Word = main[LineIndex][TextIndex];
             int ThisType= AType(Word);
 
+            int Force = 0;
+
             int isLast = LineIndex == mainSLen-1 && TextIndex == strlen(main[LineIndex])-1;
-            int beMio = 0; //強制切換，通常用在不可重疊字符上
 
 
             if (!WordsType[1])
@@ -84,14 +85,14 @@ mioObj* tts(const char**main,const int mainSLen)
 
                     if (WordsType[0] == 11)
                     {
-                        beMio=1;
+                        Force = 1;
                     }
                     break;
                 }
             }
 
 
-            if ((ThisType != WordsType[0] /*需要不同別類*/ && WordsType[2] == 0 /*上一個字元需要不被類別限制*/ && WordsType[0]/*需要前面有字元*/)||WordsType[5])
+            if ((ThisType != WordsType[0] /*需要不同別類*/ && WordsType[2] == 0 /*上一個字元需要不被類別限制*/ && WordsType[0]/*需要前面有字元*/)||WordsType[5]||Force)
             {
                 ButterSize++;
                 Butter = realloc(Butter,ButterSize);
@@ -127,7 +128,7 @@ mioObj* tts(const char**main,const int mainSLen)
                 }
             }
 
-            if (isLast || beMio)
+            if (isLast)
             {
                 ButterSize++;
                 Butter = realloc(Butter,ButterSize);
