@@ -55,6 +55,8 @@ int CheckCharType(const char Char)
     //space
     if (Char == ' ') return  11;
 
+    if (Char == '\\') return 12;
+
     return 1;
 }
 
@@ -62,7 +64,15 @@ CaseObj* FCO(FILE*F)
 {
     int state[] = {
         0, // 是否在限制別類裡，如果是則此項表示限制別類的類型。例如：字串=1, 表單=2, 函數=3,
+        0, //是否為特殊字符 '\' 的後項，表示 '\'後(包含)有多少字元進行運算
+        0 //為 '\'符號的特殊項，表示這個 backslashOption 有 '('符號 --todo
     };
+
+    char*backslashOption =  malloc(0);
+
+    char *CASE = malloc(0);
+    int CASESize = 0;
+
     char c = 0;
     do
     {
@@ -70,6 +80,65 @@ CaseObj* FCO(FILE*F)
         if (c==-1) break;
 
         int CharType = CheckCharType(c);
+
+
+        switch (state[0])
+        {
+        case 1:
+            if (state[1])
+            {
+                state[1]++;
+
+                backslashOption = realloc(backslashOption,state[1]);
+                backslashOption[state[1]-1] = c;
+
+                if (c == ')' && state[1]>2) //todo
+                {
+
+                }
+
+                if ((c == 'n' || c == '\'' || c == '\"') && state[1]==2)
+                {
+
+                }
+
+            }
+            break;
+        }
+
+        if (state[1]){}else
+        {
+            switch (CharType)
+            {
+            case 3:
+                if (state[0] == 1)
+                {
+                    if (state[1] == 0)
+                    {
+                        state[0] = 0;
+                    }
+                }else if (state[0] == 0)
+                {
+                    state[0] = 1;
+                }
+
+                break;
+            case 12:
+
+                if ( state[1]) //防止上方的結構有加了
+                {
+                }else
+                {
+                    state[1]++;
+                    backslashOption = realloc(backslashOption,state[1]);
+                    backslashOption[state[1]-1] = c;
+                }
+                break;
+            }
+        }
+
+
+
 
         printf("'%c' '%d'\n",c,CharType);
     }while (1);

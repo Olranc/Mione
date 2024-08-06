@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#define WELL_DONE 0;
-#define NO_FILE 1;
-#define FILE_NOT_FOUND 2;
-
+#define WELL_DONE 0
+#define NO_FILE 1
+#define FILE_NOT_FOUND 2
+#define MEMORY_LEAKED 3
 
 #include "OBJECTS.h"
 #include "FILE_TO_CASE_OBJECTS.h"
@@ -34,7 +35,11 @@ int main(const int OptionsSize,char **Options)
                 Mode = 0;
             }
 
-            if (strcmp(strlwr(Options[i]),"-f")==0)  Mode = 1;
+            if (isChoosingMode)
+            {
+                if (strcmp(strlwr(Options[i]),"-f")==0)  Mode = 1;
+            }
+
 
         }
     }else
