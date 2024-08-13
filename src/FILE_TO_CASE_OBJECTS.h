@@ -3,6 +3,7 @@
 //
 
 
+#include <time.h>
 CaseObj* FCO(FILE*F);
 
 #ifndef FILE_TO_CASE_OBJECTS_H
@@ -65,7 +66,8 @@ CaseObj* FCO(FILE*F)
     int state[] = {
         0, // 是否在限制別類裡，如果是則此項表示限制別類的類型。例如：字串=1, 表單=2, 函數=3,
         0, //是否為特殊字符 '\' 的後項，表示 '\'後(包含)有多少字元進行運算
-        0 //為 '\'符號的特殊項，表示這個 backslashOption 有 '('符號 --todo
+        0, //為 '\'符號的特殊項，表示這個 backslashOption 有 '(' (1) 以及 ')' (2)符號
+        0, //為 '\'符號的特殊項, 表示這個特殊符號的功能是什麼 例 : 1 = 回傳換行值 (10) , 2 = 回傳自訂字元...
     };
 
     char*backslashOption =  malloc(0);
@@ -74,10 +76,12 @@ CaseObj* FCO(FILE*F)
     int CASESize = 0;
 
     char c = 0;
+    int cIndex = -1;
     do
     {
         c = (char)fgetc(F);
-        if (c==-1) break;
+        cIndex ++;
+        if (c==EOF) break;
 
         int CharType = CheckCharType(c);
 
@@ -92,22 +96,98 @@ CaseObj* FCO(FILE*F)
                 backslashOption = realloc(backslashOption,state[1]);
                 backslashOption[state[1]-1] = c;
 
-                if (c == ')' && state[1]>2) //todo
+
+                if (state[1]>2)
                 {
+                    if (c == '(')
+                    {
+                        state[2] = 1;
+                    }else  if (c == ')')
+                    {
+                        if (state[2]==1)
+                        {
+                            state[2] = 2;
+                        }
+                    }
+                }
+
+
+                if (state[1]==2)
+                {
+                    switch (c)
+                    {
+                    case 'n':
+                        state[3] = 1;
+                        break;
+                    case 'u':
+                        state[3] = 2;
+                        break;
+                    case '\'':
+                        state[3] = 3;
+                        break;
+                    case '"':
+                        state[3] = 4;
+                        break;
+                    }
+                }
+
+                char* Cs = malloc(0); //每個模式自己個用
+                int CsSize = 0;//_msize()
+
+                switch (state[3])
+                {
+                case 1:
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = 10;
+
+                    state[3] = 0;
+                    state[2] = 0;
+                    state[1] = 0;
+
+                    break;
+                case 2:
+                    if (state[2] == 2) //end
+                    {
+                        CASESize++;
+                        CASE = realloc(CASE,CASESize);
+                        CASE[CASESize-1] = 10;
+                        //int unStart = cIndex - state[1] + 1 /* '/' */ +  1 /* Opt符號 */  + 1 /* '(' */ + (1);
+                        //int unEnd = cIndex-(1);
+
+                        int isHex = 0;
+                        for (int i = 1/* 不要 '(' */ ; i<CsSize;i=+2)
+                        {
+                            if (i == 1) if (Cs[i] == '0' &&  Cs[i+1] == 'x') isHex = 1;
+
+                        }
+
+                        state[3] = 0;
+                        state[2] = 0;
+                        state[1] = 0;
+                    }else if(state[2] == 1) //還在紀錄
+                    {
+                        CsSize++;
+                        Cs = realloc(Cs,CsSize);
+                        Cs[CsSize-1] = c;
+                    }
+                    break;
 
                 }
 
-                if ((c == 'n' || c == '\'' || c == '\"') && state[1]==2)
-                {
 
-                }
 
             }
             break;
         }
 
+
         if (state[1]){}else
         {
+            CASESize++;
+            CASE = realloc(CASE,CASESize);
+            CASE[CASESize-1] = c;
+
             switch (CharType)
             {
             case 3:
@@ -115,6 +195,10 @@ CaseObj* FCO(FILE*F)
                 {
                     if (state[1] == 0)
                     {
+                        CASESize++;
+                        CASE = realloc(CASE,CASESize);
+                        CASE[CASESize-1] = c;
+                        printf("*[CASE END]* ");
                         state[0] = 0;
                     }
                 }else if (state[0] == 0)
@@ -135,12 +219,27 @@ CaseObj* FCO(FILE*F)
                 }
                 break;
             }
+
+            switch (state[0])
+            {
+            case 1://字串
+
+                printf("*[CASE ADDED]* ");
+
+
+                CASESize++;
+                CASE = realloc(CASE,CASESize);
+                CASE[CASESize-1] = c;
+
+                break;
+
+            }
         }
 
 
 
 
-        printf("'%c' '%d'\n",c,CharType);
+        printf("'%c' '%d' '%d'\n",c,CharType,state[0]);
     }while (1);
 
 }
