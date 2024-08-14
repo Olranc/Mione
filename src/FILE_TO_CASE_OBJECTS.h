@@ -72,6 +72,7 @@ CaseObj* FCO(FILE*F)
 
     int superCharMode = 0; //為 '\'符號的特殊項, 表示這個特殊符號的功能是什麼 例 : 1 = 回傳換行值 (10) , 2 = 回傳自訂字元...
 
+    int ThislastSuperChar = 0; //為 '\'符號的特殊項,為1時代表這是Super Char的最後一項，辨別使用
 
     char*backslashOption =  malloc(0);
 
@@ -152,19 +153,19 @@ CaseObj* FCO(FILE*F)
                 case 1:
                     CASESize++;
                     CASE = realloc(CASE,CASESize);
-                    CASE[CASESize-1] = 10;
+                    CASE[CASESize-1] = 0;
 
-                   superCharMode = 0;
-                   hasBracket = 0;
-                   superCharSize = 0;
-
+                    superCharMode = 0;
+                    hasBracket = 0;
+                    superCharSize = 0;
+                    ThislastSuperChar = 1;
                     break;
                 case 2:
                     if (hasBracket == 2) //end
                     {
                         CASESize++;
                         CASE = realloc(CASE,CASESize);
-                        CASE[CASESize-1] = 10;
+                        CASE[CASESize-1] = 0;
                         //int unStart = cIndex -superCharSize + 1 /* '/' */ +  1 /* Opt符號 */  + 1 /* '(' */ + (1);
                         //int unEnd = cIndex-(1);
 
@@ -172,7 +173,6 @@ CaseObj* FCO(FILE*F)
                         superCharOpt[superCharOptSize] = 0;
 
                         int isHex = 0;
-                        printf("'Str:%s'\n",superCharOpt);
 
                         for (int i = 1/* 不要 '(' */ ; i<superCharOptSize;i=i+2)
                         {
@@ -185,24 +185,7 @@ CaseObj* FCO(FILE*F)
                             {
 
 
-                                const char A[] = {
-                                    '0',
-                                    '1',
-                                    '2',
-                                    '3',
-                                    '4',
-                                    '5',
-                                    '6',
-                                    '7',
-                                    '8',
-                                    '9',
-                                    'A',
-                                    'B',
-                                    'C',
-                                    'D',
-                                    'E',
-                                    'F'
-                                };
+                                const char A[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
                                 int indexA = 0;//個位
                                 int indexB = 0;//十位
@@ -224,19 +207,18 @@ CaseObj* FCO(FILE*F)
                                 superCharOut = realloc(superCharOut,superCharOutSize);
                                 superCharOut[superCharOutSize-1] = indexB*16+indexA;
 
-                                printf("we out : %d\n",indexB*16+indexA);
                             };
-
-
-
-                            printf("a : '%c' '%c'\n",superCharOpt[i],superCharOpt[i+1]);
                         }
-                        superCharOut[superCharOutSize] = 0;
-                        printf("FIN : %s \n",superCharOut);
+                        CASESize=CASESize+superCharOutSize-1-1+1;
+                        strcat(CASE,superCharOut);
 
-                       superCharMode = 0;
-                       hasBracket = 0;
-                       superCharSize = 0;
+                        for(int i =0;i<superCharOutSize;i++) superCharOut[i] = 0;
+                        superCharOut=realloc(superCharOut,0);
+
+                        superCharMode = 0;
+                        hasBracket = 0;
+                        superCharSize = 0;
+                        ThislastSuperChar = 1;
                     }else if(hasBracket == 1) //還在紀錄
                     {
                         superCharOptSize++;
@@ -255,11 +237,8 @@ CaseObj* FCO(FILE*F)
         }
 
 
-        if (superCharSize){}else
+        if (superCharSize||ThislastSuperChar){}else
         {
-            CASESize++;
-            CASE = realloc(CASE,CASESize);
-            CASE[CASESize-1] = c;
 
             switch (CharType)
             {
@@ -271,8 +250,22 @@ CaseObj* FCO(FILE*F)
                         CASESize++;
                         CASE = realloc(CASE,CASESize);
                         CASE[CASESize-1] = c;
-                        printf("*[CASE END]* ");
-                       inLockinType = 0;
+
+                        CASESize++;
+                        CASE = realloc(CASE,CASESize);
+                        CASE[CASESize-1] = 0;
+
+                        printf("*[CASE END]* \n");
+                        for (int i = 0;i<CASESize;i++)
+                        {
+                            printf("Mdd : %d\n",CASE[i]);
+                        }
+                        printf("GG : %s\n",CASE);
+                        inLockinType = 0;
+
+                        free(CASE);
+                        CASE = malloc(0);
+                        CASESize = 0;
                     }
                 }else if (inLockinType == 0)
                 {
@@ -287,7 +280,7 @@ CaseObj* FCO(FILE*F)
                 }else
                 {
                     printf("*[SUPER CHAR START]* ");
-                   superCharSize++;
+                    superCharSize++;
                     backslashOption = realloc(backslashOption,superCharSize);
                     backslashOption[superCharSize-1] = c;
                 }
@@ -297,16 +290,15 @@ CaseObj* FCO(FILE*F)
         }
 
 
-        if (superCharSize){}else
+        if (superCharSize||ThislastSuperChar){}else
         {
             switch (inLockinType)
             {
             case 1://字串
 
-                printf("*[CASE ADDED]* ");
+                printf("*[CASE ADDED]* \"%d\"",c);
 
-
-                CASESize++;
+                CASESize++ ;
                 CASE = realloc(CASE,CASESize);
                 CASE[CASESize-1] = c;
 
@@ -318,6 +310,7 @@ CaseObj* FCO(FILE*F)
 
 
         printf("'%c' '%d' '%d'\n",c,CharType,inLockinType);
+        ThislastSuperChar = 0;
     }while (1);
 
 }
