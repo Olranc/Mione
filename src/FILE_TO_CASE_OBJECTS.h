@@ -79,7 +79,7 @@ CaseObj* FCO(FILE*F)
     char* superCharOpt = malloc(0); //每個模式自己個用
     int superCharOptSize = 0;
 
-    char* superCharOut = malloc(0);
+    char* superCharOut = malloc(0); //返回值
     int superCharOutSize = 0;
 
     char *CASE = malloc(0);
@@ -163,9 +163,7 @@ CaseObj* FCO(FILE*F)
                 case 2:
                     if (hasBracket == 2) //end
                     {
-                        CASESize++;
-                        CASE = realloc(CASE,CASESize);
-                        CASE[CASESize-1] = 0;
+
                         //int unStart = cIndex -superCharSize + 1 /* '/' */ +  1 /* Opt符號 */  + 1 /* '(' */ + (1);
                         //int unEnd = cIndex-(1);
 
@@ -173,11 +171,9 @@ CaseObj* FCO(FILE*F)
                         superCharOpt[superCharOptSize] = 0;
 
                         int isHex = 0;
-
                         for (int i = 1/* 不要 '(' */ ; i<superCharOptSize;i=i+2)
                         {
-
-                            if (isHex) if ((superCharOptSize-1/* '(' */)%2==1) break;
+                            if (isHex) if ((superCharOptSize-1/* '(' */)%2==1) {printf("break!\n"); break; };
                             if (i == 1)
                             {
                                 if (superCharOpt[i] == '0' &&  superCharOpt[i+1] == 'x') isHex = 1;
@@ -209,11 +205,39 @@ CaseObj* FCO(FILE*F)
 
                             };
                         }
-                        CASESize=CASESize+superCharOutSize-1-1+1;
-                        strcat(CASE,superCharOut);
+
+
+
+                        //for (int i =0;i<superCharOutSize;i++) {printf("A:%d %d\n",superCharOut[i],superCharOutSize);}
+
+
+                        //for (int i =0;i<CASESize;i++) {printf("B:%d\n",CASE[i]);}
+
+                        CASESize=CASESize+superCharOutSize;
+                        CASE = realloc(CASE,CASESize);
+
+                        printf("here : %d %d\n",CASESize,strlen(CASE));
+
+                        for (int i = 0; i<superCharOutSize;i++)
+                        {
+                            CASE[i+CASESize-1] = superCharOut[i];
+                            printf("C : %d\n",superCharOut[i]);
+                        }
+
 
                         for(int i =0;i<superCharOutSize;i++) superCharOut[i] = 0;
-                        superCharOut=realloc(superCharOut,0);
+
+                        superCharOut = NULL;
+                        superCharOut = malloc(0);
+
+                        superCharOutSize = 0;
+
+                        for(int i =0;i<superCharOptSize;i++) superCharOpt[i] = 0;
+                        superCharOpt = NULL;
+                        superCharOpt = malloc(0);
+
+                        superCharOptSize = 0;
+
 
                         superCharMode = 0;
                         hasBracket = 0;
@@ -224,14 +248,9 @@ CaseObj* FCO(FILE*F)
                         superCharOptSize++;
                         superCharOpt = realloc(superCharOpt,superCharOptSize);
                         superCharOpt[superCharOptSize-1] = c;
-
                     }
                     break;
-
                 }
-
-
-
             }
             break;
         }
@@ -239,7 +258,6 @@ CaseObj* FCO(FILE*F)
 
         if (superCharSize||ThislastSuperChar){}else
         {
-
             switch (CharType)
             {
             case 3:
@@ -254,18 +272,18 @@ CaseObj* FCO(FILE*F)
                         CASESize++;
                         CASE = realloc(CASE,CASESize);
                         CASE[CASESize-1] = 0;
+                        printf("my track~ '%s'\n",CASE);
 
                         printf("*[CASE END]* \n");
-                        for (int i = 0;i<CASESize;i++)
-                        {
-                            printf("Mdd : %d\n",CASE[i]);
-                        }
-                        printf("GG : %s\n",CASE);
+
+
+
                         inLockinType = 0;
 
-                        free(CASE);
+                        CASE = NULL;
                         CASE = malloc(0);
                         CASESize = 0;
+
                     }
                 }else if (inLockinType == 0)
                 {
@@ -302,11 +320,12 @@ CaseObj* FCO(FILE*F)
                 CASE = realloc(CASE,CASESize);
                 CASE[CASESize-1] = c;
 
+
+
                 break;
 
             }
         }
-
 
 
         printf("'%c' '%d' '%d'\n",c,CharType,inLockinType);
