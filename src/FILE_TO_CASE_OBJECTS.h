@@ -216,11 +216,11 @@ CaseObj* FCO(FILE*F)
                         CASESize=CASESize+superCharOutSize;
                         CASE = realloc(CASE,CASESize);
 
-                        printf("here : %d %d\n",CASESize,strlen(CASE));
+                        printf("here : %d %d\n",superCharOutSize,strlen(CASE));
 
                         for (int i = 0; i<superCharOutSize;i++)
                         {
-                            CASE[i+CASESize-1] = superCharOut[i];
+                            CASE[i+CASESize-superCharOutSize] = superCharOut[i];
                             printf("C : %d\n",superCharOut[i]);
                         }
 
