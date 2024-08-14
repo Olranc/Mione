@@ -3,6 +3,7 @@
 //
 
 
+#include <inttypes.h>
 #include <time.h>
 CaseObj* FCO(FILE*F);
 
@@ -76,6 +77,9 @@ CaseObj* FCO(FILE*F)
 
     char* superCharOpt = malloc(0); //每個模式自己個用
     int superCharOptSize = 0;
+
+    char* superCharOut = malloc(0);
+    int superCharOutSize = 0;
 
     char *CASE = malloc(0);
     int CASESize = 0;
@@ -164,14 +168,71 @@ CaseObj* FCO(FILE*F)
                         //int unStart = cIndex -superCharSize + 1 /* '/' */ +  1 /* Opt符號 */  + 1 /* '(' */ + (1);
                         //int unEnd = cIndex-(1);
 
+                        superCharOpt = realloc(superCharOpt,superCharOptSize);
+                        superCharOpt[superCharOptSize] = 0;
+
                         int isHex = 0;
+                        printf("'Str:%s'\n",superCharOpt);
 
                         for (int i = 1/* 不要 '(' */ ; i<superCharOptSize;i=i+2)
                         {
-                            if (i == 1) if (superCharOpt[i] == '0' &&  superCharOpt[i+1] == 'x') isHex = 1;
-                            if (isHex) if (superCharOptSize%2==1) break; //err
-                            printf("a : %c %c\n",superCharOpt[i],superCharOpt[i+1]);
+
+                            if (isHex) if ((superCharOptSize-1/* '(' */)%2==1) break;
+                            if (i == 1)
+                            {
+                                if (superCharOpt[i] == '0' &&  superCharOpt[i+1] == 'x') isHex = 1;
+                            } else
+                            {
+
+
+                                const char A[] = {
+                                    '0',
+                                    '1',
+                                    '2',
+                                    '3',
+                                    '4',
+                                    '5',
+                                    '6',
+                                    '7',
+                                    '8',
+                                    '9',
+                                    'A',
+                                    'B',
+                                    'C',
+                                    'D',
+                                    'E',
+                                    'F'
+                                };
+
+                                int indexA = 0;//個位
+                                int indexB = 0;//十位
+
+
+                                for (int index = 0 ;index<16;index++)
+                                {
+                                    if (A[index] == superCharOpt[i+1])
+                                    {
+                                        indexA = index;
+                                    };
+                                    if (A[index] == superCharOpt[i])
+                                    {
+                                        indexB = index;
+                                    };
+                                }
+
+                                superCharOutSize++;
+                                superCharOut = realloc(superCharOut,superCharOutSize);
+                                superCharOut[superCharOutSize-1] = indexB*16+indexA;
+
+                                printf("we out : %d\n",indexB*16+indexA);
+                            };
+
+
+
+                            printf("a : '%c' '%c'\n",superCharOpt[i],superCharOpt[i+1]);
                         }
+                        superCharOut[superCharOutSize] = 0;
+                        printf("FIN : %s \n",superCharOut);
 
                        superCharMode = 0;
                        hasBracket = 0;
