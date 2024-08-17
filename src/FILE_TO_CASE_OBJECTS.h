@@ -153,7 +153,18 @@ CaseObj* FCO(FILE*F)
                 case 1:
                     CASESize++;
                     CASE = realloc(CASE,CASESize);
-                    CASE[CASESize-1] = 0;
+                    CASE[CASESize-1] = 10;
+
+                    superCharOut = NULL;
+                    superCharOut = malloc(0);
+
+                    superCharOutSize = 0;
+
+                    for(int i =0;i<superCharOptSize;i++) superCharOpt[i] = 0;
+                    superCharOpt = NULL;
+                    superCharOpt = malloc(0);
+
+                    superCharOptSize = 0;
 
                     superCharMode = 0;
                     hasBracket = 0;
@@ -173,7 +184,7 @@ CaseObj* FCO(FILE*F)
                         int isHex = 0;
                         for (int i = 1/* 不要 '(' */ ; i<superCharOptSize;i=i+2)
                         {
-                            if (isHex) if ((superCharOptSize-1/* '(' */)%2==1) {printf("break!\n"); break; };
+                            if (isHex) if ((superCharOptSize-1/* '(' */)%2==1)  break;
                             if (i == 1)
                             {
                                 if (superCharOpt[i] == '0' &&  superCharOpt[i+1] == 'x') isHex = 1;
@@ -216,12 +227,10 @@ CaseObj* FCO(FILE*F)
                         CASESize=CASESize+superCharOutSize;
                         CASE = realloc(CASE,CASESize);
 
-                        printf("here : %d %d\n",superCharOutSize,strlen(CASE));
 
                         for (int i = 0; i<superCharOutSize;i++)
                         {
                             CASE[i+CASESize-superCharOutSize] = superCharOut[i];
-                            printf("C : %d\n",superCharOut[i]);
                         }
 
 
@@ -273,6 +282,11 @@ CaseObj* FCO(FILE*F)
                         CASE = realloc(CASE,CASESize);
                         CASE[CASESize-1] = 0;
                         printf("my track~ '%s'\n",CASE);
+
+                        for (int i = 0;i<CASESize;i++)
+                        {
+                            printf("%d %d\n",i,CASE[i]);
+                        }
 
                         printf("*[CASE END]* \n");
 
