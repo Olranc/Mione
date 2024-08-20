@@ -187,10 +187,9 @@ CaseObj* FCO(FILE*F)
                             if (isHex) if ((superCharOptSize-1/* '(' */)%2==1)  break;
                             if (i == 1)
                             {
-                                if (superCharOpt[i] == '0' &&  superCharOpt[i+1] == 'x') isHex = 1;
+                                if (superCharOpt[i] == '1' &&  superCharOpt[i+1] == '6') isHex = 1;
                             } else
                             {
-
 
                                 const char A[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 
@@ -258,6 +257,48 @@ CaseObj* FCO(FILE*F)
                         superCharOpt = realloc(superCharOpt,superCharOptSize);
                         superCharOpt[superCharOptSize-1] = c;
                     }
+                    break;
+                case 3:
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = '\'';
+
+                    superCharOut = NULL;
+                    superCharOut = malloc(0);
+
+                    superCharOutSize = 0;
+
+                    for(int i =0;i<superCharOptSize;i++) superCharOpt[i] = 0;
+                    superCharOpt = NULL;
+                    superCharOpt = malloc(0);
+
+                    superCharOptSize = 0;
+
+                    superCharMode = 0;
+                    hasBracket = 0;
+                    superCharSize = 0;
+                    ThislastSuperChar = 1;
+                    break;
+                case 4:
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = '"';
+
+                    superCharOut = NULL;
+                    superCharOut = malloc(0);
+
+                    superCharOutSize = 0;
+
+                    for(int i =0;i<superCharOptSize;i++) superCharOpt[i] = 0;
+                    superCharOpt = NULL;
+                    superCharOpt = malloc(0);
+
+                    superCharOptSize = 0;
+
+                    superCharMode = 0;
+                    hasBracket = 0;
+                    superCharSize = 0;
+                    ThislastSuperChar = 1;
                     break;
                 }
             }
