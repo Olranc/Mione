@@ -74,6 +74,8 @@ CaseObj* FCO(FILE*F)
 
     int ThislastSuperChar = 0; //為 '\'符號的特殊項,為1時代表這是Super Char的最後一項，辨別使用
 
+    int LastCharType = 0; //上個字元的別類
+
     char*backslashOption =  malloc(0);
 
     char* superCharOpt = malloc(0); //每個模式自己個用
@@ -305,41 +307,61 @@ CaseObj* FCO(FILE*F)
             break;
         }
 
+        if (inLockinType){}else
+        {
+            if (LastCharType == CharType){}else
+            {
+                CASESize++;
+                CASE = realloc(CASE,CASESize);
+                CASE[CASESize-1] = 0;
+                printf("end\n");
 
-        if (superCharSize||ThislastSuperChar){}else
+                CASE = NULL;
+                CASE = malloc(0);
+                CASESize = 0;
+            }
+        }
+
+
+        if (superCharSize||ThislastSuperChar){}else //一般
         {
             switch (CharType)
             {
+            case 1:
+                if (inLockinType){}else
+                {
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = c;
+                }
+
+                break;
             case 3:
                 if (inLockinType == 1)
                 {
-                    if (superCharSize == 0)
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = c;
+
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = 0;
+                    printf("my track~ '%s'\n",CASE);
+
+                    for (int i = 0;i<CASESize;i++)
                     {
-                        CASESize++;
-                        CASE = realloc(CASE,CASESize);
-                        CASE[CASESize-1] = c;
-
-                        CASESize++;
-                        CASE = realloc(CASE,CASESize);
-                        CASE[CASESize-1] = 0;
-                        printf("my track~ '%s'\n",CASE);
-
-                        for (int i = 0;i<CASESize;i++)
-                        {
-                            printf("%d %d\n",i,CASE[i]);
-                        }
-
-                        printf("*[CASE END]* \n");
-
-
-
-                        inLockinType = 0;
-
-                        CASE = NULL;
-                        CASE = malloc(0);
-                        CASESize = 0;
-
+                        printf("%d %d\n",i,CASE[i]);
                     }
+
+                    printf("*[CASE END]* \n");
+
+
+
+                    inLockinType = 0;
+
+                    CASE = NULL;
+                    CASE = malloc(0);
+                    CASESize = 0;
                 }else if (inLockinType == 0)
                 {
                    inLockinType = 1;
@@ -363,7 +385,7 @@ CaseObj* FCO(FILE*F)
         }
 
 
-        if (superCharSize||ThislastSuperChar){}else
+        if (superCharSize||ThislastSuperChar){}else //Lockin 【內】專屬
         {
             switch (inLockinType)
             {
@@ -384,6 +406,7 @@ CaseObj* FCO(FILE*F)
 
 
         printf("'%c' '%d' '%d'\n",c,CharType,inLockinType);
+        LastCharType = CharType;
         ThislastSuperChar = 0;
     }while (1);
 
