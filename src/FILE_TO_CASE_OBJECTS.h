@@ -90,13 +90,15 @@ CaseObj* FCO(FILE*F)
     char c = 0;
     int cIndex = -1;
 
+    int end = 0;
+
 
 
     do
     {
         c = (char)fgetc(F);
         cIndex ++;
-        if (c==EOF) break;
+        if (c==EOF) {c = ' ';end = 1;};
 
         int CharType = CheckCharType(c);
 
@@ -307,9 +309,10 @@ CaseObj* FCO(FILE*F)
             break;
         }
 
+
         if (inLockinType){}else
         {
-            if (LastCharType == CharType){}else
+            if (LastCharType == CharType){}else //一般結束 沒有被限制的情況下
             {
                 CASESize++;
                 CASE = realloc(CASE,CASESize);
@@ -368,8 +371,76 @@ CaseObj* FCO(FILE*F)
                 }
 
                 break;
-            case 12:
+            case 5:
+                if (inLockinType){}else
+                {
 
+                    inLockinType = 2;
+
+                    /*CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = c;
+                    */
+                    //上方加了
+
+                }
+                break;
+            case 6:
+                if (inLockinType == 2) //結束本身
+                {
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = c;
+
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = 0;
+                    printf("table ended %s\n",CASE);
+
+                    for (int i = 0;i<CASESize;i++)
+                    {
+                        printf("%d %d\n",i,CASE[i]);
+                    }
+
+                    inLockinType = 0;
+
+                    CASE = NULL;
+                    CASE = malloc(0);
+                    CASESize = 0;
+                }else
+                {
+                    printf("error\n");
+                }
+                break;
+            case 7:
+                inLockinType = 3;
+                break;
+            case 8:
+                if (inLockinType==3)
+                {
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = c;
+
+                    CASESize++;
+                    CASE = realloc(CASE,CASESize);
+                    CASE[CASESize-1] = 0;
+
+                    printf("Function ended\n");
+
+                    for (int i = 0;i<CASESize;i++)
+                    {
+                        printf("%d %d\n",i,CASE[i]);
+                    }
+
+                    inLockinType = 0;
+
+                    CASE = NULL;
+                    CASE = malloc(0);
+                    CASESize = 0;
+                }
+                break;
+            case 12:
                 if (superCharSize) //防止上方的結構有加了
                 {
                 }else
@@ -397,17 +468,21 @@ CaseObj* FCO(FILE*F)
                 CASE = realloc(CASE,CASESize);
                 CASE[CASESize-1] = c;
 
-
-
                 break;
-
             }
         }
+
+
 
 
         printf("'%c' '%d' '%d'\n",c,CharType,inLockinType);
         LastCharType = CharType;
         ThislastSuperChar = 0;
+
+        if (end)
+        {
+            break;
+        }
     }while (1);
 
 }

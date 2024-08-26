@@ -44,7 +44,8 @@ int main(const int OptionsSize,char **Options)
         }
     }else
     {
-        f = fopen("index.mio","r");
+        
+        f = fopen("D:\\Chen99\\Mione\\index.mio","r");
     }
 
 
