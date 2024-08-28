@@ -12,6 +12,8 @@ CaseObj* FCO(FILE*F);
 
 int CheckCharType(const char Char)
 {
+    if (Char == EOF) return 0;
+
     if ((Char>='a'&& Char<='z') || (Char>='A'&& Char<='Z')) return 1;
 
     if ((Char>='0'&& Char<='9')) return 2;
@@ -90,15 +92,10 @@ CaseObj* FCO(FILE*F)
     char c = 0;
     int cIndex = -1;
 
-    int end = 0;
-
-
-
     do
     {
         c = (char)fgetc(F);
         cIndex ++;
-        if (c==EOF) {c = ' ';end = 1;};
 
         int CharType = CheckCharType(c);
 
@@ -479,10 +476,7 @@ CaseObj* FCO(FILE*F)
         LastCharType = CharType;
         ThislastSuperChar = 0;
 
-        if (end)
-        {
-            break;
-        }
+       if (c == EOF) break;
     }while (1);
 
 }
