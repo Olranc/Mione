@@ -8,14 +8,16 @@
 #define MEMORY_LEAKED 3
 
 #include "OBJECTS.h"
-#include "FILE_TO_CASE_OBJECTS.h"
+#include "FILE_TO_CASE.h"
+#include "CASE_TO_MIONE.h"
 
 int main(const int OptionsSize,char **Options)
 {
     FILE *f = NULL;
-    int Mode = 0;
+
     if (OptionsSize>1)
     {
+        int Mode = 0;
         for (int i = 0;i<OptionsSize;i++)
         {
             int isChoosingMode = Options[i][0]=='-';
@@ -45,13 +47,17 @@ int main(const int OptionsSize,char **Options)
     }else
     {
         
-        f = fopen("D:\\Chen99\\Mione\\index.mio","r");
+        f = fopen("D:\\Mione\\index.mio","r");
     }
 
 
     if (f != NULL)
     {
-        FCO(f);
+        int CaseObjSize = 0;
+        CaseObj * CASES = FCO(f,&CaseObjSize);
+
+        CMO(CASES,CaseObjSize);
+
     }else
     {
         return NO_FILE;
