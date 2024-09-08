@@ -20,13 +20,13 @@ int CheckCharType(const char Char)
 
     if ((Char == '\'')) return 4;
 
-    if ((Char == '{')) return 5;
+    if (NULL) return 5;
 
-    if ((Char == '}')) return 6;
+    if (NULL) return 6;
 
-    if ((Char == '$')) return 7;
+    if (NULL) return 7;
 
-    if ((Char == '@')) return 8;
+    if (NULL) return 8;
 
     //Symbols
 
@@ -42,7 +42,9 @@ int CheckCharType(const char Char)
         '(',
         ')',
         '[',
-        ']'
+        ']',
+        '{',
+        '}'
     };
 
     for (int i = 0; i < sizeof(CanConnectWithAnotherSymbol); i++)
@@ -414,6 +416,15 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                 else if (inLockinType == 0)
                 {
                     inLockinType = 1;
+                }
+
+                break;
+            case 9:
+                if (!inLockinType)
+                {
+                    CASESize++;
+                    CASE = realloc(CASE, CASESize);
+                    CASE[CASESize - 1] = c;
                 }
 
                 break;
