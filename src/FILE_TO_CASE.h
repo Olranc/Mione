@@ -35,7 +35,8 @@ int CheckCharType(const char Char)
         '*',
         '/',
         '-',
-        '+'
+        '+',
+        '=',
     };
 
     char CanNotConnectWithAnotherSymbol[] = {
@@ -44,12 +45,13 @@ int CheckCharType(const char Char)
         '[',
         ']',
         '{',
-        '}'
+        '}',
+
     };
 
     for (int i = 0; i < sizeof(CanConnectWithAnotherSymbol); i++)
     {
-        if (CanConnectWithAnotherSymbol[i] == Char) return 9;
+        if (CanConnectWithAnotherSymbol[i] == Char)  return 9;
     }
     for (int i = 0; i < sizeof(CanNotConnectWithAnotherSymbol); i++)
     {
@@ -61,15 +63,13 @@ int CheckCharType(const char Char)
 
     if (Char == '\\') return 12;
 
+    if (Char == '\n') return 13;
+
     return 1;
 }
 
 CaseObj* FCO(FILE* F,int*CASESIZE)
 {
-    CaseObj a = {
-        .ObjName = "Name",
-        .ObjType = 0,
-    };
     CaseObj *CaseObjects = NULL;
     int CaseObjectsSize = 0;
 
@@ -329,10 +329,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = 0;
 
-
-                    //printf("case '%s'\n", CASE);
                     CaseObjectsSize++;
-                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(a));
+                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                     CaseObjects[CaseObjectsSize - 1] = (CaseObj){
                         .ObjType = LastCharType,
                         .ObjName = CASE,
@@ -391,7 +389,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     //printf("my track~ '%s'\n", CASE);
 
                     CaseObjectsSize++;
-                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(a));
+                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                     CaseObjects[CaseObjectsSize - 1] = (CaseObj){
                         .ObjType = 2,
                         .ObjName = CASE,
@@ -440,7 +438,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                         //printf("bdfr '%s'\n", CASE);
 
                         CaseObjectsSize++;
-                        CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(a));
+                        CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                         CaseObjects[CaseObjectsSize - 1] = (CaseObj){
                             .ObjType = 3,
                             .ObjName = CASE,
@@ -466,6 +464,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             case 12:
                 if (superCharSize) //防止上方的結構有加了
                 {
+                    
                 }
                 else
                 {
@@ -476,7 +475,22 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                 }
 
                 break;
+            case 13:
+                if (inLockinType)
+                {
+
+                }else
+                {
+                    CaseObjectsSize++;
+                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
+                    CaseObjects[CaseObjectsSize - 1] = (CaseObj){
+                        .ObjType = 13,
+                        .ObjName = "\n",
+                    };
+                }
+                break;
             }
+
         }
 
 
@@ -500,9 +514,10 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
         }
 
 
-        //printf("'%c' '%d' '%d'\n",c,CharType,inLockinType);
+        //printf("'%c' '%d' '%d'\n",c,CharType,LastCharType);
         LastCharType = CharType;
-        ThislastSuperChar = 0;
+        // ThislastSuperChar = 0;1
+
 
         if (c == EOF) break;
     }

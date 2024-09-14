@@ -42,7 +42,7 @@ typedef struct _VariableObject
 
 typedef struct _MioneObject
 {
-    int ObjType; //HPSVV宏
+    int ObjType; //HPSVV宏 1H 2P 3S 4VAR 5VAL
 
 
     ValueObj Area;  //當ObjType為VALUE宏時，會用到此值。
