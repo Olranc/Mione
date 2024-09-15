@@ -38,6 +38,17 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
                 .Area = NULL
             };
         }
+        //PROMPT
+        for (int Ci = 0; Ci < sizeof( Prompts)/sizeof( Prompts[0]); Ci++) if (strcmp(CASES[i].ObjName,Prompts[Ci]) == 0)
+        {
+            MIONESIZE++;
+            MIONE = (MioneObj*)malloc(MIONESIZE*sizeof(MioneObj));
+            MIONE[MIONESIZE-1] = (MioneObj){
+                .ObjType= 2,
+                .Text = CASES[i].ObjName,
+                .Area = NULL
+            };
+        }
 
 
         printf("'%d' '%s'\n",CASES[i].ObjType,CASES[i].ObjName);
