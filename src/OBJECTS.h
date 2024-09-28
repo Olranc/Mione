@@ -18,7 +18,7 @@ typedef struct _VariableObject;
 
 typedef struct _ValueObject
 {
-    int ValueType; //HPSVV
+    int ValueType; //值類型
     /*
     1:字串
     2:整數

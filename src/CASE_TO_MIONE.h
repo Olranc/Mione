@@ -44,7 +44,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
 
     for (int i = 0; i <CASESIZE; i++)
     {
-        int Paired =0;
+        int Paired =0; //Head Symbol Prompt Variable Value
         //HEAD
         for (int Ci = 0; Ci < sizeof( Heads)/sizeof( Heads[0]); Ci++) if (strcmp(CASES[i].ObjName,Heads[Ci]) == 0)
         {
@@ -81,8 +81,12 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
             };
             Paired = 3;
         }
+
+
+
         //Value : Function
-        if (Paired == 0) if (strcmp(CASES[i].ObjName,"function") == 0)
+
+        if (ChildCount == 0) if (strcmp(CASES[i].ObjName,"function") == 0)
         {
             ChildCount++;
             if (ChildCount == 1)
@@ -93,32 +97,62 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
                 DEFSIZE = &ChildSIZE;
             }
         }
-        if (Paired == 0) if (strcmp(CASES[i].ObjName,"range") == 0)
+
+
+        //Value : Range
+
+        
+        if (ChildCount == 0) if (strcmp(CASES[i].ObjName,"range") == 0)
         {
             ChildCount++;
             if (ChildCount == 1)
             {
                 ChildType=2;
 
-                DEF = &MIONE;
-                DEFSIZE = &MIONESIZE;
+                DEF = &Child;
+                DEFSIZE = &ChildSIZE;
             }
         }
-        if (Paired == 0) if (strcmp(CASES[i].ObjName,"end") == 0)
+
+        // Value : Function or range END
+
+        if (ChildCount != 0) if (strcmp(CASES[i].ObjName,"end") == 0)
         {
             ChildCount--;
             if (ChildCount == 0) //僅包覆最高層的子向
             {
                 ChildType = 0;
 
+                DEF = &MIONE;
+                DEFSIZE = &MIONESIZE;
+
+                ValueObj Value = (ValueObj){
+                    .ValueType = Paired == 1 ? 4 : 5,
+                    .Area = Child,
+
+                    .String = NULL,
+                    .NPNumber = 0,
+                    .PNumber = 0,
+                    .Table = NULL,
+                };
+
+                (*DEFSIZE)++ ;
+                (*DEF) = (MioneObj*)realloc(*DEF, (*DEFSIZE)*sizeof(MioneObj));
+                (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+
+                };
 
             }
         }
 
-        if (!ChildCount) //結束子項
+        //Variable
+
+        if (Paired == 0) Paired = 4;
+
+        //
+
+        if (!ChildCount) //一班執行的子項內容
         {
-            DEF = &MIONE;
-            DEFSIZE = &MIONESIZE;
 
         }
 
