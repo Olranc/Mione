@@ -2,6 +2,8 @@
 // Created by calle on 24-9-7.
 //
 
+#include <inttypes.h>
+#include <tgmath.h>
 MioneObj *CMO(CaseObj*CASES,int CASESIZE);
 
 #ifndef CASE_TO_MIONE_H
@@ -24,6 +26,7 @@ char* Symbols[] =
 {
     "+",
     "-",
+    "."
 };
 
 
@@ -92,6 +95,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
             if (ChildCount == 1)
             {
                 ChildType=1;
+                Paired = 4;
 
                 DEF = &Child;
                 DEFSIZE = &ChildSIZE;
@@ -108,6 +112,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
             if (ChildCount == 1)
             {
                 ChildType=2;
+                Paired = 4;
 
                 DEF = &Child;
                 DEFSIZE = &ChildSIZE;
@@ -122,9 +127,13 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
             if (ChildCount == 0) //僅包覆最高層的子向
             {
                 ChildType = 0;
+                Paired = 4;
 
                 DEF = &MIONE;
                 DEFSIZE = &MIONESIZE;
+
+                int a = ChildSIZE;
+
 
                 ValueObj Value = (ValueObj){
                     .ValueType = Paired == 1 ? 4 : 5,
@@ -136,25 +145,88 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
                     .Table = NULL,
                 };
 
+                printf("%d\n",ChildSIZE);
+
                 (*DEFSIZE)++ ;
                 (*DEF) = (MioneObj*)realloc(*DEF, (*DEFSIZE)*sizeof(MioneObj));
                 (*DEF)[(*DEFSIZE)-1] = (MioneObj){
-
+                    .ObjType = 5,
+                    .Text = NULL,
+                    .Area = Value,
                 };
+                Child = NULL;
+                ChildSIZE = 0;
 
+                for (int i = 0; i < (a); i++)
+                {
+                    printf("aaa %s\n", Value.Area[i].Text);
+                }
             }
         }
 
+        //Value : NPNumber
+
+        if (CASES[i].ObjType == 2)
+        {
+            Paired = 4;
+
+            ValueObj Value = (ValueObj){
+                .ValueType = 2,
+                .NPNumber = atoi(CASES[i].ObjName)
+            };
+
+            (*DEFSIZE)++;
+            (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
+            (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+                .ObjType= 5,
+                .Text = NULL,
+                .Area = Value
+            };
+        }
+
+
+        //Value : PNumber
+        if (CASES[i].ObjType == 2)  // 1.1
+        {
+            if (*DEFSIZE >= 3)
+            {
+
+                if ((*DEF)[(*DEFSIZE)-2].ObjType == 3)  if (strcmp((*DEF)[(*DEFSIZE)-2].Text,".")==0) // .
+                {
+                    if ((*DEF)[(*DEFSIZE)-3].ObjType == 5) if ((*DEF)[(*DEFSIZE)-3].Area.ValueType == 2)// 1.
+                    {
+                        long double V = 0;
+                        V= V+ (*DEF)[(*DEFSIZE)-3].Area.NPNumber;
+
+                        V= V+ (*DEF)[(*DEFSIZE)-1].Area.NPNumber*(pow(10.0,(int)(-1*strlen(CASES[i].ObjName))));
+
+                        for (int i = 0;i<3;i++)
+                        {
+                            (*DEF)[(*DEFSIZE)-1] = (MioneObj){};
+                            (*DEFSIZE)--;
+                        }
+                        printf("%Lf\n",V);
+
+                    }
+                }
+            }
+
+        }
+
+
         //Variable
 
-        if (Paired == 0) Paired = 4;
+        if (Paired == 0) Paired = 8;
 
         //
+
+
 
         if (!ChildCount) //一班執行的子項內容
         {
 
         }
+
 
         printf("'%d' '%s'\n",CASES[i].ObjType,CASES[i].ObjName);
     }

@@ -84,6 +84,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
     int ThislastSuperChar = 0; //為 '\'符號的特殊項,為1時代表這是Super Char的最後一項，辨別使用
 
     int LastCharType = 0; //上個字元的別類
+    char LastChar = 0;//上個字元
 
     char* backslashOption = malloc(0);
 
@@ -98,6 +99,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
     char c = 0;
     int cIndex = -1;
+
+
 
     do
     {
@@ -323,22 +326,30 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             }
             else //一般結束 沒有被限制的情況下
             {
-                if (CASESize)
+
+                if (CASESize) //第一個會有0的差異
                 {
-                    CASESize++;
-                    CASE = realloc(CASE, CASESize);
-                    CASE[CASESize - 1] = 0;
+                    if ((LastCharType == 1 && CharType == 2) )
+                    {
 
-                    CaseObjectsSize++;
-                    CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
-                    CaseObjects[CaseObjectsSize - 1] = (CaseObj){
-                        .ObjType = LastCharType,
-                        .ObjName = CASE,
-                    };
+                    }else
+                    {
+                        CASESize++;
+                        CASE = realloc(CASE, CASESize);
+                        CASE[CASESize - 1] = 0;
 
-                    CASE = NULL;
-                    CASE = malloc(0);
-                    CASESize = 0;
+                        CaseObjectsSize++;
+                        CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
+                        CaseObjects[CaseObjectsSize - 1] = (CaseObj){
+                            .ObjType = LastCharType,
+                            .ObjName = CASE,
+                        };
+
+                        CASE = NULL;
+                        CASE = malloc(0);
+                        CASESize = 0;
+                    }
+
                 }
             }
         }
@@ -364,7 +375,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
                 break;
             case 2:
-                if (inLockinType)
+                if (inLockinType){}
                 {
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
@@ -373,7 +384,6 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     {
                         CharType = 1;
                     }
-
                 }
                 break;
             case 3:
@@ -423,6 +433,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
+
                 }
 
                 break;
@@ -516,6 +527,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
         //printf("'%c' '%d' '%d'\n",c,CharType,LastCharType);
         LastCharType = CharType;
+        LastChar = c;
         // ThislastSuperChar = 0;1
 
 
