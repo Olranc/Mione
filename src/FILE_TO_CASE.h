@@ -104,10 +104,15 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
     do
     {
+
         c = (char)fgetc(F);
         cIndex++;
 
         int CharType = CheckCharType(c);
+
+
+        int ZEROTILSC = 0;//清除ThislastSuperChar的用 1為清除 0為無
+        if (ThislastSuperChar) ZEROTILSC++;
 
 
         switch (inLockinType)
@@ -167,6 +172,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
                     superCharOut = NULL;
                     superCharOut = malloc(0);
+
 
                     superCharOutSize = 0;
 
@@ -405,14 +411,14 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                         .ObjName = CASE,
                     };
 
-                    /*
-                    for (int i = 0;i<CASESize;i++)
+
+                    /*for (int i = 0;i<CASESize;i++)
                     {
                         printf("%d %d\n",i,CASE[i]);
                     }
-                    */
+*/
 
-                    //printf("*[CASE END]* \n");
+                   // printf("*[CASE END]* \n");
 
 
                     inLockinType = 0;
@@ -525,9 +531,10 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
         }
 
 
-        //printf("'%c' '%d' '%d'\n",c,CharType,LastCharType);
+        //printf("'%c' '%d' '%d'\n",c,CharType,ThislastSuperChar);
         LastCharType = CharType;
         LastChar = c;
+        if (ZEROTILSC) ThislastSuperChar=0; //在Loop內 別清除 ZEROTILSC
         // ThislastSuperChar = 0;1
 
 
