@@ -209,9 +209,11 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
         //Value : NPNumber
         if (!Paired) // 防止PNumber搞怪
         {
-            if (CASESIZE-1>i) if (CASES[i+1].ObjType == 9) if (strcmp(CASES[i+1].ObjName,".") == 0) //"."前的數字無法被Paired到，因此這樣做。
+
+            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 9&&(strcmp(CASES[i+1].ObjName,".") == 0)))|| (i-1>=0&&( CASES[i-1].ObjType == 9&&(strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
             {}else
             {
+
                 long int V = 0;
                 V=V+atoi(CASES[i].ObjName);
 
@@ -256,14 +258,14 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
         }
 
 
-       // printf("'%d' '%s'\n",CASES[i].ObjType,CASES[i].ObjName);
+       printf("'%d' '%s'\n",CASES[i].ObjType,CASES[i].ObjName);
     }
     for (int i = 0; i < MIONESIZE; i++)
     {
 
         if (MIONE[i].ObjType == 5)
         {
-            printf( "%d '%Lf'\n",MIONE[i].ObjType,MIONE[i].Area.PNumber);
+            printf( "%d PN:'%Lf' NP:'%d\n",MIONE[i].ObjType,MIONE[i].Area.PNumber,MIONE[i].Area.NPNumber);
         }else
         {
             printf( "%d '%s'\n",MIONE[i].ObjType,MIONE[i].Text);
