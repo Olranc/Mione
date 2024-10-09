@@ -55,7 +55,8 @@ int main(const int OptionsSize,char **Options)
     {
         int CaseObjSize = 0;
         CaseObj * CASES = FCO(f,&CaseObjSize);
-        CMO(CASES,CaseObjSize);
+        int *ROWS = malloc(0);
+        CMO(CASES,CaseObjSize,&ROWS);
 
     }else
     {

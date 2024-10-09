@@ -4,7 +4,7 @@
 
 #include <inttypes.h>
 #include <tgmath.h>
-MioneObj *CMO(CaseObj*CASES,int CASESIZE);
+MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS);
 
 #ifndef CASE_TO_MIONE_H
 #define CASE_TO_MIONE_H
@@ -32,7 +32,7 @@ char* Symbols[] =
 
 
 
-MioneObj *CMO(CaseObj*CASES,int CASESIZE)
+MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
 {
     MioneObj *MIONE = 0;
     int MIONESIZE = 0;
@@ -52,13 +52,21 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE)
     int LastPaired = 0;
 
     int ThisSourceHasBeenPN = 0; //是否已經有PNumber的數字
+
+    int RowCount = 0; //行數
+
     printf("SIZE : %d\n",CASESIZE);
 
     for (int i = 0; i <CASESIZE; i++)
     {
         int Paired =0; //Head Symbol Prompt Variable Value
 
-
+        if (CASES[i].ObjType == 13)
+        {
+            RowCount++;
+            (*ROWS) = realloc(*ROWS,(RowCount)*sizeof(int));
+            (*ROWS)[RowCount-1] = i;
+        }
 
         //HEAD
         for (int Ci = 0; Ci < sizeof( Heads)/sizeof( Heads[0]); Ci++) if (strcmp(CASES[i].ObjName,Heads[Ci]) == 0)
