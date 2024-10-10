@@ -121,7 +121,6 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             if (superCharSize)
             {
                 superCharSize++;
-
                 backslashOption = realloc(backslashOption, superCharSize);
                 backslashOption[superCharSize - 1] = c;
                 //printf("*[SUPER CHAR ADD]* ");
@@ -170,21 +169,14 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = 10;
 
-                    superCharOut = NULL;
-                    superCharOut = malloc(0);
 
 
-                    superCharOutSize = 0;
-
-                    for (int i = 0; i < superCharOptSize; i++) superCharOpt[i] = 0;
-                    superCharOpt = NULL;
-                    superCharOpt = malloc(0);
-
-                    superCharOptSize = 0;
 
                     superCharMode = 0;
-                    hasBracket = 0;
+
+                    backslashOption = 0;
                     superCharSize = 0;
+
                     ThislastSuperChar = 1;
                     break;
                 case 2:
@@ -247,24 +239,11 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                             CASE[i + CASESize - superCharOutSize] = superCharOut[i];
                         }
 
-
-                        for (int i = 0; i < superCharOutSize; i++) superCharOut[i] = 0;
-
-                        superCharOut = NULL;
-                        superCharOut = malloc(0);
-
-                        superCharOutSize = 0;
-
-                        for (int i = 0; i < superCharOptSize; i++) superCharOpt[i] = 0;
-                        superCharOpt = NULL;
-                        superCharOpt = malloc(0);
-
-                        superCharOptSize = 0;
-
-
                         superCharMode = 0;
-                        hasBracket = 0;
+
+                        backslashOption = 0;
                         superCharSize = 0;
+
                         ThislastSuperChar = 1;
                     }
                     else if (hasBracket == 1) //還在紀錄
@@ -273,26 +252,19 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                         superCharOpt = realloc(superCharOpt, superCharOptSize);
                         superCharOpt[superCharOptSize - 1] = c;
                     }
+
                     break;
                 case 3:
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = '\'';
 
-                    superCharOut = NULL;
-                    superCharOut = malloc(0);
-
-                    superCharOutSize = 0;
-
-                    for (int i = 0; i < superCharOptSize; i++) superCharOpt[i] = 0;
-                    superCharOpt = NULL;
-                    superCharOpt = malloc(0);
-
-                    superCharOptSize = 0;
 
                     superCharMode = 0;
-                    hasBracket = 0;
+
+                    backslashOption = 0;
                     superCharSize = 0;
+
                     ThislastSuperChar = 1;
                     break;
                 case 4:
@@ -300,20 +272,11 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = '"';
 
-                    superCharOut = NULL;
-                    superCharOut = malloc(0);
-
-                    superCharOutSize = 0;
-
-                    for (int i = 0; i < superCharOptSize; i++) superCharOpt[i] = 0;
-                    superCharOpt = NULL;
-                    superCharOpt = malloc(0);
-
-                    superCharOptSize = 0;
-
                     superCharMode = 0;
-                    hasBracket = 0;
+
+                    backslashOption = 0;
                     superCharSize = 0;
+
                     ThislastSuperChar = 1;
                     break;
                 }
@@ -361,7 +324,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
         }
 
 
-        if (superCharSize || ThislastSuperChar)
+        if (superCharSize)
         {
         }
         else //一般
@@ -399,6 +362,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
 
+                    printf("huh %d\n",c);
+
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = 0;
@@ -407,19 +372,18 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CaseObjectsSize++;
                     CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                     CaseObjects[CaseObjectsSize - 1] = (CaseObj){
-                        .ObjType = 2,
+                        .ObjType = 3,
                         .ObjName = CASE,
                     };
 
 
-                    /*for (int i = 0;i<CASESize;i++)
+                    for (int i = 0;i<CASESize;i++)
                     {
                         printf("%d %d\n",i,CASE[i]);
                     }
-*/
+
 
                    // printf("*[CASE END]* \n");
-
 
                     inLockinType = 0;
 
@@ -519,8 +483,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             switch (inLockinType)
             {
             case 1: //字串
-
-                //printf("*[CASE ADDED]* \"%d\"",c);
+//todo
+                printf("%d *[CASE ADDED]* \"%d\"",cIndex,c);
 
                 CASESize++;
                 CASE = realloc(CASE, CASESize);

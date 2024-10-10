@@ -1,3 +1,10 @@
-set x = 1.1
-set y = 2.2
-set z = 3.3
+input "io"
+
+set x = 1
+
+if x == 1 then range
+    print ("x is equal to 1")
+end
+else range
+    print ("x is not equal to 1")
+end

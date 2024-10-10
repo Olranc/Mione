@@ -14,19 +14,24 @@ char* Heads[] =
 {
     "set",
     "get",
+    "if",
+    "input",
 };
 
 char* Prompts[] =
 {
     "=",
-    "them",
+    "then",
+    "else"
 };
 
 char* Symbols[] =
 {
     "+",
     "-",
-    "."
+    ".",
+    "==",
+    "--"
 };
 
 
@@ -55,11 +60,19 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
 
     int RowCount = 0; //行數
 
+    int Lock = -1; //被封鎖到...
+
+    VariableObj* Vars = malloc(0);
+    int VarsSize = 0;
+
     printf("SIZE : %d\n",CASESIZE);
 
     for (int i = 0; i <CASESIZE; i++)
     {
-        int Paired =0; //Head Symbol Prompt Variable Value
+
+       if (Lock != i)
+       {
+            int Paired =0; //Head Symbol Prompt Variable Value
 
         if (CASES[i].ObjType == 13)
         {
@@ -110,6 +123,19 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
             Paired = 3;
         }
 
+        //Value : String
+        if (CASES[i].ObjType == 3)
+        {
+            Paired = 5;
+            ValueObj Value = (ValueObj){.ValueType = 1, .String = CASES[i].ObjName};
+
+            (*DEFSIZE)++;
+            (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
+            (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+                .ObjType= 5,
+                .Area = Value
+            };
+        }
 
 
         //Value : Function
@@ -130,7 +156,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
 
         //Value : Range
 
-        
+
         if (ChildCount == 0) if (strcmp(CASES[i].ObjName,"range") == 0)
         {
             ChildCount++;
@@ -182,10 +208,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
                 Child = NULL;
                 ChildSIZE = 0;
 
-                for (int i = 0; i < (a); i++)
-                {
-                    printf("aaa %s\n", Value.Area[i].Text);
-                }
             }
         }
 
@@ -194,10 +216,16 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         {
             if (CASESIZE-1>i)
             {
-                if (CASES[i+1].ObjType == 2)
+                if (!ThisSourceHasBeenPN)
                 {
-                    if (!ThisSourceHasBeenPN)
+                    if (CASES[i+1].ObjType == 2)
                     {
+
+                        (*DEFSIZE)--;
+                        (*DEF)[(*DEFSIZE)] = (MioneObj){};
+
+                        Lock = i+1;
+
                         ThisSourceHasBeenPN = 1;
                         long double V = 0;
                         V=V+atoi(CASES[i+1].ObjName)*pow(10.,(int)strlen(CASES[i+1].ObjName)*(-1));
@@ -227,12 +255,31 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
                             .ObjType = 5,
                             .Area = Value,
                         };
-                    }else
+                    }else if(i-1>=0 && CASES[i-1].ObjType == 2)
                     {
-                        exit(0xffff+0x01);
-                    }
+                        (*DEFSIZE)--;
+                        (*DEF)[(*DEFSIZE)] = (MioneObj){};
 
+                        ThisSourceHasBeenPN = 1;
+                        long double V = 0;
+                        V=V+atoi(CASES[i-1].ObjName);
+                        ValueObj Value = (ValueObj){
+                            .ValueType = 3,
+                            .PNumber = V * (Minus),
+                        };
+                        Minus = 1;
+                        (*DEFSIZE)++;
+                        (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
+                        (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+                            .ObjType = 5,
+                            .Area = Value,
+                        };
+                    }
+                }else
+                {
+                    exit(0xffff+0x01);
                 }
+
             }
         };
 
@@ -243,8 +290,9 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         if (!Paired) // 防止PNumber搞怪
         {
 
-            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 9&&(strcmp(CASES[i+1].ObjName,".") == 0)))|| (i-1>=0&&( CASES[i-1].ObjType == 9&&(strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
-            {}else if(CASES[i].ObjType == 2)
+            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 9 && (strcmp(CASES[i+1].ObjName,".") == 0))) ||
+                (i-1>=0&&( CASES[i-1].ObjType == 9 && (strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
+            { Paired = -1; }else if(CASES[i].ObjType == 2)
             {
                 Paired = 5;
 
@@ -253,7 +301,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
                 V=V+atoi(CASES[i].ObjName);
 
                 ValueObj Value = (ValueObj){
-                    .ValueType = 3,
+                    .ValueType = 2,
                     .NPNumber = V * (Minus),
                 };
                 Minus = 1;
@@ -270,20 +318,59 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
 
         //Variable
 
-        if (Paired == 0) Paired = 8;
+        if (Paired == 0 && (CASES[i].ObjType != 13))
+        {
+            Paired = 5;
+
+            int NewVar = 1;
+
+            VariableObj Variable;
+
+            for (int j = 0; j < VarsSize; j++)   if (Vars[i].Name == CASES[i].ObjName)
+            {
+
+                NewVar = 0;
+                Variable = Vars[i];
+                break;
+            }
+
+
+
+            if (NewVar)
+            {
+                Variable = (VariableObj){
+                    .Name = CASES[i].ObjName,
+                };
+
+                VarsSize++;
+                Vars = realloc(Vars,VarsSize*sizeof(VariableObj));
+                Vars[VarsSize-1] = Variable;
+            }
+
+
+            (*DEFSIZE)++;
+            (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
+            (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+                .ObjType = 4,
+                .Var = Variable,
+            };
+        };
 
         //**ELSE**
 
         //負數處理
-        if (CASES[i].ObjType == 10) if (strcmp(CASES[i].ObjName,"-") == 0)
+        if (Paired == 3)
         {
-
-            if (CASESIZE-1>i)
+            if (CASES[i].ObjType == 10) if (strcmp(CASES[i].ObjName,"-") == 0)
             {
-                if (CASES[i+1].ObjType == 2) Minus = -1;
-                if (CASES[i+1].ObjType == 9) if (strcmp(CASES[i+1].ObjName,".")==0)Minus = -1;
-            }
-        };
+
+                if (CASESIZE-1>i)
+                {
+                    if (CASES[i+1].ObjType == 2) Minus = -1;
+                    if (CASES[i+1].ObjType == 9) if (strcmp(CASES[i+1].ObjName,".")==0)Minus = -1;
+                }
+            };
+        }
 
 
 
@@ -294,19 +381,57 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         }
 
 
-       printf("'%d' '%s'\n",CASES[i].ObjType,CASES[i].ObjName);
+        printf("'%d' a'%s'\n",CASES[i].ObjType,CASES[i].ObjName);
 
         LastPaired = Paired;
+       }
     }
     for (int i = 0; i < MIONESIZE; i++)
     {
-
+        printf("\033[0m %d :",i);
         if (MIONE[i].ObjType == 5)
         {
-            printf( "%d %d PN:'%Lf' NP:'%d\n",i,MIONE[i].ObjType,MIONE[i].Area.PNumber,MIONE[i].Area.NPNumber);
+            printf("\033[1;37;42m VALUE \033[0m");
+            switch (MIONE[i].Area.ValueType)
+            {
+            case 1:
+
+                printf("\033[1;37;45m String \033[0m : \033[1;34;47m %s \033[0m\n",MIONE[i].Area.String);
+                break;
+            case 2:
+                printf("\033[1;37;45m NPNumber \033[0m : \033[1;34;47m %d \033[0m\n",MIONE[i].Area.NPNumber);
+                break;
+            case 3:
+                printf("\033[1;37;45m PNumber \033[0m : \033[1;34;47m %Lf \033[0m\n",MIONE[i].Area.PNumber);
+                break;
+            case 4:
+                printf("\033[1;37;45m Function \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Area);
+                break;
+            case 5:
+                printf("\033[1;37;45m Range \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Area);
+                break;
+            case 6:
+                printf("\033[1;37;45m Table \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Table);
+                break;
+            }
+            printf( "");
         }else
         {
-            printf( "%d %d '%s'\n",i,MIONE[i].ObjType,MIONE[i].Text);
+            switch (MIONE[i].ObjType)
+            {
+            case 1:
+                printf("\033[1;37;42m HEAD \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
+                break;
+            case 2:
+                printf("\033[1;37;42m PROMPT \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
+                break;
+            case 3:
+                printf("\033[1;37;42m SYMBOL \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
+                break;
+            case 4:
+                printf("\033[1;37;42m VARIABLE \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Var.Name);
+                break;
+            }
         }
     }
 }

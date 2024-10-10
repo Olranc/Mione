@@ -44,9 +44,9 @@ typedef struct _MioneObject
 {
     int ObjType; //HPSVV宏 1H 2P 3S 4VAR 5VAL 0換行
 
-
+    VariableObj Var; //當ObjType為VAR時，會用到此變數。
     ValueObj Area;  //當ObjType為VALUE宏時，會用到此值。
-    char* Text; //如果不是Value的話，將會採用此char*來儲存文字。
+    char* Text; //如果不是Value以及Variable的話，將會採用此char*來儲存文字。
 
 } MioneObj;
 
