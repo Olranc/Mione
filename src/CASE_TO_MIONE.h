@@ -414,8 +414,11 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
          for (int j = 0; j < 10; j++) printf("\033[1;37;41m LEVEL %d \033[0m",Index);
          printf("\n");
 
+
+         char  string[] = {' '};
+         /*
          int s = 0;
-        char * string = malloc(0);
+         char * string = malloc(0);
          for (int iii = 0; iii < Index; iii++)
          {
              for (int f = 0;f <4;f++)
@@ -428,10 +431,11 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
          s++;
          string = realloc(string,s);
          string[s-1] = 0;
+         */
 
         for (int i = 0; i < ASize[Index]; i++)
         {
-            printf("\033[0m %d :",i);
+            printf("\033[0m %x :",i);
             if (A[Index][i].ObjType == 5)
             {
                 printf("%s\033[1;37;42m VALUE \033[0m",string);

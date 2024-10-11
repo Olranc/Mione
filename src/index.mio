@@ -1,6 +1,6 @@
 input "io"
 
-set x = 1 ()
+set x = 1
 
 if x == 1 then range()
     print ("x is equal to 1")
