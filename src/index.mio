@@ -1,10 +1,10 @@
 input "io"
 
-set x = 1
+set x = 1 ()
 
-if x == 1 then range
+if x == 1 then range()
     print ("x is equal to 1")
 end
-else range
+else range()
     print ("x is not equal to 1")
 end

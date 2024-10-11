@@ -307,6 +307,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                         CASE = realloc(CASE, CASESize);
                         CASE[CASESize - 1] = 0;
 
+
+
                         CaseObjectsSize++;
                         CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                         CaseObjects[CaseObjectsSize - 1] = (CaseObj){
@@ -337,6 +339,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                 }
                 else
                 {
+                    printf("yess  %d\n",inLockinType);
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
@@ -344,8 +347,9 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
                 break;
             case 2:
-                if (inLockinType){}
+                if (inLockinType){}else
                 {
+                    printf("hahaha %d\n",inLockinType);
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
@@ -368,6 +372,8 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = 0;
                     //printf("my track~ '%s'\n", CASE);
+
+
 
                     CaseObjectsSize++;
                     CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
@@ -418,10 +424,11 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
 
                         //printf("bdfr '%s'\n", CASE);
 
+
                         CaseObjectsSize++;
                         CaseObjects = realloc(CaseObjects, CaseObjectsSize*sizeof(CaseObj));
                         CaseObjects[CaseObjectsSize - 1] = (CaseObj){
-                            .ObjType = 3,
+                            .ObjType = 10,
                             .ObjName = CASE,
                         };
 
@@ -483,7 +490,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             switch (inLockinType)
             {
             case 1: //字串
-//todo
+
                 printf("%d *[CASE ADDED]* \"%d\"",cIndex,c);
 
                 CASESize++;

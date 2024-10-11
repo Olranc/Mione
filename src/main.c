@@ -7,6 +7,21 @@
 #define FILE_NOT_FOUND 2
 #define MEMORY_LEAKED 3
 
+#ifdef _WIN32
+
+#endif
+
+#ifdef __APPLE__
+
+#endif
+
+#ifdef __linux__
+
+#endif
+
+
+
+
 #include "OBJECTS.h"
 #include "FILE_TO_CASE.h"
 #include "CASE_TO_MIONE.h"

@@ -4,6 +4,8 @@
 
 #include <inttypes.h>
 #include <tgmath.h>
+
+#include "OBJECTS.h"
 MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS);
 
 #ifndef CASE_TO_MIONE_H
@@ -31,7 +33,9 @@ char* Symbols[] =
     "-",
     ".",
     "==",
-    "--"
+    "--",
+    "(",
+    ")",
 };
 
 
@@ -61,6 +65,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
     int RowCount = 0; //行數
 
     int Lock = -1; //被封鎖到...
+
+    int RF = 0; //Range Function
 
     VariableObj* Vars = malloc(0);
     int VarsSize = 0;
@@ -126,6 +132,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         //Value : String
         if (CASES[i].ObjType == 3)
         {
+            printf("'%d' a'%s'\n",CASES[i].ObjType,CASES[i].ObjName);
             Paired = 5;
             ValueObj Value = (ValueObj){.ValueType = 1, .String = CASES[i].ObjName};
 
@@ -141,12 +148,14 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         //Value : Function
 
         if (ChildCount == 0) if (strcmp(CASES[i].ObjName,"function") == 0)
+
         {
             ChildCount++;
             if (ChildCount == 1)
             {
+                RF = 2;
                 ChildType=1;
-                Paired = 4;
+                Paired = 5;
 
                 DEF = &Child;
                 DEFSIZE = &ChildSIZE;
@@ -162,6 +171,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
             ChildCount++;
             if (ChildCount == 1)
             {
+                RF = 1;
                 ChildType=2;
                 Paired = 5;
 
@@ -177,26 +187,28 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
             ChildCount--;
             if (ChildCount == 0) //僅包覆最高層的子向
             {
+
                 ChildType = 0;
                 Paired = 5;
 
                 DEF = &MIONE;
                 DEFSIZE = &MIONESIZE;
 
+
+
                 int a = ChildSIZE;
 
-
-                ValueObj Value = (ValueObj){
-                    .ValueType = Paired == 1 ? 4 : 5,
-                    .Area = Child,
-
-                    .String = NULL,
-                    .NPNumber = 0,
-                    .PNumber = 0,
-                    .Table = NULL,
+                AreaObj Area = (AreaObj){
+                    .Area =Child,
+                    .Size = ChildSIZE,
                 };
 
-                printf("%d\n",ChildSIZE);
+                ValueObj Value = (ValueObj){
+                    .ValueType = RF == 1 ? 5 : 4,
+                    .Area = Area,
+                };
+
+
 
                 (*DEFSIZE)++ ;
                 (*DEF) = (MioneObj*)realloc(*DEF, (*DEFSIZE)*sizeof(MioneObj));
@@ -239,7 +251,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
                             }
                         }
 
-                        printf("%Lf\n",V);
+
 
                         Paired = 5;
 
@@ -320,7 +332,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
 
         if (Paired == 0 && (CASES[i].ObjType != 13))
         {
-            Paired = 5;
+            Paired = 4;
 
             int NewVar = 1;
 
@@ -381,59 +393,107 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         }
 
 
-        printf("'%d' a'%s'\n",CASES[i].ObjType,CASES[i].ObjName);
+
 
         LastPaired = Paired;
        }
     }
-    for (int i = 0; i < MIONESIZE; i++)
-    {
-        printf("\033[0m %d :",i);
-        if (MIONE[i].ObjType == 5)
-        {
-            printf("\033[1;37;42m VALUE \033[0m");
-            switch (MIONE[i].Area.ValueType)
-            {
-            case 1:
 
-                printf("\033[1;37;45m String \033[0m : \033[1;34;47m %s \033[0m\n",MIONE[i].Area.String);
-                break;
-            case 2:
-                printf("\033[1;37;45m NPNumber \033[0m : \033[1;34;47m %d \033[0m\n",MIONE[i].Area.NPNumber);
-                break;
-            case 3:
-                printf("\033[1;37;45m PNumber \033[0m : \033[1;34;47m %Lf \033[0m\n",MIONE[i].Area.PNumber);
-                break;
-            case 4:
-                printf("\033[1;37;45m Function \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Area);
-                break;
-            case 5:
-                printf("\033[1;37;45m Range \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Area);
-                break;
-            case 6:
-                printf("\033[1;37;45m Table \033[0m : \033[1;34;47m %p \033[0m\n",MIONE[i].Area.Table);
-                break;
-            }
-            printf( "");
-        }else
+    int Size = 0;
+    MioneObj** A = malloc(0);
+    int* ASize = malloc(0);
+
+    Size++;
+    A = realloc(A,Size*sizeof(MioneObj));
+    A[Size-1] = MIONE;
+    ASize = realloc(ASize,Size*sizeof(int));
+    ASize[Size-1] = MIONESIZE;
+
+     for (int Index = 0; Index < Size; Index++)
+    {
+         for (int j = 0; j < 10; j++) printf("\033[1;37;41m LEVEL %d \033[0m",Index);
+         printf("\n");
+
+         int s = 0;
+        char * string = malloc(0);
+         for (int iii = 0; iii < Index; iii++)
+         {
+             for (int f = 0;f <4;f++)
+             {
+                 s++;
+                 string = realloc(string,s);
+                 string[s-1] = ' ';
+             }
+         }
+         s++;
+         string = realloc(string,s);
+         string[s-1] = 0;
+
+        for (int i = 0; i < ASize[Index]; i++)
         {
-            switch (MIONE[i].ObjType)
+            printf("\033[0m %d :",i);
+            if (A[Index][i].ObjType == 5)
             {
-            case 1:
-                printf("\033[1;37;42m HEAD \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
-                break;
-            case 2:
-                printf("\033[1;37;42m PROMPT \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
-                break;
-            case 3:
-                printf("\033[1;37;42m SYMBOL \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Text);
-                break;
-            case 4:
-                printf("\033[1;37;42m VARIABLE \033[0m : \033[1;31;47m %s \033[0m\n",MIONE[i].Var.Name);
-                break;
-            }
+                printf("%s\033[1;37;42m VALUE \033[0m",string);
+                switch (A[Index][i].Area.ValueType)
+                {
+                case 1:
+
+                    printf("\033[1;37;45m String \033[0m : \033[1;34;47m %s \033[0m\n",A[Index][i].Area.String);
+                    break;
+                case 2:
+                    printf("\033[1;37;45m NPNumber \033[0m : \033[1;34;47m %d \033[0m\n",A[Index][i].Area.NPNumber);
+                    break;
+                case 3:
+                    printf("\033[1;37;45m PNumber \033[0m : \033[1;34;47m %Lf \033[0m\n",A[Index][i].Area.PNumber);
+                    break;
+                case 4:
+                    printf("\033[1;37;45m Function \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Area.Area);
+
+                    Size++;
+                    A = realloc(A,Size*sizeof(MioneObj));
+                    A[Size-1] = A[Index][i].Area.Area.Area;
+                    ASize = realloc(ASize,Size*sizeof(int));
+                    ASize[Size-1] = A[Index][i].Area.Area.Size;
+
+                    break;
+                case 5:
+                    printf("\033[1;37;45m Range \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Area.Area);
+
+                    Size++;
+                    A = realloc(A,Size*sizeof(MioneObj));
+                    A[Size-1] = A[Index][i].Area.Area.Area;
+                    ASize = realloc(ASize,Size*sizeof(int));
+                    ASize[Size-1] = A[Index][i].Area.Area.Size;
+
+                    break;
+                case 6:
+                    printf("\033[1;37;45m Table \033[0m : \033[1;34;47m %p \033[0m\n",A[Index][i].Area.Table.Table);
+                    break;
+                }
+                printf( "");
+            }else
+
+               switch (A[Index][i].ObjType)
+               {
+                     case 1:
+                         printf("%s\033[1;37;42m HEAD \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
+                         break;
+                     case 2:
+                         printf("%s\033[1;37;42m PROMPT \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
+                         break;
+                     case 3:
+                         printf("%s\033[1;37;42m SYMBOL \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Text);
+                         break;
+                     case 4:
+                         printf("%s\033[1;37;42m VARIABLE \033[0m : \033[1;31;47m %s \033[0m\n",string,A[Index][i].Var.Name);
+                      break;
+               }
         }
+
     }
 }
+
+
 
 #endif //CASE_TO_MIONE_H
