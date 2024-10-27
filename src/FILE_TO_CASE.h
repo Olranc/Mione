@@ -339,7 +339,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                 }
                 else
                 {
-                    printf("yess  %d\n",inLockinType);
+                    //printf("yess  %d\n",inLockinType);
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
@@ -349,7 +349,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             case 2:
                 if (inLockinType){}else
                 {
-                    printf("hahaha %d\n",inLockinType);
+                    //printf("hahaha %d\n",inLockinType);
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
@@ -366,7 +366,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     CASE = realloc(CASE, CASESize);
                     CASE[CASESize - 1] = c;
 
-                    printf("huh %d\n",c);
+                    //printf("huh %d\n",c);
 
                     CASESize++;
                     CASE = realloc(CASE, CASESize);
@@ -383,10 +383,6 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
                     };
 
 
-                    for (int i = 0;i<CASESize;i++)
-                    {
-                        printf("%d %d\n",i,CASE[i]);
-                    }
 
 
                    // printf("*[CASE END]* \n");
@@ -491,7 +487,7 @@ CaseObj* FCO(FILE* F,int*CASESIZE)
             {
             case 1: //字串
 
-                printf("%d *[CASE ADDED]* \"%d\"",cIndex,c);
+                //printf("%d *[CASE ADDED]* \"%d\"",cIndex,c);
 
                 CASESize++;
                 CASE = realloc(CASE, CASESize);

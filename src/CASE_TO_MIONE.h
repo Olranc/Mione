@@ -6,19 +6,16 @@
 #include <tgmath.h>
 
 #include "OBJECTS.h"
-MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS);
+MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * SIZE);
 
 #ifndef CASE_TO_MIONE_H
 #define CASE_TO_MIONE_H
 
 
-char* Heads[] =
-{
-    "set",
-    "get",
-    "if",
-    "input",
-};
+
+
+
+
 
 char* Prompts[] =
 {
@@ -41,7 +38,8 @@ char* Symbols[] =
 
 
 
-MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
+MioneObj *CMO(CaseObj*CASES,int CASESIZE,
+    int* *ROWS, int * SIZE)
 {
     MioneObj *MIONE = 0;
     int MIONESIZE = 0;
@@ -71,7 +69,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
     VariableObj* Vars = malloc(0);
     int VarsSize = 0;
 
-    printf("SIZE : %d\n",CASESIZE);
+
 
     for (int i = 0; i <CASESIZE; i++)
     {
@@ -88,7 +86,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         }
 
         //HEAD
-        for (int Ci = 0; Ci < sizeof( Heads)/sizeof( Heads[0]); Ci++) if (strcmp(CASES[i].ObjName,Heads[Ci]) == 0)
+        for (int Ci = 0; Ci < sizeof( Heads)/sizeof( Heads[0]); Ci++) if (strcmp(CASES[i].ObjName,Heads[Ci].Name) == 0)
         {
             (*DEFSIZE)++;
              (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
@@ -132,7 +130,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         //Value : String
         if (CASES[i].ObjType == 3)
         {
-            printf("'%d' a'%s'\n",CASES[i].ObjType,CASES[i].ObjName);
+
             Paired = 5;
             ValueObj Value = (ValueObj){.ValueType = 1, .String = CASES[i].ObjName};
 
@@ -217,6 +215,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
                     .Text = NULL,
                     .Area = Value,
                 };
+
                 Child = NULL;
                 ChildSIZE = 0;
 
@@ -399,6 +398,13 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
        }
     }
 
+    (*SIZE) = (*DEFSIZE);
+    return *DEF;
+
+
+
+    /*
+
     int Size = 0;
     MioneObj** A = malloc(0);
     int* ASize = malloc(0);
@@ -409,30 +415,13 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
     ASize = realloc(ASize,Size*sizeof(int));
     ASize[Size-1] = MIONESIZE;
 
-     for (int Index = 0; Index < Size; Index++)
+    for (int Index = 0; Index < Size; Index++)
     {
          for (int j = 0; j < 10; j++) printf("\033[1;37;41m LEVEL %d \033[0m",Index);
          printf("\n");
 
 
          char  string[] = {' '};
-         /*
-         int s = 0;
-         char * string = malloc(0);
-         for (int iii = 0; iii < Index; iii++)
-         {
-             for (int f = 0;f <4;f++)
-             {
-                 s++;
-                 string = realloc(string,s);
-                 string[s-1] = ' ';
-             }
-         }
-         s++;
-         string = realloc(string,s);
-         string[s-1] = 0;
-         */
-
         for (int i = 0; i < ASize[Index]; i++)
         {
             printf("\033[0m %x :",i);
@@ -496,7 +485,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS)
         }
 
     }
-}
+    */
+}      
 
 
 

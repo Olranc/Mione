@@ -24,7 +24,9 @@
 
 #include "OBJECTS.h"
 #include "FILE_TO_CASE.h"
+#include "HeadFile/AllHeads.h"
 #include "CASE_TO_MIONE.h"
+#include "MIONE.h"
 
 int main(const int OptionsSize,char **Options)
 {
@@ -68,10 +70,17 @@ int main(const int OptionsSize,char **Options)
 
     if (f != NULL)
     {
+        //MAIN
         int CaseObjSize = 0;
         CaseObj * CASES = FCO(f,&CaseObjSize);
-        int *ROWS = malloc(0);
-        CMO(CASES,CaseObjSize,&ROWS);
+
+        int *Rows = malloc(0);
+        int MioObjSize = 0;
+        MioneObj * MioObj = CMO(CASES,CaseObjSize,&Rows,&MioObjSize);
+
+        mione(MioObj,MioObjSize,Rows);
+
+
 
     }else
     {

@@ -9,6 +9,9 @@ typedef struct _VariableObject;
 typedef struct _AreaObject;
 typedef struct _TableObject;
 
+typedef struct _HeadObject;
+typedef struct _PairObject;
+
 #define HEAD 1
 #define PROMPT 2
 #define SYMBOL 3
@@ -61,7 +64,7 @@ typedef struct _MioneObject
 
     VariableObj Var; //當ObjType為VAR時，會用到此變數。
     ValueObj Area;  //當ObjType為VALUE宏時，會用到此值。
-    char* Text; //如果不是Value以及Variable的話，將會採用此char*來儲存文字。
+    char* Text; //如果不是Value或Variable的話，將會採用此char*來儲存文字。
 
 } MioneObj;
 
@@ -72,6 +75,33 @@ typedef struct _CaseObject
     */
     char * ObjName;
 } CaseObj;
+
+
+
+
+/*
+ *
+ *
+ *
+ *
+ *
+ */
+
+typedef struct _HeadObject
+{
+    int (*Fuc)(struct _PairObject*Pairs,int PairsSize);
+    char * Name;
+} HeadObj;
+
+typedef struct _PairObject
+{
+    MioneObj Prompt;
+
+    MioneObj* Source;
+
+    int SourceSize;
+
+}PairObj;
 
 
 
