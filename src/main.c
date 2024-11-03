@@ -79,9 +79,6 @@ int main(const int OptionsSize,char **Options)
         MioneObj * MioObj = CMO(CASES,CaseObjSize,&Rows,&MioObjSize);
 
         mione(MioObj,MioObjSize,Rows);
-
-
-
     }else
     {
         return NO_FILE;

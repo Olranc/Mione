@@ -329,6 +329,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
         //Variable
 
+
+
         if (Paired == 0 && (CASES[i].ObjType != 13))
         {
             Paired = 4;
@@ -337,11 +339,13 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
             VariableObj Variable;
 
-            for (int j = 0; j < VarsSize; j++)   if (Vars[i].Name == CASES[i].ObjName)
+            for (int j = 0; j < VarsSize; j++)   if (Vars[j].Name == CASES[i].ObjName)
             {
 
                 NewVar = 0;
+
                 Variable = Vars[i];
+
                 break;
             }
 
@@ -397,10 +401,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         LastPaired = Paired;
        }
     }
-
-    (*SIZE) = (*DEFSIZE);
-    return *DEF;
-
 
 
     /*
@@ -486,6 +486,14 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
     }
     */
+
+
+    (*SIZE) = (*DEFSIZE);
+    return *DEF;
+
+
+
+
 }      
 
 
