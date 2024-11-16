@@ -6,7 +6,7 @@
 #include <tgmath.h>
 
 #include "OBJECTS.h"
-MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * SIZE);
+MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * ROWSSIZE,int * SIZE);
 
 #ifndef CASE_TO_MIONE_H
 #define CASE_TO_MIONE_H
@@ -39,7 +39,7 @@ char* Symbols[] =
 
 
 MioneObj *CMO(CaseObj*CASES,int CASESIZE,
-    int* *ROWS, int * SIZE)
+    int* *ROWS, int * ROWSSIZE,int * SIZE)
 {
     MioneObj *MIONE = 0;
     int MIONESIZE = 0;
@@ -60,8 +60,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
     int ThisSourceHasBeenPN = 0; //是否已經有PNumber的數字
 
-    int RowCount = 0; //行數
-
     int Lock = -1; //被封鎖到...
 
     int RF = 0; //Range Function
@@ -78,11 +76,12 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
        {
             int Paired =0; //Head Symbol Prompt Variable Value
 
-        if (CASES[i].ObjType == 13)
+        if (CASES[i].ObjType == 13 || CASESIZE-1 == i)
         {
-            RowCount++;
-            (*ROWS) = realloc(*ROWS,(RowCount)*sizeof(int));
-            (*ROWS)[RowCount-1] = i;
+             (*ROWSSIZE)++;
+            (*ROWS) = realloc(*ROWS,( (*ROWSSIZE))*sizeof(int));
+            (*ROWS)[ (*ROWSSIZE)-1] = i;
+            printf("add\n");
         }
 
         //HEAD

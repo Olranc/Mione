@@ -20,8 +20,7 @@
 #endif
 
 
-
-
+#include "ERR.h"
 #include "OBJECTS.h"
 #include "FILE_TO_CASE.h"
 #include "HeadFile/AllHeads.h"
@@ -74,11 +73,11 @@ int main(const int OptionsSize,char **Options)
         int CaseObjSize = 0;
         CaseObj * CASES = FCO(f,&CaseObjSize);
 
-        int *Rows = malloc(0);
+        MioRowsEnd = malloc(0);
         int MioObjSize = 0;
-        MioneObj * MioObj = CMO(CASES,CaseObjSize,&Rows,&MioObjSize);
+        MioneObj * MioObj = CMO(CASES,CaseObjSize,&MioRowsEnd,&MioRowsEndSize,&MioObjSize);
 
-        mione(MioObj,MioObjSize,Rows);
+        mione(MioObj,MioObjSize,MioRowsEnd);
     }else
     {
         return NO_FILE;
