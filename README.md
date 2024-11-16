@@ -7,4 +7,4 @@
 # 
 
 ### 超連結 🔗
-###### [前往Mione Wiki📖](https://github.com/Olranc/Mione/wiki/Mione-Programming-Language--%F0%9F%AA%B6)
+###### [前往Mione Wiki📖](https://github.com/Olranc/Mione/wiki)
