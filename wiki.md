@@ -1,4 +1,5 @@
-# Mione 🪶
+# Mione 🪶 
+Mione programming language
 
 ## 前言
 Mione是個輕量、手稿、簡潔、貼近自然語言的程式語言，不管男女老少都能輕鬆地上手。
