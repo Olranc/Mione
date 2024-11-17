@@ -81,7 +81,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
              (*ROWSSIZE)++;
             (*ROWS) = realloc(*ROWS,( (*ROWSSIZE))*sizeof(int));
             (*ROWS)[ (*ROWSSIZE)-1] = i;
-            printf("add\n");
         }
 
         //HEAD

@@ -103,6 +103,15 @@ typedef struct _PairObject
 
 }PairObj;
 
+typedef struct _CountObject
+{
+    ValueObj* Value;
+    int ValueSize;
+
+} CountObj;
+
+
+
 
 
 

@@ -6,6 +6,10 @@
 #define NO_FILE 1
 #define FILE_NOT_FOUND 2
 #define MEMORY_LEAKED 3
+#define MIONE_FAILED 4
+
+#define MIONE_VERSION "Sunfish-0.1"
+
 
 #ifdef _WIN32
 
@@ -18,6 +22,7 @@
 #ifdef __linux__
 
 #endif
+
 
 
 #include "ERR.h"

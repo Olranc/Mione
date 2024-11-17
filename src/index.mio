@@ -1,1 +1,1 @@
-set x = Hello()
+set Hello = 1+100000

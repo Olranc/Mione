@@ -52,7 +52,7 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
 
 
 
-        if (Mio.ObjType == 1) //HeadFuc
+        if (Mio.ObjType == 1) //Head
         {
 
             for (int i = 0; i <sizeof(Heads)/sizeof(Heads[0]); i++)
@@ -77,10 +77,10 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
 
         if (Mio.ObjType == 2) // PROMPT
         {
-            Pairs[PairsSize-1].SourceSize++;
-            Pairs[PairsSize-1].Source = realloc(Pairs[PairsSize-1].Source,sizeof(MioneObj)*Pairs[PairsSize-1].SourceSize);
-            Pairs[PairsSize-1].Source[Pairs[PairsSize-1].SourceSize-1] = Mio;
-
+            PairsSize++;
+            Pairs[PairsSize-1].SourceSize=0;
+            Pairs[PairsSize-1].Source = malloc(0);
+            Pairs[PairsSize-1].Prompt = Mio; // Type = 2
         }
 
         if (Mio.ObjType == 3 || Mio.ObjType == 4 || Mio.ObjType == 5) // SVV
