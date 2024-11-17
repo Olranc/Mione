@@ -31,7 +31,7 @@ int CheckCharType(const char Char)
     //Symbols
 
     char CanConnectWithAnotherSymbol[] = {
-        '.',
+
         '*',
         '/',
         '+',
@@ -46,7 +46,8 @@ int CheckCharType(const char Char)
         '{',
         '}',
 
-        '-'
+        '-',
+        '.',
     };
 
     for (int i = 0; i < sizeof(CanConnectWithAnotherSymbol); i++)

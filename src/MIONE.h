@@ -58,7 +58,6 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
             for (int i = 0; i <sizeof(Heads)/sizeof(Heads[0]); i++)
                 if (strcmp(Mio.Text,Heads[i].Name) == 0)
                 {
-
                     PairsSize++;
                     Pairs = realloc(Pairs,sizeof(struct _PairObject)*PairsSize);
                     Pairs[PairsSize-1].Prompt = Mio; // Type = 1
@@ -78,6 +77,8 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
         if (Mio.ObjType == 2) // PROMPT
         {
             PairsSize++;
+            Pairs = realloc(Pairs,sizeof(struct _PairObject)*PairsSize);
+
             Pairs[PairsSize-1].SourceSize=0;
             Pairs[PairsSize-1].Source = malloc(0);
             Pairs[PairsSize-1].Prompt = Mio; // Type = 2
@@ -88,7 +89,7 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
             if (Head.ObjType==0) { //偽HeadFuc
                 PairsSize++;
                 Pairs = realloc(Pairs,sizeof(struct _PairObject)*PairsSize);
-                Pairs[PairsSize-1].Prompt = Head; // Type = 1
+                Pairs[PairsSize-1].Prompt = Mio; // 自主
 
 
                 Pairs[PairsSize-1].SourceSize = 0;
@@ -97,8 +98,11 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
                 HeadFuc = SVV;
             }
 
-            Pairs[PairsSize-1].SourceSize++;
-            Pairs[PairsSize-1].Source = realloc(Pairs[PairsSize-1].Source,sizeof(MioneObj)*Pairs[PairsSize-1].SourceSize);
+            (Pairs[PairsSize-1].SourceSize)++;
+
+            (Pairs[PairsSize-1].Source) = realloc((Pairs[PairsSize-1].Source),sizeof(MioneObj)*(Pairs[PairsSize-1].SourceSize));
+
+
             Pairs[PairsSize-1].Source[Pairs[PairsSize-1].SourceSize-1] = Mio;
         }
 
@@ -112,11 +116,10 @@ void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
                 HeadFuc = 0;
                 Pairs = NULL;
                 PairsSize = 0;
-
-
             }
         }
         WorkOnMioIndex++;
+
     }
 }
 

@@ -95,6 +95,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             };
 
             Paired = 1;
+            ThisSourceHasBeenPN = 0;
+
         }
         //PROMPT
         for (int Ci = 0; Ci < sizeof( Prompts)/sizeof( Prompts[0]); Ci++) if (strcmp(CASES[i].ObjName,Prompts[Ci]) == 0)
@@ -107,6 +109,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 .Area = NULL
             };
             Paired = 2;
+            ThisSourceHasBeenPN = 0;
+
         }
 
 
@@ -123,6 +127,11 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 .Area = NULL
             };
             Paired = 3;
+            if (strcmp(CASES[i].ObjName,"."))
+            {
+                ThisSourceHasBeenPN = 0;
+
+            }
         }
 
         //Value : String
@@ -138,6 +147,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 .ObjType= 5,
                 .Area = Value
             };
+
         }
 
 
@@ -221,9 +231,9 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         }
 
         //Value : PNumber
-        if (CASES[i].ObjType == 9) if (strcmp(CASES[i].ObjName,".") == 0)
+        if (CASES[i].ObjType == 10) if (strcmp(CASES[i].ObjName,".") == 0)
         {
-            if (CASESIZE-1>i)
+            if (CASESIZE-1>=i)
             {
                 if (!ThisSourceHasBeenPN)
                 {
@@ -286,7 +296,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                     }
                 }else
                 {
-                    exit(0xffff+0x01);
+                    printf("CASE_TO_MIONE, 289\n");
+                    exit(0xffff+0x02);
                 }
 
             }
@@ -299,8 +310,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         if (!Paired) // 防止PNumber搞怪
         {
 
-            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 9 && (strcmp(CASES[i+1].ObjName,".") == 0))) ||
-                (i-1>=0&&( CASES[i-1].ObjType == 9 && (strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
+            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 10 && (strcmp(CASES[i+1].ObjName,".") == 0))) ||
+                (i-1>=0&&( CASES[i-1].ObjType == 10 && (strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
             { Paired = -1; }else if(CASES[i].ObjType == 2)
             {
                 Paired = 5;
@@ -380,7 +391,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 if (CASESIZE-1>i)
                 {
                     if (CASES[i+1].ObjType == 2) Minus = -1;
-                    if (CASES[i+1].ObjType == 9) if (strcmp(CASES[i+1].ObjName,".")==0)Minus = -1;
+                    if (CASES[i+1].ObjType == 10) if (strcmp(CASES[i+1].ObjName,".")==0)Minus = -1;
                 }
             };
         }
@@ -401,8 +412,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
     }
 
 
-    /*
 
+/*
     int Size = 0;
     MioneObj** A = malloc(0);
     int* ASize = malloc(0);
@@ -483,8 +494,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         }
 
     }
-    */
 
+*/
 
     (*SIZE) = (*DEFSIZE);
     return *DEF;
