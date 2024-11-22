@@ -3,17 +3,17 @@
 //
 
 
-void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows);
+void mione(const MioneObj* Objs ,const int ObjsSize);
 
 
 
 #ifndef MIONE_H
 #define MIONE_H
 
+#include "HeadFile/AllHeads.h"
 
 
-
-void mione(const MioneObj* Objs ,const int ObjsSize,int *Rows)
+void mione(const MioneObj* Objs ,const int ObjsSize)
 {
     //system("clear");
 

@@ -32,7 +32,7 @@ void ErrCall(char*Reason,char*ErrCode,char*Tip){
 
     printf("\033[1;37;45m" " MIONE " "\033[1;37;44m" " %s " "\033[0m" "\n",MIONE_VERSION);
 
-    exit(MIONE_FAILED);
+    exit(1);
 }
 
 #endif //ERR_H

@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WELL_DONE 0
-#define NO_FILE 1
-#define FILE_NOT_FOUND 2
-#define MEMORY_LEAKED 3
-#define MIONE_FAILED 4
 
 #define MIONE_VERSION "Sunfish-0.1"
 
@@ -24,13 +19,12 @@
 #endif
 
 
-
 #include "ERR.h"
 #include "OBJECTS.h"
 #include "FILE_TO_CASE.h"
-#include "HeadFile/AllHeads.h"
 #include "CASE_TO_MIONE.h"
 #include "MIONE.h"
+
 
 int main(const int OptionsSize,char **Options)
 {
@@ -51,7 +45,7 @@ int main(const int OptionsSize,char **Options)
                     f = fopen(Options[i],"r");
                     if (f){}else
                     {
-                        return FILE_NOT_FOUND;
+                        ErrCall("No file found","M001","");
                     }
                     break;
                 }
@@ -82,11 +76,11 @@ int main(const int OptionsSize,char **Options)
         int MioObjSize = 0;
         MioneObj * MioObj = CMO(CASES,CaseObjSize,&MioRowsEnd,&MioRowsEndSize,&MioObjSize);
 
-        mione(MioObj,MioObjSize,MioRowsEnd);
+        mione(MioObj,MioObjSize);
     }else
     {
-        return NO_FILE;
+        //todo
     }
 
-    return WELL_DONE;
+    return 0;
 }

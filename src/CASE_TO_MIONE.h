@@ -2,17 +2,15 @@
 // Created by calle on 24-9-7.
 //
 
-#include <inttypes.h>
-#include <tgmath.h>
 
-#include "OBJECTS.h"
+#include <tgmath.h>
 MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * ROWSSIZE,int * SIZE);
 
 #ifndef CASE_TO_MIONE_H
 #define CASE_TO_MIONE_H
 
 
-
+#include "HeadFile/AllHeads.h"
 
 
 
@@ -36,6 +34,7 @@ char* Symbols[] =
     "--",
     "(",
     ")",
+    "^"
 };
 
 

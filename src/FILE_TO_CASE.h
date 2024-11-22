@@ -36,6 +36,7 @@ int CheckCharType(const char Char)
         '/',
         '+',
         '=',
+        '^'
     };
 
     char CanNotConnectWithAnotherSymbol[] = {
