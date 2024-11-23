@@ -8,8 +8,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize);
 #ifndef COUNT_H
 #define COUNT_H
 
-
-#include "AREA_CALLING.h"
+#include "main.h"
 
 
 CountObj COUNT(MioneObj*Pack,int PackSize)
@@ -90,6 +89,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                             {
                                 if (Pack[FirstBracketIndex - 1].Var.V.ValueType == 4)
                                 {
+                                    Function(NULL,1);
                                     //todo function call
                                 }
                                 else
@@ -105,7 +105,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                     ErrCall(
                                         REASON,
-                                        "MG001",
+                                            "MG001",
                                         "Maybe you can change the Variable Type to FUNCTION."
                                     );
                                 }

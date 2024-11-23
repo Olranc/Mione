@@ -10,7 +10,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * ROWSSIZE,int * SIZE);
 #define CASE_TO_MIONE_H
 
 
-#include "HeadFile/AllHeads.h"
+#include "main.h"
 
 
 

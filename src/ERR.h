@@ -2,15 +2,20 @@
 // Created by calle on 24-11-16.
 //
 
-int WorkOnMioIndex = 0;
+int WorkOnMioIndex;
 
 int * MioRowsEnd;
-int MioRowsEndSize = 0;
+int MioRowsEndSize;
 
 void ErrCall(char*Reason,char*ErrCode,char*Tip);
 
 #ifndef ERR_H
 #define ERR_H
+
+#include "main.h"
+
+WorkOnMioIndex = 0;
+MioRowsEndSize = 0;
 
 void ErrCall(char*Reason,char*ErrCode,char*Tip){
     int Line = 0;

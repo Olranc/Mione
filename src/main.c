@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-
-#define MIONE_VERSION "Sunfish-0.1"
 
 
 #ifdef _WIN32
@@ -18,12 +13,7 @@
 
 #endif
 
-
-#include "ERR.h"
-#include "OBJECTS.h"
-#include "FILE_TO_CASE.h"
-#include "CASE_TO_MIONE.h"
-#include "MIONE.h"
+#include "main.h"
 
 
 int main(const int OptionsSize,char **Options)
