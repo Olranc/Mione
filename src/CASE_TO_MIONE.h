@@ -82,7 +82,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         {
              (*ROWSSIZE)++;
             (*ROWS) = realloc(*ROWS,( (*ROWSSIZE))*sizeof(int));
-            (*ROWS)[ (*ROWSSIZE)-1] = i;
+            (*ROWS)[ (*ROWSSIZE)-1] = MIONESIZE+1;
         }
 
         //HEAD
@@ -209,6 +209,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 AreaObj Area = (AreaObj){
                     .Area =Child,
                     .Size = ChildSIZE,
+                    .Index = i
                 };
 
                 ValueObj Value = (ValueObj){

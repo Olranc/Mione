@@ -25,6 +25,7 @@ typedef struct _AreaObject
 {
     int Size; //值大小
     struct _MioneObject * Area;//給於函數(function)或者執行式(range)。
+    int Index; //開頭位置
 }AreaObj;
 
 typedef struct _TableObject
@@ -109,6 +110,12 @@ typedef struct _CountObject
     int ValueSize;
 
 } CountObj;
+
+typedef struct _RequestObject
+{
+    VariableObj *Variable;
+    int VariableSize;
+}RequestObj;
 
 
 

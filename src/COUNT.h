@@ -89,8 +89,11 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                             {
                                 if (Pack[FirstBracketIndex - 1].Var.V.ValueType == 4)
                                 {
-                                    Function(NULL,1);
+                                    int ButterIndex = WorkOnMioIndex;
+                                    WorkOnMioIndex = Pack[FirstBracketIndex - 1].Var.V.Area.Index;
+                                    Function( Pack[FirstBracketIndex - 1].Var.V.Area.Area, Pack[FirstBracketIndex - 1].Var.V.Area.Size);
                                     //todo function call
+                                    WorkOnMioIndex = ButterIndex;
                                 }
                                 else
                                 {

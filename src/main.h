@@ -20,6 +20,8 @@
 
 #include "HeadFile/AllHeads.h"
 
+#include "REQUEST.h"
+
 
 #define MIONE_VERSION "Sunfish-0.1"
 
