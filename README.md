@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="./Olranc-nobackground.svg">
+  <img src="./Vlranc-nobackground.svg">
   <img src="./mione.svg">
 <p/>
   
@@ -11,4 +11,4 @@
 # 
 
 ### 超連結 🔗
-###### [前往Mione Wiki📖](https://github.com/Olranc/Mione/wiki)
+###### [前往Mione Wiki📖](https://github.com/Vlranc/Mione/wiki)
