@@ -6,6 +6,9 @@
 #include <tgmath.h>
 MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * ROWSSIZE,int * SIZE);
 
+
+
+
 #ifndef CASE_TO_MIONE_H
 #define CASE_TO_MIONE_H
 
@@ -13,28 +16,11 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,int* *ROWS,int * ROWSSIZE,int * SIZE);
 #include "main.h"
 
 
-
-
 char* Prompts[] =
 {
     "=",
     "then",
     "else"
-};
-
-char* Symbols[] =
-{
-    "+",
-    "*",
-    "/",
-    "%",
-    "-",
-    ".",
-    "==",
-    "--",
-    "(",
-    ")",
-    "^"
 };
 
 
@@ -86,14 +72,18 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         }
 
         //HEAD
-        for (int Ci = 0; Ci < sizeof( Heads)/sizeof( Heads[0]); Ci++) if (strcmp(CASES[i].ObjName,Heads[Ci].Name) == 0)
+        for (int Ci = 0; Ci < sizeof( HeadFucs)/sizeof(HeadFucObj); Ci++) if (strcmp(CASES[i].ObjName,HeadFucs[Ci].Name) == 0)
         {
+
+            HeadObj Head = (HeadObj){
+                .Name = CASES[i].ObjName,
+            };
+
             (*DEFSIZE)++;
              (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
              (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                 .ObjType= 1,
-                .Text = CASES[i].ObjName,
-                .Area = NULL
+                .Head = Head
             };
 
             Paired = 1;
@@ -103,12 +93,16 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         //PROMPT
         for (int Ci = 0; Ci < sizeof( Prompts)/sizeof( Prompts[0]); Ci++) if (strcmp(CASES[i].ObjName,Prompts[Ci]) == 0)
         {
+
+            PromptObj Prompt = (PromptObj){
+                .Name = CASES[i].ObjName,
+            };
+
             (*DEFSIZE)++;
             (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
             (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                 .ObjType= 2,
-                .Text = CASES[i].ObjName,
-                .Area = NULL
+                .Prompt = Prompt
             };
             Paired = 2;
             ThisSourceHasBeenPN = 0;
@@ -119,14 +113,23 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
         if (ThisSourceHasBeenPN) if (Paired ==1 || Paired == 2) ThisSourceHasBeenPN = 0;
 
         //SYMBOL
-        for (int Ci = 0; Ci < sizeof( Symbols)/sizeof( Symbols[0]); Ci++) if (strcmp(CASES[i].ObjName,Symbols[Ci]) == 0)
+        for (int Ci = 0; Ci < sizeof( Symbols)/sizeof( Symbols[0]); Ci++) if (strcmp(CASES[i].ObjName,Symbols[Ci].Name) == 0)
         {
+
+
+
+
+            SymbolObj Symbol = (SymbolObj){
+                .Name = CASES[i].ObjName,
+                .SymbolType = Symbols[Ci].SymbolType,
+                .xIndex = Symbols[Ci].xIndex,
+            };
+
             (*DEFSIZE)++;
             (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
             (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                 .ObjType= 3,
-                .Text = CASES[i].ObjName,
-                .Area = NULL
+                .Symbol = Symbol
             };
             Paired = 3;
             if (strcmp(CASES[i].ObjName,"."))
@@ -147,7 +150,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
             (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                 .ObjType= 5,
-                .Area = Value
+                .Val = Value
             };
 
         }
@@ -223,8 +226,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 (*DEF) = (MioneObj*)realloc(*DEF, (*DEFSIZE)*sizeof(MioneObj));
                 (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                     .ObjType = 5,
-                    .Text = NULL,
-                    .Area = Value,
+                    .Val = Value,
                 };
 
                 Child = NULL;
@@ -275,7 +277,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                         (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
                         (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                             .ObjType = 5,
-                            .Area = Value,
+                            .Val = Value,
                         };
                     }else if(i-1>=0 && CASES[i-1].ObjType == 2)
                     {
@@ -294,7 +296,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                         (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
                         (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                             .ObjType = 5,
-                            .Area = Value,
+                            .Val = Value,
                         };
                     }
                 }else
@@ -333,7 +335,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
                 (*DEF)[(*DEFSIZE)-1] = (MioneObj){
                     .ObjType = 5,
-                    .Area = Value,
+                    .Val = Value,
                 };
 
             }

@@ -11,6 +11,7 @@ typedef struct _TableObject;
 
 typedef struct _HeadObject;
 typedef struct _PairObject;
+typedef struct _SymbolObject;
 
 #define HEAD 1
 #define PROMPT 2
@@ -59,13 +60,44 @@ typedef struct _VariableObject
     ValueObj V; //值
 } VariableObj;
 
+typedef struct _SymbolObject
+{
+    char * Name;
+    int SymbolType;
+    int xIndex; //符號順序
+}SymbolObj;
+
+
+typedef struct _PromptObject
+{
+    char * Name;
+
+}PromptObj;
+
+typedef struct _HeadObject
+{
+    char * Name;
+
+}HeadObj;
+
+
+
+
+
+
+
 typedef struct _MioneObject
 {
     int ObjType; //HPSVV宏 1H 2P 3S 4VAR 5VAL 0換行
 
     VariableObj Var; //當ObjType為VAR時，會用到此變數。
-    ValueObj Area;  //當ObjType為VALUE宏時，會用到此值。
-    char* Text; //如果不是Value或Variable的話，將會採用此char*來儲存文字。
+    ValueObj Val;  //當ObjType為VALUE宏時，會用到此值。
+    //char* _Text;
+
+    SymbolObj Symbol; //當ObjType為SYMBOL時，會用到此符號。
+    PromptObj Prompt; //當ObjType為PROMPT時，會用到此提示。
+    HeadObj Head; //當ObjType為HEAD時，會用到此標題。
+
 
 } MioneObj;
 
@@ -88,11 +120,18 @@ typedef struct _CaseObject
  *
  */
 
-typedef struct _HeadObject
+typedef struct _HeadFucObject
 {
     int (*Fuc)(struct _PairObject*Pairs,int PairsSize);
     char * Name;
-} HeadObj;
+} HeadFucObj;
+
+typedef struct _SymbolsCaseObject{
+  char * Name;
+  int SymbolType;
+  int xIndex;
+  int CurNumber;
+} SymbolsCaseObj;
 
 typedef struct _PairObject
 {
@@ -116,7 +155,6 @@ typedef struct _RequestObject
     VariableObj *Variable;
     int VariableSize;
 }RequestObj;
-
 
 
 

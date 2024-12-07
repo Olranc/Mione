@@ -13,9 +13,10 @@ RequestObj REQUEST(MioneObj*Objs, int ObjsSize)
 
     for (int i = 0; i < ObjsSize; i++)
     {
+        printf("%d\n",i);
         if (Objs[i].ObjType == 3)
         {
-            if(strcmp(Objs[i].Text, ",") == 0){
+            if(strcmp(Objs[i].Symbol.Name, ",") == 0){
                 
             }else
             {

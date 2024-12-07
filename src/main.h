@@ -10,6 +10,7 @@
 #include "OBJECTS.h"
 #include "CASE_TO_MIONE.h"
 #include "FILE_TO_CASE.h"
+#include "SYMBOL_DEF.h"
 
 #include "MIONE.h"
 

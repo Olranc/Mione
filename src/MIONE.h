@@ -11,6 +11,7 @@ MioneObj * Function(const MioneObj* Objs ,const int ObjsSize);
 
 MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
 {
+
     MioneObj Head = (MioneObj) {
         .ObjType = 0
     };
@@ -26,10 +27,14 @@ MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
 
     for (int index = 0; index < ObjsSize; index++)
     {
+
         if (inFucReq)
         {
-            if (Objs[index].ObjType == 3 && strcmp(Objs[index].Text, ")") == 0)
+
+            if (Objs[index].ObjType == 3 && strcmp(Objs[index].Symbol.Name, ")") == 0)
             {
+                printf("AAA %d\n",FucReqsSize);
+
                 RequestObj Req = REQUEST(FucReqs, FucReqsSize);
             }
             else
@@ -43,7 +48,7 @@ MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
         {
             if (index == 0)
             {
-                if (Objs[index].ObjType == 3 && strcmp(Objs[index].Text, "(") == 0) inFucReq = 1;
+                if (Objs[index].ObjType == 3 && strcmp(Objs[index].Symbol.Name, "(") == 0) inFucReq = 1;
                 else ErrCall("Function Request didn't work.", "MG006", "");
             }
             else
@@ -52,7 +57,7 @@ MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
 
                 if (Mio.ObjType == 1) Head = Mio;
 
-                if ((Mio.ObjType == 3 && strcmp(Mio.Text, ";") == 0) || Mio.ObjType == 1)
+                if ((Mio.ObjType == 3 && strcmp(Mio.Symbol.Name, ";") == 0) || Mio.ObjType == 1)
                 {
                     if (HeadFuc != 0) {
                         int IndexUseless = HeadFuc(Pairs, PairsSize);
@@ -66,9 +71,9 @@ MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
 
                 if (Mio.ObjType == 1) // Head
                 {
-                    for (int i = 0; i < sizeof(Heads) / sizeof(Heads[0]); i++)
+                    for (int i = 0; i < sizeof(HeadFucs) / sizeof(HeadFucObj); i++)
                     {
-                        if (strcmp(Mio.Text, Heads[i].Name) == 0)
+                        if (strcmp(Mio.Head.Name, HeadFucs[i].Name) == 0)
                         {
                             PairsSize++;
                             Pairs = realloc(Pairs, sizeof(struct _PairObject) * PairsSize);
@@ -77,7 +82,7 @@ MioneObj * Function(const MioneObj* Objs, const int ObjsSize)
                             Pairs[PairsSize - 1].SourceSize = 0;
                             Pairs[PairsSize - 1].Source = malloc(0);
 
-                            HeadFuc = Heads[i].Fuc;
+                            HeadFuc = HeadFucs[i].Fuc;
                         }
                     }
                 }
@@ -146,7 +151,7 @@ void mione(const MioneObj* Objs, const int ObjsSize)
 
         if (Mio.ObjType == 1) Head = Mio;
 
-        if ((Mio.ObjType == 3 && strcmp(Mio.Text, ";") == 0) || Mio.ObjType == 1)
+        if ((Mio.ObjType == 3 && strcmp(Mio.Symbol.Name, ";") == 0) || Mio.ObjType == 1)
         {
             if (HeadFuc != 0) {
                 int IndexUseless = HeadFuc(Pairs, PairsSize);
@@ -160,9 +165,9 @@ void mione(const MioneObj* Objs, const int ObjsSize)
 
         if (Mio.ObjType == 1) // Head
         {
-            for (int i = 0; i < sizeof(Heads) / sizeof(Heads[0]); i++)
+            for (int i = 0; i < sizeof(HeadFucs) / sizeof(HeadFucs[0]); i++)
             {
-                if (strcmp(Mio.Text, Heads[i].Name) == 0)
+                if (strcmp(Mio.Head.Name, HeadFucs[i].Name) == 0)
                 {
                     PairsSize++;
                     Pairs = realloc(Pairs, sizeof(struct _PairObject) * PairsSize);
@@ -171,7 +176,7 @@ void mione(const MioneObj* Objs, const int ObjsSize)
                     Pairs[PairsSize - 1].SourceSize = 0;
                     Pairs[PairsSize - 1].Source = malloc(0);
 
-                    HeadFuc = Heads[i].Fuc;
+                    HeadFuc = HeadFucs[i].Fuc;
                 }
             }
         }

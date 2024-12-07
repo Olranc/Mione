@@ -10,7 +10,6 @@ CountObj COUNT(MioneObj*Pack,int PackSize);
 
 #include "main.h"
 
-
 CountObj COUNT(MioneObj*Pack,int PackSize)
 {
     int FirstBracketIndex = 0;
@@ -33,14 +32,14 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
     for(int i = 0; i < PackSize; i++)
     {
-        if (Pack[i].ObjType == 3) // S
+        if (Pack[i].ObjType == 3) // Symbol
         {
-            if (strcmp(Pack[i].Text, "(") == 0)
+            if (strcmp(Pack[i].Symbol.Name, "(") == 0)
             {
                 FirstBracketIndex = i;
                 IfBrackets = 1;
             }
-            else if (strcmp(Pack[i].Text, ")") == 0)
+            else if (strcmp(Pack[i].Symbol.Name, ")") == 0)
             {
                 if (IfBrackets)
                 {
@@ -65,7 +64,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         NewPack = realloc(NewPack, NewPackSize * sizeof(MioneObj));
                         NewPack[NewPackSize - 1] = (MioneObj){
                             .ObjType = 5,
-                            .Area = ChildCount.Value[index]
+                            .Val = ChildCount.Value[index]
                         };
                     }
 
@@ -81,14 +80,20 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                     i = FirstBracketIndex;
 
+
+
                     if (FirstBracketIndex > 0)
                     {
+
                         if (Pack[FirstBracketIndex - 1].ObjType == 4 || Pack[FirstBracketIndex - 1].ObjType == 5)
                         {
+
                             if (Pack[FirstBracketIndex - 1].ObjType == 4)
                             {
+
                                 if (Pack[FirstBracketIndex - 1].Var.V.ValueType == 4)
                                 {
+
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Var.V.Area.Index;
                                     Function( Pack[FirstBracketIndex - 1].Var.V.Area.Area, Pack[FirstBracketIndex - 1].Var.V.Area.Size);
@@ -115,9 +120,14 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                             }
                             else
                             {
-                                if (Pack[FirstBracketIndex - 1].Area.ValueType == 4)
+                                if (Pack[FirstBracketIndex - 1].Val.ValueType == 4)
                                 {
+
+                                    int ButterIndex = WorkOnMioIndex;
+                                    WorkOnMioIndex = Pack[FirstBracketIndex - 1].Val.Area.Index;
+                                    Function( Pack[FirstBracketIndex - 1].Val.Area.Area, Pack[FirstBracketIndex - 1].Val.Area.Size);
                                     //todo function call
+                                    WorkOnMioIndex = ButterIndex;
                                 }
                                 else
                                 {
@@ -134,36 +144,26 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
             }
             else
             {
-               if(!IfBrackets)
-               {
-                   if (i == PackSize - 1)
-                   {
-                       ErrCall(
-                           "You can't connect any Two-side-count-symbols to VOID (Meaning Nothing, even no Mione Object).",
-                           "MG003",
-                           "Maybe you can try `1+1` or anything else."
-                       );
-                   }
-                   switch (CalculateLevel)
-                   {
-                   case 1:
-                       if (strcmp(Pack[i].Text, "^") == 0) CalculateType = 6;
-                       break;
-                   case 2:
-                       if (strcmp(Pack[i].Text, "*") == 0) CalculateType = 3;
-                       if (strcmp(Pack[i].Text, "/") == 0) CalculateType = 4;
-                       if (strcmp(Pack[i].Text, "%") == 0) CalculateType = 5;
-                       break;
-                   case 3:
-                       if (strcmp(Pack[i].Text, "+") == 0) CalculateType = 1;
-                       if (strcmp(Pack[i].Text, "-") == 0) CalculateType = 2;
-                   default:
-                       break;
-                   }
-               }
+                if(!IfBrackets)
+                {
+
+                    if (Pack[i].Symbol.SymbolType == 1){
+                        if (i == PackSize - 1)
+                        {
+                            ErrCall(
+                                "You can't connect any Two-side-count-symbols to VOID (Meaning Nothing, even no Mione Object).",
+                                "MG003",
+                                "Maybe you can try `1+1` or anything else."
+                            );
+                        }
+                        for (int index = 0; index < sizeof(Symbols)/sizeof(Symbols[0]); index++)
+                        {
+                            if (Symbols[index].xIndex == CalculateLevel) if (strcmp(Symbols[index].Name, Pack[i].Symbol.Name) == 0)CalculateType = Symbols[index].CurNumber;
+                        }
+                    }
+                }
             }
-        }
-        else if (Pack[i].ObjType == 4 || Pack[i].ObjType == 5)
+        }else if (Pack[i].ObjType == 4 || Pack[i].ObjType == 5)
         {
             if (CalculateType)
             {
@@ -183,9 +183,9 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
                             if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
                             if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
@@ -205,13 +205,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i - 2].Area.ValueType == 3)
+                                    if (Pack[i - 2].Val.ValueType == 3)
                                     {
-                                        Value1 = Pack[i - 2].Area.PNumber;
+                                        Value1 = Pack[i - 2].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value1 = (long double)Pack[i - 2].Area.NPNumber;
+                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
                                     }
                                 }
 
@@ -228,19 +228,19 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i].Area.ValueType == 3)
+                                    if (Pack[i].Val.ValueType == 3)
                                     {
-                                        Value2 = Pack[i].Area.PNumber;
+                                        Value2 = Pack[i].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value2 = (long double)Pack[i].Area.NPNumber;
+                                        Value2 = (long double)Pack[i].Val.NPNumber;
                                     }
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 3,
                                         .PNumber = Value1 + Value2,
                                     }
@@ -257,7 +257,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value1 = Pack[i - 2].Area.NPNumber;
+                                    Value1 = Pack[i - 2].Val.NPNumber;
                                 }
 
                                 if (Pack[i].ObjType == 4)
@@ -266,12 +266,12 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value2 = Pack[i].Area.NPNumber;
+                                    Value2 = Pack[i].Val.NPNumber;
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 2,
                                         .NPNumber = Value1 + Value2,
                                     }
@@ -292,9 +292,9 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
                             if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
                             if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
@@ -314,13 +314,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i - 2].Area.ValueType == 3)
+                                    if (Pack[i - 2].Val.ValueType == 3)
                                     {
-                                        Value1 = Pack[i - 2].Area.PNumber;
+                                        Value1 = Pack[i - 2].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value1 = (long double)Pack[i - 2].Area.NPNumber;
+                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
                                     }
                                 }
 
@@ -337,19 +337,19 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i].Area.ValueType == 3)
+                                    if (Pack[i].Val.ValueType == 3)
                                     {
-                                        Value2 = Pack[i].Area.PNumber;
+                                        Value2 = Pack[i].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value2 = (long double)Pack[i].Area.NPNumber;
+                                        Value2 = (long double)Pack[i].Val.NPNumber;
                                     }
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 3,
                                         .PNumber = Value1 - Value2,
                                     }
@@ -366,7 +366,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value1 = Pack[i - 2].Area.NPNumber;
+                                    Value1 = Pack[i - 2].Val.NPNumber;
                                 }
 
                                 if (Pack[i].ObjType == 4)
@@ -375,12 +375,12 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value2 = Pack[i].Area.NPNumber;
+                                    Value2 = Pack[i].Val.NPNumber;
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 2,
                                         .NPNumber = Value1 - Value2,
                                     }
@@ -401,9 +401,9 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
                             if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
                             if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
@@ -423,13 +423,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i - 2].Area.ValueType == 3)
+                                    if (Pack[i - 2].Val.ValueType == 3)
                                     {
-                                        Value1 = Pack[i - 2].Area.PNumber;
+                                        Value1 = Pack[i - 2].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value1 = (long double)Pack[i - 2].Area.NPNumber;
+                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
                                     }
                                 }
 
@@ -446,19 +446,19 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i].Area.ValueType == 3)
+                                    if (Pack[i].Val.ValueType == 3)
                                     {
-                                        Value2 = Pack[i].Area.PNumber;
+                                        Value2 = Pack[i].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value2 = (long double)Pack[i].Area.NPNumber;
+                                        Value2 = (long double)Pack[i].Val.NPNumber;
                                     }
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 3,
                                         .PNumber = Value1 * Value2,
                                     }
@@ -475,7 +475,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value1 = Pack[i - 2].Area.NPNumber;
+                                    Value1 = Pack[i - 2].Val.NPNumber;
                                 }
 
                                 if (Pack[i].ObjType == 4)
@@ -484,12 +484,12 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value2 = Pack[i].Area.NPNumber;
+                                    Value2 = Pack[i].Val.NPNumber;
                                 }
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 2,
                                         .NPNumber = Value1 * Value2,
                                     }
@@ -510,9 +510,9 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
                             if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
                             if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Area.ValueType == 3) UsePointNumber = 1;
+                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
@@ -532,13 +532,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i - 2].Area.ValueType == 3)
+                                    if (Pack[i - 2].Val.ValueType == 3)
                                     {
-                                        Value1 = Pack[i - 2].Area.PNumber;
+                                        Value1 = Pack[i - 2].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value1 = (long double)Pack[i - 2].Area.NPNumber;
+                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
                                     }
                                 }
 
@@ -555,13 +555,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    if (Pack[i].Area.ValueType == 3)
+                                    if (Pack[i].Val.ValueType == 3)
                                     {
-                                        Value2 = Pack[i].Area.PNumber;
+                                        Value2 = Pack[i].Val.PNumber;
                                     }
                                     else
                                     {
-                                        Value2 = (long double)Pack[i].Area.NPNumber;
+                                        Value2 = (long double)Pack[i].Val.NPNumber;
                                     }
                                 }
 
@@ -570,7 +570,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 3,
                                         .PNumber = Value3
                                     }
@@ -587,7 +587,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value1 = Pack[i - 2].Area.NPNumber;
+                                    Value1 = Pack[i - 2].Val.NPNumber;
                                 }
 
                                 if (Pack[i].ObjType == 4)
@@ -596,7 +596,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 }
                                 else
                                 {
-                                    Value2 = Pack[i].Area.NPNumber;
+                                    Value2 = Pack[i].Val.NPNumber;
                                 }
 
                                 long int Value3 = Value1;
@@ -604,7 +604,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
-                                    .Area = (ValueObj){
+                                    .Val = (ValueObj){
                                         .ValueType = 2,
                                         .NPNumber = Value3
                                     }
@@ -656,7 +656,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
         if (IfBrackets)
         {
-            if (Pack[i].ObjType == 3 && strcmp(Pack[i].Text, "(") == 0) {}
+            if (Pack[i].ObjType == 3 && strcmp(Pack[i].Symbol.Name, "(") == 0) {}
             else
             {
                 inBracketSize++;
@@ -683,8 +683,8 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
        {
            VPackSize ++;
            VPack = realloc(VPack, sizeof(MioneObj) * (VPackSize));
-           VPack[VPackSize-1] = Pack[i].Area;
-           printf("d %d\n",Pack[i].Area.NPNumber);
+           VPack[VPackSize-1] = Pack[i].Val;
+           printf("d %d\n",Pack[i].Val.NPNumber);
        }
     }
 
