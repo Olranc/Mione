@@ -130,6 +130,7 @@ typedef struct _SymbolsCaseObject{
   char * Name;
   int SymbolType;
   int xIndex;
+  int yIndex;
   int CurNumber;
 } SymbolsCaseObj;
 

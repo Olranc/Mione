@@ -14,8 +14,8 @@ void ErrCall(char*Reason,char*ErrCode,char*Tip);
 
 #include "main.h"
 
-WorkOnMioIndex = 0;
-MioRowsEndSize = 0;
+int WorkOnMioIndex = 0;
+int MioRowsEndSize = 0;
 
 void ErrCall(char*Reason,char*ErrCode,char*Tip){
     int Line = 0;

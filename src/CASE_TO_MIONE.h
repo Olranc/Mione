@@ -42,7 +42,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
     MioneObj* *DEF = &MIONE;
     int * DEFSIZE = &MIONESIZE;
 
-    int Minus = 1; //負號處理
+
 
     int LastPaired = 0;
 
@@ -269,9 +269,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
                         ValueObj Value = (ValueObj){
                             .ValueType = 3,
-                            .PNumber = V * (Minus),
+                            .PNumber = V,
                         };
-                        Minus = 1;
 
                         (*DEFSIZE)++;
                         (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
@@ -289,9 +288,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                         V=V+atoi(CASES[i-1].ObjName);
                         ValueObj Value = (ValueObj){
                             .ValueType = 3,
-                            .PNumber = V * (Minus),
+                            .PNumber = V ,
                         };
-                        Minus = 1;
                         (*DEFSIZE)++;
                         (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
                         (*DEF)[(*DEFSIZE)-1] = (MioneObj){
@@ -327,9 +325,8 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
                 ValueObj Value = (ValueObj){
                     .ValueType = 2,
-                    .NPNumber = V * (Minus),
+                    .NPNumber = V
                 };
-                Minus = 1;
 
                 (*DEFSIZE)++;
                 (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
@@ -385,21 +382,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             };
         };
 
-        //**ELSE**
-
-        //負數處理
-        if (Paired == 3)
-        {
-            if (CASES[i].ObjType == 10) if (strcmp(CASES[i].ObjName,"-") == 0)
-            {
-
-                if (CASESIZE-1>i)
-                {
-                    if (CASES[i+1].ObjType == 2) Minus = -1;
-                    if (CASES[i+1].ObjType == 10) if (strcmp(CASES[i+1].ObjName,".")==0)Minus = -1;
-                }
-            };
-        }
 
 
 

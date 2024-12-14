@@ -18,12 +18,7 @@ SymbolsCaseObj Symbols[] =
         .CurNumber = 1
     },
 
-    (SymbolsCaseObj){
-        .Name = "-",
-        .SymbolType = 1,
-        .xIndex = 2,
-        .CurNumber = 2
-    },
+
 
     (SymbolsCaseObj){
         .Name = "*",
@@ -62,9 +57,17 @@ SymbolsCaseObj Symbols[] =
 
     (SymbolsCaseObj){
         .Name = ";",
-        .SymbolType = 1,
-        .xIndex = 1,
-        .CurNumber = 1
+        .SymbolType = 0,
+        .xIndex = 0,
+        .CurNumber = 0
+    },
+
+    (SymbolsCaseObj){
+        .Name = "-",
+        .SymbolType = 3,
+        .xIndex = 0,// -1
+        .yIndex = 2,// 1-1
+        .CurNumber = 6
     },
 };
 
