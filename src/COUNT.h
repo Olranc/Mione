@@ -101,7 +101,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Var.V.Area.Index;
-                                    Function( MioObj, MioObjSize);
+                                    mione( MioObj, MioObjSize);
 
 
                                     //todo function call
@@ -138,7 +138,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Val.Area.Index;
-                                    Function( MioObj, MioObjSize);
+                                    mione( MioObj, MioObjSize);
 
 
                                     //todo function call
