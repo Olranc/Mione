@@ -18,7 +18,12 @@ SymbolsCaseObj Symbols[] =
         .CurNumber = 1
     },
 
-
+    (SymbolsCaseObj){
+        .Name = ",",
+        .SymbolType = 4,
+        .xIndex = 0, // 1,2,3,5,8,13
+        .CurNumber = 2
+    },
 
     (SymbolsCaseObj){
         .Name = "*",

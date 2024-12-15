@@ -20,14 +20,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
     MioneObj* inBracket = malloc(0);
     int inBracketSize = 0;
 
-    int CalculateType = 0; /*
-        0 : 無
-        1 : 加法 : +
-        2 : 減法 : -
-        3 : 乘法 : *
-        4 : 除法 : /
-        5 : 餘數 : %
-    */
+    int CalculateType = 0;
 
     int CalculateLevel = 0;
 
@@ -101,9 +94,14 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                 if (Pack[FirstBracketIndex - 1].Var.V.ValueType == 4)
                                 {
 
+
+                                    int MioObjSize = 0;
+
+                                    MioneObj * MioObj = CMO(Pack[FirstBracketIndex - 1].Var.V.Area.Area,Pack[FirstBracketIndex - 1].Var.V.Area.Size,NULL,NULL,&MioObjSize);
+
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Var.V.Area.Index;
-                                    Function( Pack[FirstBracketIndex - 1].Var.V.Area.Area, Pack[FirstBracketIndex - 1].Var.V.Area.Size);
+                                    Function( MioObj, MioObjSize);
 
 
                                     //todo function call
@@ -129,12 +127,20 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                             }
                             else
                             {
+
                                 if (Pack[FirstBracketIndex - 1].Val.ValueType == 4)
                                 {
 
+
+
+                                    int MioObjSize = 0;
+                                    MioneObj * MioObj = CMO(Pack[FirstBracketIndex - 1].Val.Area.Area,Pack[FirstBracketIndex - 1].Val.Area.Size,NULL,NULL,&MioObjSize);
+
                                     int ButterIndex = WorkOnMioIndex;
                                     WorkOnMioIndex = Pack[FirstBracketIndex - 1].Val.Area.Index;
-                                    Function( Pack[FirstBracketIndex - 1].Val.Area.Area, Pack[FirstBracketIndex - 1].Val.Area.Size);
+                                    Function( MioObj, MioObjSize);
+
+
                                     //todo function call
                                     WorkOnMioIndex = ButterIndex;
                                 }

@@ -1,1 +1,5 @@
-set x = -10101*(.1+1.0)
+set x = function
+    set z = function
+        set y = 10.0
+    end()
+end()
