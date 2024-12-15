@@ -64,7 +64,6 @@ typedef struct _SymbolObject
 {
     char * Name;
     int SymbolType;
-    int xIndex; //符號順序
 }SymbolObj;
 
 
@@ -131,6 +130,7 @@ typedef struct _SymbolsCaseObject{
   int SymbolType;
   int xIndex;
   int yIndex;
+  int zIndex;
   int CurNumber;
 } SymbolsCaseObj;
 

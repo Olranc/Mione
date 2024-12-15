@@ -46,7 +46,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
     int LastPaired = 0;
 
-    int ThisSourceHasBeenPN = 0; //是否已經有PNumber的數字
 
     int Lock = -1; //被封鎖到...
 
@@ -87,7 +86,6 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             };
 
             Paired = 1;
-            ThisSourceHasBeenPN = 0;
 
         }
         //PROMPT
@@ -105,12 +103,10 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 .Prompt = Prompt
             };
             Paired = 2;
-            ThisSourceHasBeenPN = 0;
 
         }
 
 
-        if (ThisSourceHasBeenPN) if (Paired ==1 || Paired == 2) ThisSourceHasBeenPN = 0;
 
         //SYMBOL
         for (int Ci = 0; Ci < sizeof( Symbols)/sizeof( Symbols[0]); Ci++) if (strcmp(CASES[i].ObjName,Symbols[Ci].Name) == 0)
@@ -118,11 +114,9 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 
 
 
-
             SymbolObj Symbol = (SymbolObj){
                 .Name = CASES[i].ObjName,
                 .SymbolType = Symbols[Ci].SymbolType,
-                .xIndex = Symbols[Ci].xIndex,
             };
 
             (*DEFSIZE)++;
@@ -132,11 +126,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
                 .Symbol = Symbol
             };
             Paired = 3;
-            if (strcmp(CASES[i].ObjName,"."))
-            {
-                ThisSourceHasBeenPN = 0;
 
-            }
         }
 
         //Value : String
@@ -235,108 +225,31 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
             }
         }
 
-        //Value : PNumber
-        if (CASES[i].ObjType == 10) if (strcmp(CASES[i].ObjName,".") == 0)
-        {
-            if (CASESIZE-1>=i)
-            {
-                if (!ThisSourceHasBeenPN)
-                {
-                    if (CASES[i+1].ObjType == 2)
-                    {
-
-                        (*DEFSIZE)--;
-                        (*DEF)[(*DEFSIZE)] = (MioneObj){};
-
-                        Lock = i+1;
-
-                        ThisSourceHasBeenPN = 1;
-                        long double V = 0;
-                        V=V+atoi(CASES[i+1].ObjName)*pow(10.,(int)strlen(CASES[i+1].ObjName)*(-1));
-
-                        if (i-1>=0)
-                        {
-                            if (CASES[i-1].ObjType == 2)
-                            {
-
-                                V=V+atoi(CASES[i-1].ObjName);
-                            }
-                        }
-
-
-
-                        Paired = 5;
-
-                        ValueObj Value = (ValueObj){
-                            .ValueType = 3,
-                            .PNumber = V,
-                        };
-
-                        (*DEFSIZE)++;
-                        (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
-                        (*DEF)[(*DEFSIZE)-1] = (MioneObj){
-                            .ObjType = 5,
-                            .Val = Value,
-                        };
-                    }else if(i-1>=0 && CASES[i-1].ObjType == 2)
-                    {
-                        (*DEFSIZE)--;
-                        (*DEF)[(*DEFSIZE)] = (MioneObj){};
-
-                        ThisSourceHasBeenPN = 1;
-                        long double V = 0;
-                        V=V+atoi(CASES[i-1].ObjName);
-                        ValueObj Value = (ValueObj){
-                            .ValueType = 3,
-                            .PNumber = V ,
-                        };
-                        (*DEFSIZE)++;
-                        (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
-                        (*DEF)[(*DEFSIZE)-1] = (MioneObj){
-                            .ObjType = 5,
-                            .Val = Value,
-                        };
-                    }
-                }else
-                {
-                    printf("CASE_TO_MIONE, 289\n");
-                    exit(0xffff+0x02);
-                }
-
-            }
-        };
-
 
 
 
         //Value : NPNumber
-        if (!Paired) // 防止PNumber搞怪
-        {
-
-            if ((CASESIZE-1>i &&( CASES[i+1].ObjType == 10 && (strcmp(CASES[i+1].ObjName,".") == 0))) ||
-                (i-1>=0&&( CASES[i-1].ObjType == 10 && (strcmp(CASES[i-1].ObjName,".") == 0)))) //"."前的數字無法被Paired到，因此這樣做。
-            { Paired = -1; }else if(CASES[i].ObjType == 2)
-            {
-                Paired = 5;
+           if(CASES[i].ObjType == 2)
+           {
+               Paired = 5;
 
 
-                long int V = 0;
-                V=V+atoi(CASES[i].ObjName);
+               long int V = 0;
+               V=V+atoi(CASES[i].ObjName);
 
-                ValueObj Value = (ValueObj){
-                    .ValueType = 2,
-                    .NPNumber = V
-                };
+               ValueObj Value = (ValueObj){
+                   .ValueType = 2,
+                   .NPNumber = V
+               };
 
-                (*DEFSIZE)++;
-                (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
-                (*DEF)[(*DEFSIZE)-1] = (MioneObj){
-                    .ObjType = 5,
-                    .Val = Value,
-                };
+               (*DEFSIZE)++;
+               (*DEF) = (MioneObj*)realloc( (*DEF) ,(*DEFSIZE)*sizeof(MioneObj));
+               (*DEF)[(*DEFSIZE)-1] = (MioneObj){
+                   .ObjType = 5,
+                   .Val = Value,
+               };
 
-            }
-        }
+           }
 
         //Variable
 
@@ -485,6 +398,7 @@ MioneObj *CMO(CaseObj*CASES,int CASESIZE,
 */
 
     (*SIZE) = (*DEFSIZE);
+
     return *DEF;
 
 

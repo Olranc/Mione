@@ -65,9 +65,17 @@ SymbolsCaseObj Symbols[] =
     (SymbolsCaseObj){
         .Name = "-",
         .SymbolType = 3,
-        .xIndex = 0,// -1
+        .xIndex = 1,// -1
         .yIndex = 2,// 1-1
         .CurNumber = 6
+    },
+
+    (SymbolsCaseObj){
+        .Name = ".",
+        .SymbolType = 3,
+        .xIndex = 0,// .1
+        .yIndex = 0,// 0.1 or <TABLE>.<CHILD>
+        .CurNumber = 7
     },
 };
 

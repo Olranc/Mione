@@ -33,19 +33,25 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
     for(int i = 0; i < PackSize; i++)
     {
+        int PastCost = 0;//符號所前扣之值
+
         if (Pack[i].ObjType == 3) // Symbol
         {
+
             if (strcmp(Pack[i].Symbol.Name, "(") == 0)
             {
+
                 FirstBracketIndex = i;
                 IfBrackets = 1;
             }
             else if (strcmp(Pack[i].Symbol.Name, ")") == 0)
             {
+
                 if (IfBrackets)
                 {
                     PairsOfBrackets++;
                     IfBrackets = 0;
+
 
                     CountObj ChildCount = COUNT(inBracket, inBracketSize);
 
@@ -147,11 +153,13 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
             }
             else
             {
+
                 if(!IfBrackets)
                 {
                     switch (Pack[i].Symbol.SymbolType)
                     {
                     case 1:
+
                         if (i == PackSize - 1 || i - 1 <0)
                         {
                             ErrCall(
@@ -166,6 +174,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         }
                         break;
                     case 2:
+
                         if (i == PackSize - 1)
                         {
                             ErrCall(
@@ -180,6 +189,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         }
                        break;
                     case 3:
+
                         if (i == PackSize - 1)
                         {
                             ErrCall(
@@ -189,6 +199,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                            );
                         }
 
+
                         for (int index = 0; index < sizeof(Symbols)/sizeof(Symbols[0]); index++)
                         {
                             if (strcmp(Symbols[index].Name, Pack[i].Symbol.Name) == 0)
@@ -196,17 +207,22 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
 
                                 if (i-1>=0 && (Pack[i-1].ObjType == 4 || Pack[i-1].ObjType == 5))
                                 {
+
                                     if (Symbols[index].yIndex == CalculateLevel)  CalculateType = Symbols[index].CurNumber;
+
                                 }else
                                 {
 
                                     if (Symbols[index].xIndex == CalculateLevel) CalculateType = Symbols[index].CurNumber;
+
                                 }
 
                             }
 
                         }
                         break;
+
+
                     }
 
                 }
@@ -221,63 +237,41 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                 switch (CalculateType)
                 {
                     case 1: // +
-
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
-                            if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
+                            ValueObj Target1 ;
+                            ValueObj Target2 ;
+
+
+
+
+
+                            if (Pack[i - 2].ObjType == 4) Target1 = Pack[i - 2].Var.V; else Target1 = Pack[i - 2].Val;
+                            if (Pack[i].ObjType == 4) Target2 = Pack[i].Var.V; else Target2 = Pack[i].Val;
+
+                            if (!(Target1.ValueType == 2 || Target1.ValueType == 3)) ErrCall("Type Error","MG001111","");
+                            if (!(Target2.ValueType == 2 || Target2.ValueType == 3)) ErrCall("Type Error","MG001111","");
+
+                            if (Target1.ValueType == 3) UsePointNumber = 1;
+                            if (Target2.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
                                 long double Value1 = 0;
                                 long double Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    if (Pack[i - 2].Var.V.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Var.V.NPNumber;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Pack[i - 2].Val.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
-                                    }
-                                }
 
-                                if (Pack[i].ObjType == 4)
+
+                                if (Target2.ValueType == 3)
                                 {
-                                    if (Pack[i].Var.V.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Var.V.NPNumber;
-                                    }
+                                    if (Target1.ValueType == 3) Value1 = Target1.PNumber; else Value1 = (long double)Target1.NPNumber;
+                                    Value2 = Target2.PNumber;
                                 }
                                 else
                                 {
-                                    if (Pack[i].Val.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Val.NPNumber;
-                                    }
+                                    Value1 = Target1.PNumber;
+                                    Value2 = (long double)Target2.NPNumber;
+
                                 }
 
                                 Out = (MioneObj){
@@ -287,29 +281,19 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                         .PNumber = Value1 + Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                             else
                             {
                                 long int Value1 = 0;
                                 long int Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    Value1 = Pack[i - 2].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value1 = Pack[i - 2].Val.NPNumber;
-                                }
+                                Value1 = Target1.NPNumber;
+                                Value2 = Target2.NPNumber;
 
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    Value2 = Pack[i].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value2 = Pack[i].Val.NPNumber;
-                                }
+
+
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
@@ -318,6 +302,8 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                         .NPNumber = Value1 + Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                         }
                         else
@@ -330,65 +316,39 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         }
                         CalculateType = 0;
                         break;
-
                     case 3: // *
-
                         if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
                         {
-                            if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
+                            ValueObj Target1 ;
+                            ValueObj Target2 ;
+
+                            if (Pack[i - 2].ObjType == 4) Target1 = Pack[i - 2].Var.V; else Target1 = Pack[i - 2].Val;
+                            if (Pack[i].ObjType == 4) Target2 = Pack[i].Var.V; else Target2 = Pack[i].Val;
+
+                            if (!(Target1.ValueType == 2 || Target1.ValueType == 3)) ErrCall("Type Error 1","MG001111","");
+                            if (!(Target2.ValueType == 2 || Target2.ValueType == 3)) ErrCall("Type Error 2","MG001111","");
+
+                            if (Target1.ValueType == 3) UsePointNumber = 1;
+                            if (Target2.ValueType == 3) UsePointNumber = 1;
+
 
                             if (UsePointNumber)
                             {
                                 long double Value1 = 0;
                                 long double Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    if (Pack[i - 2].Var.V.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Var.V.NPNumber;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Pack[i - 2].Val.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
-                                    }
-                                }
 
-                                if (Pack[i].ObjType == 4)
+
+                                if (Target2.ValueType == 3)
                                 {
-                                    if (Pack[i].Var.V.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Var.V.NPNumber;
-                                    }
+                                    if (Target1.ValueType == 3) Value1 = Target1.PNumber; else Value1 = (long double)Target1.NPNumber;
+                                    Value2 = Target2.PNumber;
                                 }
                                 else
                                 {
-                                    if (Pack[i].Val.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Val.NPNumber;
-                                    }
+                                    Value1 = Target1.PNumber;
+                                    Value2 = (long double)Target2.NPNumber;
+
                                 }
 
                                 Out = (MioneObj){
@@ -398,29 +358,19 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                         .PNumber = Value1 * Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                             else
                             {
                                 long int Value1 = 0;
                                 long int Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    Value1 = Pack[i - 2].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value1 = Pack[i - 2].Val.NPNumber;
-                                }
+                                Value1 = Target1.NPNumber;
+                                Value2 = Target2.NPNumber;
 
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    Value2 = Pack[i].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value2 = Pack[i].Val.NPNumber;
-                                }
+
+
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
@@ -429,6 +379,8 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                         .NPNumber = Value1 * Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                         }
                         else
@@ -441,215 +393,64 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                         }
                         CalculateType = 0;
                         break;
-                    case 5: // ^
-                        
-                        if (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5)
-                        {
-                            if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
 
-                            if (UsePointNumber)
-                            {
-                                long double Value1 = 0;
-                                long double Value2 = 0;
-
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    if (Pack[i - 2].Var.V.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Var.V.NPNumber;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Pack[i - 2].Val.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
-                                    }
-                                }
-
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    if (Pack[i].Var.V.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Var.V.NPNumber;
-                                    }
-                                }
-                                else
-                                {
-                                    if (Pack[i].Val.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Val.NPNumber;
-                                    }
-                                }
-
-                                long double Value3 = Value1;
-                                for (int p = 1; p < (int)Value2; p++) Value3 *= Value1;
-
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 3,
-                                        .PNumber = Value3
-                                    }
-                                };
-                            }
-                            else
-                            {
-                                long int Value1 = 0;
-                                long int Value2 = 0;
-
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    Value1 = Pack[i - 2].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value1 = Pack[i - 2].Val.NPNumber;
-                                }
-
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    Value2 = Pack[i].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value2 = Pack[i].Val.NPNumber;
-                                }
-
-                                long int Value3 = Value1;
-                                for (int p = 1; p < Value2; p++) Value3 *= Value1;
-
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 2,
-                                        .NPNumber = Value3
-                                    }
-                                };
-                            }
-                        }
-                        else
-                        {
-                            ErrCall(
-                                "You must only connect Two-side-count-symbols to VV(Variable or Value).",
-                                "MG005",
-                                "Maybe you can try `1^1` or anything else."
-                            );
-                        }
-                        CalculateType = 0;
-                        break;
                 case 6: //-
-
                     if (i-2>=0 && (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5))
                     {
                         // 1- 1
-                        if (Pack[i - 2].ObjType == 4) if (Pack[i - 2].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i - 2].ObjType == 5) if (Pack[i - 2].Val.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                            if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
+                         ValueObj Target1 ;
+                            ValueObj Target2 ;
+
+
+
+
+
+                            if (Pack[i - 2].ObjType == 4) Target1 = Pack[i - 2].Var.V; else Target1 = Pack[i - 2].Val;
+                            if (Pack[i].ObjType == 4) Target2 = Pack[i].Var.V; else Target2 = Pack[i].Val;
+
+                            if (!(Target1.ValueType == 2 || Target1.ValueType == 3)) ErrCall("Type Error 3","MG001111","");
+                            if (!(Target2.ValueType == 2 || Target2.ValueType == 3)) ErrCall("Type Error 4","MG001111","");
+
+                            if (Target1.ValueType == 3) UsePointNumber = 1;
+                            if (Target2.ValueType == 3) UsePointNumber = 1;
 
                             if (UsePointNumber)
                             {
                                 long double Value1 = 0;
                                 long double Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
+
+
+                                if (Target2.ValueType == 3)
                                 {
-                                    if (Pack[i - 2].Var.V.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Var.V.NPNumber;
-                                    }
+                                    if (Target1.ValueType == 3) Value1 = Target1.PNumber; else Value1 = (long double)Target1.NPNumber;
+                                    Value2 = Target2.PNumber;
                                 }
                                 else
                                 {
-                                    if (Pack[i - 2].Val.ValueType == 3)
-                                    {
-                                        Value1 = Pack[i - 2].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value1 = (long double)Pack[i - 2].Val.NPNumber;
-                                    }
-                                }
+                                    Value1 = Target1.PNumber;
+                                    Value2 = (long double)Target2.NPNumber;
 
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    if (Pack[i].Var.V.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Var.V.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Var.V.NPNumber;
-                                    }
                                 }
-                                else
-                                {
-                                    if (Pack[i].Val.ValueType == 3)
-                                    {
-                                        Value2 = Pack[i].Val.PNumber;
-                                    }
-                                    else
-                                    {
-                                        Value2 = (long double)Pack[i].Val.NPNumber;
-                                    }
-                                }
-
-
 
                                 Out = (MioneObj){
                                     .ObjType = 5,
                                     .Val = (ValueObj){
                                         .ValueType = 3,
-                                        .PNumber = Value1-Value2
+                                        .PNumber = Value1 -  Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                             else
                             {
                                 long int Value1 = 0;
                                 long int Value2 = 0;
 
-                                if (Pack[i - 2].ObjType == 4)
-                                {
-                                    Value1 = Pack[i - 2].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value1 = Pack[i - 2].Val.NPNumber;
-                                }
+                                Value1 = Target1.NPNumber;
+                                Value2 = Target2.NPNumber;
 
-                                if (Pack[i].ObjType == 4)
-                                {
-                                    Value2 = Pack[i].Var.V.NPNumber;
-                                }
-                                else
-                                {
-                                    Value2 = Pack[i].Val.NPNumber;
-                                }
 
 
 
@@ -657,83 +458,175 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                                     .ObjType = 5,
                                     .Val = (ValueObj){
                                         .ValueType = 2,
-                                        .NPNumber = Value1-Value2
+                                        .NPNumber = Value1 - Value2,
                                     }
                                 };
+
+                                PastCost = 2;
                             }
                     }else
                     {
                         // -1
-                        if (Pack[i].ObjType == 4) if (Pack[i].Var.V.ValueType == 3) UsePointNumber = 1;
-                        if (Pack[i].ObjType == 5) if (Pack[i].Val.ValueType == 3) UsePointNumber = 1;
+                        ValueObj Target;
+
+                        if (Pack[i].ObjType == 4) Target = Pack[i].Var.V;
+                        if (Pack[i].ObjType == 5) Target = Pack[i].Val;
+
+                        if (Target.ValueType == 3) UsePointNumber = 1;
 
 
-                        if (Pack[i].ObjType == 4)
+                        if (Target.ValueType == 2 || Target.ValueType == 3){}else
                         {
-                            if (UsePointNumber)
-                            {
-                                long double Value1 = 0;
-
-                                Value1 = Pack[i].Var.V.PNumber*-1;
-
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 3,
-                                        .PNumber = Value1
-                                    }
-                                };
-                            }else
-                            {
-                                long int Value1 = 0;
-
-                                Value1 = Pack[i].Var.V.NPNumber*-1;
+                            ErrCall("Type error aaaa","MG00111","aa");
+                        }
 
 
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 2,
-                                        .NPNumber = Value1
-                                    }
-                                };
-                            }
+                        if (UsePointNumber)
+                        {
+                            long double Value1 = 0;
 
+                            Value1 = Target.PNumber*-1;
+
+
+                            Out = (MioneObj){
+                                .ObjType = 5,
+                                .Val = (ValueObj){
+                                    .ValueType = 3,
+                                    .PNumber = Value1
+                                }
+                            };
+
+                            PastCost = 1;
                         }else
                         {
-                            if (UsePointNumber)
-                            {
-                                long double Value1 = 0;
+                            long int Value1 = 0;
 
-                                Value1 = Pack[i].Val.PNumber*-1;
-
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 3,
-                                        .PNumber = Value1
-                                    }
-                                };
-                            }else
-                            {
-                                long int Value1 = 0;
-
-                                Value1 = Pack[i].Val.NPNumber*-1;
+                            Value1 = Target.NPNumber*-1;
 
 
+                            Out = (MioneObj){
+                                .ObjType = 5,
+                                .Val = (ValueObj){
+                                    .ValueType = 2,
+                                    .NPNumber = Value1
+                                }
+                            };
 
-                                Out = (MioneObj){
-                                    .ObjType = 5,
-                                    .Val = (ValueObj){
-                                        .ValueType = 2,
-                                        .NPNumber = Value1
-                                    }
-                                };
-                            }
+                            PastCost = 1;
                         }
 
                     }
+                    CalculateType = 0;
+                    break;
+                case 7: // .
 
+                    if (i-2>=0 && (Pack[i - 2].ObjType == 4 || Pack[i - 2].ObjType == 5))
+                    {
+                        // 1.1
+                            ValueObj Target1 ;
+                            ValueObj Target2 ;
+
+
+                            if (Pack[i - 2].ObjType == 4) ErrCall("to do ; Variable can`t be Point Number","MG00111","IT IS TODO NOT ERROR"); else Target1 = Pack[i - 2].Val;
+                            if (Pack[i].ObjType == 4) ErrCall("to do ; Variable can`t be Point Number","MG00111","IT IS TODO NOT ERROR"); else Target2 = Pack[i].Val;
+
+                            if (!(Target1.ValueType == 2 || Target1.ValueType == 3)) ErrCall("TODO!!!","MG001131211","");
+                            if (!(Target2.ValueType == 2 || Target2.ValueType == 3)) ErrCall("TODO!!!","MG001131211","");
+
+                            if (Target1.ValueType == 3) UsePointNumber = 1;
+                            if (Target2.ValueType == 3) UsePointNumber = 1;
+
+                            if (UsePointNumber)
+                            {
+                                ErrCall("Point Number can`t change in to another Point Number","123456","");
+                            }
+                            else
+                            {
+                                long double Value1 = 0;
+                                long double Value2 = 0;
+
+                                Value1 = Target1.NPNumber;
+                                Value2 = Target2.NPNumber;
+
+                                long double Points = 0;
+                                //LOCKED MAX NUMBER = 10^10
+                                for (int x = 1; x < 10; x++)
+                                {
+                                    int cmp=1;
+                                    for (int y = 1; y < x; y++)cmp*=10;
+
+                                    if (cmp>Value2)
+                                    {
+                                        Points = Value2/cmp;
+                                        break;
+                                    }
+                                }
+
+
+                                Out = (MioneObj){
+                                    .ObjType = 5,
+                                    .Val = (ValueObj){
+                                        .ValueType = 3,
+                                        .PNumber = Value1*1 + Points,
+                                    }
+                                };
+
+                                PastCost = 2;
+                            }
+                    }else
+                    {
+                        // .1
+                        ValueObj Target;
+
+                        if (Pack[i].ObjType == 4) ErrCall("to do ; Variable can`t be Point Number","MG00111","IT IS TODO NOT ERROR");
+                        if (Pack[i].ObjType == 5) Target = Pack[i].Val;
+
+                        if (Target.ValueType == 3) UsePointNumber = 1;
+
+                        if (Target.ValueType == 2 || Target.ValueType == 3){}else
+                        {
+                            ErrCall("Type error aaaabbbbbb","MG00111","aa");
+                        }
+
+
+                        if (UsePointNumber)
+                        {
+                            ErrCall("Point Number can`t change in to another Point Number","123456","");
+                        }else
+                        {
+                            long int Value1 = 0;
+
+                            Value1 = Target.NPNumber;
+
+                            long double Points = 0;
+                            //LOCKED MAX NUMBER = 10^10
+                            for (int x = 1; x < 10; x++)
+                            {
+                                int cmp=1;
+                                for (int y = 1; y < x; y++)cmp*=10;
+
+                                if (cmp>Value1)
+                                {
+
+                                    Points = (long double)Value1/cmp;
+
+                                    break;
+                                }
+                            }
+
+                            Out = (MioneObj){
+                                .ObjType = 5,
+                                .Val = (ValueObj){
+                                    .ValueType = 3,
+                                    .PNumber = Points
+                                }
+                            };
+
+                            PastCost = 1;
+                        }
+
+                    }
+                    CalculateType = 0;
                     break;
                     default:
                         break;
@@ -742,7 +635,8 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
                 MioneObj* NewPack = malloc(0);
                 int NewPackSize = 0;
 
-                for (int index = 0; index < i - 2; index++)
+
+                for (int index = 0; index < i - PastCost; index++)
                 {
                     NewPackSize++;
                     NewPack = realloc(NewPack, sizeof(MioneObj) * (NewPackSize));
@@ -782,7 +676,9 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
         if (i == PackSize - 1)
         {
             CalculateLevel++;
-            i = 0;
+            i = -1;// ...困擾了我好久
+
+
             if (CalculateLevel > 3) { break; }
         }
     }
@@ -798,7 +694,7 @@ CountObj COUNT(MioneObj*Pack,int PackSize)
            VPackSize ++;
            VPack = realloc(VPack, sizeof(MioneObj) * (VPackSize));
            VPack[VPackSize-1] = Pack[i].Val;
-           printf("d %d\n",Pack[i].Val.NPNumber);
+           printf("d %Lf\n",(long double)Pack[i].Val.PNumber);
        }
     }
 
